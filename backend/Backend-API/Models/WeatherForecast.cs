@@ -1,6 +1,6 @@
 using System;
 
-namespace Backend_API
+namespace Backend_API.Models
 {
     public class WeatherForecast
     {
