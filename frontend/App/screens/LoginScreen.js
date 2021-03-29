@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
 
 import Input from '../components/Input';
 import MainButton from '../components/MainButton';
 import Colors from '../constants/Colors';
+import { Login } from '../services/userService';
 
 const LoginScreen = props => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const emailInputHandler = inputText => {
         setEmail(inputText);
@@ -15,6 +17,21 @@ const LoginScreen = props => {
 
     const passwordInputHandler = inputText => {
         setPassword(inputText);
+    }
+
+    const loginClickEventHandler = () => {
+        // TODO
+        // validate email & password conditions
+        setIsLoading(true);
+        Login(email, password).then(res => {
+            // do something with result
+            console.log(res);
+            setIsLoading(false);
+        }).catch(error => {
+            setIsLoading(false);
+            // do somethiong with the error
+        });
+
     }
 
     return (
@@ -45,27 +62,32 @@ const LoginScreen = props => {
                         onChangeText={passwordInputHandler}
                         placeholder='סיסמא'
                     />
+                    <ActivityIndicator animating={isLoading} color="#0000ff" size='large'/>
                 </View>
                 <View style={styles.buttonContainer}>
                     <MainButton 
-                        onPress={() => {}} 
+                        disabled={isLoading}
+                        onPress={loginClickEventHandler} 
                         buttonStyle={styles.loginButton} 
                         textStyle={styles.loginText}>
                         התחבר
                     </MainButton>
                     <MainButton 
+                        disabled={isLoading}
                         onPress={() => {}}
                         buttonStyle={styles.facebookButton}
                         textStyle={styles.facebookText}>
                         Facebook
                     </MainButton>
-                    <MainButton 
+                    <MainButton
+                        disabled={isLoading}
                         onPress={() => {}}
                         buttonStyle={styles.googleButton}
                         textStyle={styles.googleText}>
                         Google
                     </MainButton>
                     <MainButton 
+                        disabled={isLoading}
                         onPress={() => {}}
                         buttonStyle={styles.forgotPasswordButton}
                         textStyle={styles.forgotPasswordText}>
