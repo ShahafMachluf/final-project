@@ -1,25 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { enableScreens } from 'react-native-screens';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 
+import AppNavigation from './navigation/AppNavigation';
+import authReducer from './store/reducers/auth'
 
-import LoginScreen from './screens/LoginScreen'
+enableScreens();
+
+const rootReducer = combineReducers({
+  auth: authReducer
+});
+
+const store = createStore(rootReducer);
 
 export default function App() {
   return (
-    <LoginScreen />);
-{ /*   <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!1</Text>
-      <StatusBar style="auto" />
-  </View>*/}
-    
-  
+    <Provider store={store}>
+      <AppNavigation />
+    </Provider>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
