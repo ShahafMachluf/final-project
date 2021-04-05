@@ -65,13 +65,13 @@ namespace Backend_API.Services.Implementations
             ApplicationUser existingUser = await _userManager.FindByEmailAsync(req.Email);
             if(existingUser == null)
             {
-                throw new ArgumentException("Email or password incorrect");
+                throw new ArgumentException("Incorrect email or password");
             }
 
             bool isCorrectPassword = await _userManager.CheckPasswordAsync(existingUser, req.Password);
             if(!isCorrectPassword)
             {
-                throw new ArgumentException("Email or password incorrect");
+                throw new ArgumentException("Incorrect email or password");
             }
 
             return new LoginReqRes()

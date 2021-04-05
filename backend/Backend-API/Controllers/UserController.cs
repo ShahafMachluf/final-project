@@ -34,7 +34,7 @@ namespace Backend_API.Controllers
                 {
                     return BadRequest(new RegisterReqRes()
                     {
-                        Erros = new List<string> { "Invalid payload" },
+                        Error = "Invalid email, password or name",
                         Success = false
                     });
                 }
@@ -48,9 +48,9 @@ namespace Backend_API.Controllers
                 if(ex is ArgumentException || ex is ApplicationException)
                 {
                     return BadRequest(new RegisterReqRes()
-                    { 
+                    {
                         Success = false,
-                        Erros = new List<string>() { ex.Message }
+                        Error = ex.Message
                     });
                 }
 
@@ -68,7 +68,7 @@ namespace Backend_API.Controllers
                 {
                     return BadRequest(new RegisterReqRes()
                     {
-                        Erros = new List<string> { "Invalid payload" },
+                        Error = "Invalid email or password",
                         Success = false
                     });
                 }
@@ -84,7 +84,7 @@ namespace Backend_API.Controllers
                     return BadRequest(new LoginReqRes()
                     {
                         Success= false,
-                        Erros = new List<string>() { ex.Message }
+                        Error =  ex.Message
                     });
                 }
 

@@ -1,18 +1,20 @@
-import React, {useState} from 'react';
-import { View, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
+import React, {useState, useRef } from 'react';
+import { View, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ActivityIndicator, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Header from '../components/Header';
 import Input from '../components/Input';
 import MainButton from '../components/MainButton';
 import Colors from '../constants/Colors';
-import { Login } from '../services/dataServices/userDataService';
-import { saveUserDetails } from '../store/actions/auth';
+import { LoginEventHandler } from '../services/userService';
+import { resetAction } from '../navigation/AppNavigation'
 
 const LoginScreen = props => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const passwordInput = useRef();
     const dispatch = useDispatch();
 
     const emailInputHandler = inputText => {
@@ -26,22 +28,34 @@ const LoginScreen = props => {
     
 
     const loginClickEventHandler = () => {
-        // TODO
-        // validate email & password conditions
+        setErrorMessage('');
         setIsLoading(true);
-        Login(email, password).then(userDetails => {
-            dispatch(saveUserDetails(userDetails));
-            // navigate to home screen
-        }).catch(error => {
+        LoginEventHandler(email, password, dispatch)
+        .then(isLoggedIn => {
+            if(isLoggedIn) {
+                props.navigation.dispatch(resetAction);
+            }
+        })
+        .catch(error => {
+            setErrorMessage(error.message);
             setIsLoading(false);
-            // do somethiong with the error
-        });
+         })
     }
 
     const navigateToSignup = () => {
         props.navigation.navigate({ 
             routeName: 'Signup'
         })
+    }
+
+    const getErrorMessage = () => {
+        if(errorMessage.length > 0) {
+            return (
+                <View style={styles.errorMessage}>
+                    <Text style={styles.errorMessageText}>{errorMessage}</Text>
+                </View>
+            )
+        }
     }
 
     return (
@@ -56,24 +70,26 @@ const LoginScreen = props => {
                     <View style={styles.inputContainer}>
                         <Input 
                             style={styles.input}
-                            blurOnSubmit
                             autoCapitalize='none'
                             autoCorrect={false}
                             value={email}
                             keyboardType='email-address'
                             onChangeText={emailInputHandler}
                             placeholder='דוא"ל'
+                            returnKeyType='next'
+                            onSubmitEditing={() => {passwordInput.current.focus(); }}
                         />
                         <Input 
                             style={styles.input}
-                            blurOnSubmit
                             autoCapitalize='none'
                             autoCorrect={false}
                             value={password}
                             secureTextEntry={true}
                             onChangeText={passwordInputHandler}
                             placeholder='סיסמא'
+                            ref={passwordInput}
                         />
+                        {getErrorMessage()}
                         <ActivityIndicator animating={isLoading} color="#0000ff" size='large'/>
                     </View>
                     <View style={styles.buttonContainer}>
@@ -134,13 +150,13 @@ const styles = StyleSheet.create({
         fontSize: 17
     },
     inputContainer: {
-        height: Dimensions.get('window').height / 5,
+        height: Dimensions.get('window').height / 6,
         width: '100%',
-        marginVertical: Dimensions.get('window').height / 30
+        marginBottom: Dimensions.get('window').height / 60,
     },
     buttonContainer: {
         height: Dimensions.get('window').height / 2.5,
-        width: '50%'
+        width: '50%',
     },
     loginButton: {
         borderColor: 'black',
@@ -179,9 +195,15 @@ const styles = StyleSheet.create({
         color: 'grey',
         fontSize: 17
     },
-    warnning: {
+    errorMessage: {
         backgroundColor: 'red',
-        opacity: 0.6
+        opacity: 0.6,
+        marginHorizontal: Dimensions.get('window').width / 10,
+        alignItems: 'center',
+        height: Dimensions.get('window').height / 35,
+    },
+    errorMessageText: {
+        fontSize: 16
     }
 });
 

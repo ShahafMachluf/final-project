@@ -2,7 +2,7 @@ import Constants from 'expo-constants'
 
 import { Post } from './httpService';
 
-const baseUrl = `${Constants.manifest.APIAddress}/user`;
+const baseUrl = `${Constants.manifest.extra.APIAddress}/user`;
 
 export const Login = (email, password) => {
     const url = `${baseUrl}/login`;

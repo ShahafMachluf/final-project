@@ -10,6 +10,6 @@ namespace Backend_API.Models.User
         public string Id { get; set; }
         public string Token { get; set; }
         public bool Success { get; set; }
-        public List<string> Erros { get; set; }
+        public string Error { get; set; }
     }
 }

@@ -13,6 +13,7 @@ const Header = props => {
 const styles = StyleSheet.create({
     container: {
         height: Dimensions.get('window').height / 5,
+        marginTop: 30,
         width: '100%',
         alignItems: 'center'
     },
