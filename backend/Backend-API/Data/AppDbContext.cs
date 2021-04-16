@@ -10,6 +10,7 @@ namespace Backend_API.Data
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Dog> Dogs { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
         }

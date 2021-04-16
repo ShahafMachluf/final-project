@@ -5,7 +5,8 @@ const MainButton = props => {
     return (
         <TouchableOpacity disabled={props.disabled} onPress={props.onPress}>
             <View style={{...styles.button, ...props.buttonStyle}}>
-                <Text style={{...styles.buttonText, ...props.textStyle}}>{props.children}</Text>
+                {!props.isIcon && <Text style={{...styles.buttonText, ...props.textStyle}} >{props.children}</Text>}
+                {props.isIcon && props.children}
             </View>
         </TouchableOpacity>
     )

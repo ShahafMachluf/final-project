@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 
