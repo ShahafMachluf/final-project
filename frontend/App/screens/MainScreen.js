@@ -27,29 +27,38 @@ const MainScreen = props => {
                 <MainButton
                     buttonStyle={styles.buttons}
                     isIcon={true}
+                    iconName='arrow-back'
+                    iconSize={60}
+                    iconColor="black" // TODO change the color
                     onPress={GetNextDog}
                 >
-                    {/* add arrow icon */}
                 </MainButton>
                 <MainButton
                     buttonStyle={styles.buttons}
+                    isIcon={true}
+                    iconName='heart'
+                    iconSize={60}
+                    iconColor="black" // TODO change the color
                     onPress={heartPressEventHandler}
                 >
-                    {/* add heart icon */}
                 </MainButton>
             </View>
         </View>
     )
 }
 
-// MainScreen.navigationOptions = {
-//     title: 'asdasd',
-//     headerRight: () => (
-//         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-//             <Item title='Menu' iconName='ios-star' onPress={() => {} } />
-//         </HeaderButtons>
-//     )
-// }
+MainScreen.navigationOptions = navData => {
+    return {
+        headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item title='Menu' iconName='menu' onPress={() => {
+                    console.log(navData.navigation)
+                    //navData.navigation.toggleDrawer();
+                } } />
+            </HeaderButtons>
+            )
+    }
+}
 
 const styles = StyleSheet.create({
     screen: {

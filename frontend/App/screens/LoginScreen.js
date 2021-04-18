@@ -33,7 +33,10 @@ const LoginScreen = props => {
         LoginEventHandler(email, password, dispatch)
         .then(isLoggedIn => {
             if(isLoggedIn) {
-                props.navigation.dispatch(resetAction);
+                //props.navigation.dispatch(resetAction);
+                props.navigation.navigate({
+                    routeName: 'Main'
+                })
             }
         })
         .catch(error => {

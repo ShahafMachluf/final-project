@@ -9,6 +9,31 @@ import SignupScreen from '../screens/SignupScreen';
 import MainScreen from '../screens/MainScreen';
 import CustomHeaderButton from '../components/CustomHeaderButton';
 
+
+const DrawerNavigation = createDrawerNavigator({
+    Login: { 
+        screen: LoginScreen,
+        navigationOptions: {
+            headerShown: false,
+            title: 'asd'
+        }
+    },
+    Signup: {
+        screen: SignupScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    Main: {
+        screen: MainScreen,
+        navigationOptions: {
+            headerShown: true,
+            drawerLabel: 'MAIN',
+            
+        }
+    }
+});
+
 const AppNaviation = createStackNavigator({
     Login: { 
         screen: LoginScreen,
@@ -23,19 +48,6 @@ const AppNaviation = createStackNavigator({
         }
     },
     Main: {
-        screen: MainScreen,
-        navigationOptions: {
-            headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item title='Menu' iconName='ios-star' onPress={() => {} } />
-            </HeaderButtons>
-            )
-        }
-    }
-});
-
-const MainNavigation = createDrawerNavigator({
-    Main: {
         screen: MainScreen
     }
 });
@@ -45,4 +57,4 @@ export const resetAction = StackActions.reset({
     actions: [NavigationActions.navigate({routeName: 'Main'})]
 })
 
-export default createAppContainer(AppNaviation);
+export default createAppContainer(DrawerNavigation);
