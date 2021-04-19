@@ -1,40 +1,28 @@
-import React from 'react';
-import { createAppContainer, NavigationActions, StackActions } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import MainScreen from '../screens/MainScreen';
-import CustomHeaderButton from '../components/CustomHeaderButton';
+import Drawer from '../components/Drawer';
 
-
-const DrawerNavigation = createDrawerNavigator({
-    Login: { 
-        screen: LoginScreen,
-        navigationOptions: {
-            headerShown: false,
-            title: 'asd'
-        }
-    },
-    Signup: {
-        screen: SignupScreen,
-        navigationOptions: {
-            headerShown: false
-        }
-    },
+const app = createDrawerNavigator({
     Main: {
         screen: MainScreen,
         navigationOptions: {
             headerShown: true,
             drawerLabel: 'MAIN',
-            
         }
     }
+},
+{
+    drawerPosition: 'right',
+    drawerType: 'slide',
+    //contentComponent: Drawer
 });
 
-const AppNaviation = createStackNavigator({
+const auth = createStackNavigator({
     Login: { 
         screen: LoginScreen,
         navigationOptions: {
@@ -46,15 +34,9 @@ const AppNaviation = createStackNavigator({
         navigationOptions: {
             headerShown: false
         }
-    },
-    Main: {
-        screen: MainScreen
     }
 });
 
-export const resetAction = StackActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({routeName: 'Main'})]
-})
+export const AppNavigation = createAppContainer(app);
 
-export default createAppContainer(DrawerNavigation);
+export const AuthNavigation = createAppContainer(auth);
