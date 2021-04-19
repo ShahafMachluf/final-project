@@ -2,12 +2,11 @@ import React, {useState, useRef } from 'react';
 import { View, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ActivityIndicator, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import Header from '../components/Header';
+import AuthHeader from '../components/AuthHeader';
 import Input from '../components/Input';
 import MainButton from '../components/MainButton';
 import Colors from '../constants/Colors';
 import { LoginEventHandler } from '../services/userService';
-import { resetAction } from '../navigation/AppNavigation'
 
 const LoginScreen = props => {
     const [email, setEmail] = useState('');
@@ -31,11 +30,6 @@ const LoginScreen = props => {
         setErrorMessage('');
         setIsLoading(true);
         LoginEventHandler(email, password, dispatch)
-        .then(isLoggedIn => {
-            if(isLoggedIn) {
-                props.navigation.dispatch(resetAction);
-            }
-        })
         .catch(error => {
             setErrorMessage(error.message);
             setIsLoading(false);
@@ -62,11 +56,11 @@ const LoginScreen = props => {
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
             <ScrollView style={{flex: 1}}>
                 <View style={styles.screen}>
-                    <Header 
+                    <AuthHeader 
                         textStyle={styles.headerText}
                         >
                         ברוך הבא!
-                    </Header>
+                    </AuthHeader>
                     <View style={styles.inputContainer}>
                         <Input 
                             style={styles.input}
@@ -97,36 +91,40 @@ const LoginScreen = props => {
                             disabled={isLoading}
                             onPress={loginClickEventHandler} 
                             buttonStyle={styles.loginButton} 
-                            textStyle={styles.loginText}>
-                            התחבר
+                            linearGradientColor={Colors.mainColor}
+                        >
+                            <Text style={styles.loginText}>התחבר</Text>
                         </MainButton>
                         <MainButton 
                             disabled={isLoading}
                             onPress={() => {}}
                             buttonStyle={styles.facebookButton}
-                            textStyle={styles.facebookText}>
-                            Facebook
+                            textStyle={styles.facebookText}
+                        >
+                            <Text style={styles.facebookText}>Facebook</Text>
                         </MainButton>
                         <MainButton
                             disabled={isLoading}
                             onPress={() => {}}
                             buttonStyle={styles.googleButton}
-                            textStyle={styles.googleText}>
-                            Google
+                            textStyle={styles.googleText}
+                        >
+                            <Text style={styles.googleText}>Google</Text>
                         </MainButton>
                         <MainButton 
                             disabled={isLoading}
                             onPress={() => {}}
                             buttonStyle={styles.forgotPasswordButton}
-                            textStyle={styles.forgotPasswordText}>
-                            שכחת סיסמא?
+                        >
+                            <Text style={styles.forgotPasswordText}>שכחת סיסמא?</Text>
                         </MainButton>
                         <MainButton 
                             disabled={isLoading}
                             onPress={navigateToSignup}
                             buttonStyle={styles.signupButton}
-                            textStyle={styles.signupText}>
-                            משתמש חדש? הרשם
+                            textStyle={styles.signupText}
+                        >
+                            <Text style={styles.signupText}>משתמש חדש? הרשם</Text>
                         </MainButton>
                     </View>
                 </View>
@@ -160,11 +158,11 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         borderColor: 'black',
-        backgroundColor: 'gray'
-        // change background color to Peleg's color
     },
     loginText: {
-        color: 'white'
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center'
     },
     facebookButton: {
         borderColor: Colors.facebook,
@@ -172,21 +170,26 @@ const styles = StyleSheet.create({
         marginVertical: 15
     },
     facebookText: {
-        color: Colors.facebook
+        color: Colors.facebook,
+        fontSize: 20,
+        textAlign: 'center'
     },
     googleButton: {
         borderColor: Colors.googleRed,
         borderWidth: 3
     },
     googleText: {
-        color: Colors.googleRed
+        color: Colors.googleRed,
+        fontSize: 20,
+        textAlign: 'center'
     },
     forgotPasswordButton: {
         marginTop: 10
     },
     forgotPasswordText: {
         color: 'grey',
-        fontSize: 17
+        fontSize: 17,
+        textAlign: 'center'
     },
     signupButton: {
         marginTop: 5

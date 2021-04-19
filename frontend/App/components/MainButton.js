@@ -1,12 +1,26 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const MainButton = props => {
+
+    if(props.linearGradientColor) {
+        return (
+            <TouchableOpacity disabled={props.disabled} onPress={props.onPress}>
+                <LinearGradient 
+                    style={{...styles.button, ...props.buttonStyle}}
+                    colors={props.linearGradientColor}
+                >
+                    {props.children}
+                </LinearGradient>
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <TouchableOpacity disabled={props.disabled} onPress={props.onPress}>
             <View style={{...styles.button, ...props.buttonStyle}}>
-                {!props.isIcon && <Text style={{...styles.buttonText, ...props.textStyle}} >{props.children}</Text>}
-                {props.isIcon && props.children}
+                {props.children}
             </View>
         </TouchableOpacity>
     )
@@ -14,13 +28,9 @@ const MainButton = props => {
 
 const styles = StyleSheet.create({
     button:{
-        paddingVertical: 7,
-        paddingHorizontal: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 17
-    },
-    buttonText: {
-        fontSize: 20,
-        textAlign: 'center'
     }
 });
 

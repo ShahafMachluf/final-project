@@ -1,15 +1,98 @@
 import React from 'react';
-import { createAppContainer, NavigationActions, StackActions } from 'react-navigation';
+import { Dimensions,Image } from 'react-native';
+import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { Ionicons } from '@expo/vector-icons';
 
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import MainScreen from '../screens/MainScreen';
-import CustomHeaderButton from '../components/CustomHeaderButton';
+import Drawer from '../components/Drawer';
 
-const AppNaviation = createStackNavigator({
+const app = createDrawerNavigator({
+    Main: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'אימוץ כלב',
+            drawerIcon: () => (
+                <Image 
+                    source={require('../assets/dog.png')}
+                    style={{height: 24, width: 24}}
+                />
+            )
+        }
+    },
+    AddNewDog: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'מציאת מאמץ',
+            drawerIcon: () => (
+                <Ionicons name='home' size={24}/>
+            )
+        }
+    },
+    LikedDogs: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'כלבים שאהבתי',
+            drawerIcon: () => (
+                <Ionicons name='heart' size={24}/>
+            )
+        }
+    },
+    Chats: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: `צ'אטים `,
+            drawerIcon: () => (
+                <Ionicons name='chatbubble-ellipses' size={24}/>
+            )
+        }
+    },
+    TakeCare: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'דואגים לכלב',
+            drawerIcon: () => (
+                <Image 
+                    source={require('../assets/bigPlus.png')}
+                    style={{height: 24, width: 24}}
+                />
+            )
+        }
+    },
+    HangOut: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'מבלים עם הכלב',
+            drawerIcon: () => (
+                <Image 
+                    source={require('../assets/parasol.png')}
+                    style={{height: 24, width: 24}}
+                />
+            )
+        }
+    },
+    Profile: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'פרופיל',
+            drawerIcon: () => (
+                <Ionicons name='person' size={24}/>
+            )
+        }
+    }
+},
+{
+    drawerPosition: 'right',
+    drawerType: 'slide',
+    contentComponent: Drawer,
+    drawerWidth: Dimensions.get('window').width / 2,
+    initialRouteName: 'Main',
+});
+
+const auth = createStackNavigator({
     Login: { 
         screen: LoginScreen,
         navigationOptions: {
@@ -21,28 +104,9 @@ const AppNaviation = createStackNavigator({
         navigationOptions: {
             headerShown: false
         }
-    },
-    Main: {
-        screen: MainScreen,
-        navigationOptions: {
-            headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item title='Menu' iconName='ios-star' onPress={() => {} } />
-            </HeaderButtons>
-            )
-        }
     }
 });
 
-const MainNavigation = createDrawerNavigator({
-    Main: {
-        screen: MainScreen
-    }
-});
+export const AppNavigation = createAppContainer(app);
 
-export const resetAction = StackActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({routeName: 'Main'})]
-})
-
-export default createAppContainer(AppNaviation);
+export const AuthNavigation = createAppContainer(auth);

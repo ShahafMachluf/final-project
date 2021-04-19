@@ -2,11 +2,11 @@ import React, {useState, useRef } from 'react';
 import { View, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ActivityIndicator, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import Header from '../components/Header';
+import AuthHeader from '../components/AuthHeader';
 import Input from '../components/Input';
 import MainButton from '../components/MainButton';
 import { RegisterEventHandler } from '../services/userService';
-import { resetAction } from '../navigation/AppNavigation';
+import Colors from '../constants/Colors';
 
 const SignupScreen = props => {
     const [email, setEmail] = useState('');
@@ -40,11 +40,6 @@ const SignupScreen = props => {
         setErrorMessage('');
         setIsLoading(true);
         RegisterEventHandler(email, password, name, dispatch)
-        .then(isLoggedIn => {
-            if(isLoggedIn) {
-                props.navigation.dispatch(resetAction);
-            }
-        })
         .catch(error => {
             setErrorMessage(error.message)
             setIsLoading(false);
@@ -65,11 +60,11 @@ const SignupScreen = props => {
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
             <ScrollView>
                 <View style={styles.screen}>
-                    <Header 
+                    <AuthHeader 
                         textStyle={styles.headerText}
                         >
                         ברוך הבא!
-                    </Header>
+                    </AuthHeader>
                     <View style={styles.inputContainer}>
                         <Input 
                             style={styles.input}
@@ -110,18 +105,17 @@ const SignupScreen = props => {
                         <MainButton 
                             disabled={isLoading}
                             onPress={signupClickEventHandler} 
-                            buttonStyle={styles.signupButton} 
-                            textStyle={styles.signupText}
-                            >
-                            הרשמה
+                            buttonStyle={styles.signupButton}
+                            linearGradientColor={Colors.mainColor}
+                        >
+                            <Text style={styles.signupText}>הרשמה</Text>
                         </MainButton>
                         <MainButton 
                             disabled={isLoading}
                             onPress={navigateToLoginScreen} 
-                            buttonStyle={styles.loginButton} 
-                            textStyle={styles.loginText}
-                            >
-                            משתמש קיים? התחבר
+                            buttonStyle={styles.loginButton}
+                        >
+                            <Text style={styles.loginText}>משתמש קיים? התחבר</Text>
                         </MainButton>
                     </View>
                 </View>
@@ -154,19 +148,20 @@ const styles = StyleSheet.create({
         width: '50%'
     },
     signupButton: {
-        borderColor: 'black',
-        backgroundColor: 'gray'
-        // change background color to Peleg's color
+        borderColor: 'black'
     }, 
     signupText: {
-        color: 'white'
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center'
     },
     loginButton: {
         marginTop: 10
     },
     loginText: {
         color: 'grey',
-        fontSize: 17
+        fontSize: 17,
+        textAlign: 'center'
     },
     errorMessage: {
         backgroundColor: 'red',

@@ -1,11 +1,13 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { View, StyleSheet } from 'react-native'
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 import ImageCard from '../components/ImageCard'
 import MainButton from '../components/MainButton';
 import { GetNextDog, LikeDog } from '../services/dogService';
-import CustomHeaderButton from '../components/CustomHeaderButton';
+import Colors from '../constants/Colors';
+import LinearGradientIcon from '../components/LinearGradientIcon';
+import Header from '../components/Header';
 
 const MainScreen = props => {
 
@@ -14,46 +16,54 @@ const MainScreen = props => {
         GetNextDog();
     }
 
+    const nextPerssEventHandler = () => {
+
+    }
+
     return (
         <View style={styles.screen}>
-            {/* add here App icon and remove top margin from ImageCard */}
-            <ImageCard
-                style={{marginTop: 150}}
-                name={'גקי'} 
-                age={9}
-                additionalInfo={['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים']}
+            <Header 
+                menuClickEventHandler={props.navigation.toggleDrawer}
             />
+            <GestureRecognizer
+                onSwipeLeft={() => {console.log("LEFT!")}} // TODO move the image and execute the relevant function
+                onSwipeRight={() => {console.log("RIGHT!")}}
+            >
+                <ImageCard // TODO remove static data and get real data from server
+                    name={'גקי'} 
+                    age={9}
+                    additionalInfo={['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים']}
+                />
+            </GestureRecognizer>
             <View style={styles.buttonsContainer}>
                 <MainButton
                     buttonStyle={styles.buttons}
-                    isIcon={true}
-                    onPress={GetNextDog}
+                    onPress={nextPerssEventHandler}
                 >
-                    {/* add arrow icon */}
+                    <LinearGradientIcon 
+                        iconName="arrow-back"
+                        iconSize={60}
+                        iconColor={Colors.backArrow}
+                    />
                 </MainButton>
-                <MainButton
+                <MainButton 
                     buttonStyle={styles.buttons}
-                    onPress={heartPressEventHandler}
                 >
-                    {/* add heart icon */}
+                    <LinearGradientIcon 
+                        iconName="heart"
+                        iconSize={60}
+                        iconColor={Colors.mainColor}
+                    />
                 </MainButton>
             </View>
         </View>
     )
 }
 
-// MainScreen.navigationOptions = {
-//     title: 'asdasd',
-//     headerRight: () => (
-//         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-//             <Item title='Menu' iconName='ios-star' onPress={() => {} } />
-//         </HeaderButtons>
-//     )
-// }
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1,
+        flex: 1
     },
     buttons: {
         backgroundColor: 'gray',

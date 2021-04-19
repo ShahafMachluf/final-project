@@ -36,19 +36,20 @@ const styles = StyleSheet.create({
     container: {
         marginHorizontal: '10%',
         height: Dimensions.get('window').height / 2,
+        // TODO fix card shadow, should work with the styles below
         // android
-        elevation: 20,
+        elevation: 40,
         // ios
         shadowColor: 'black',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.5,
-        shadowRadius: 2
+        shadowRadius: 2,
     },
     image: {
       height: '100%',
       resizeMode: 'cover',
       borderRadius: 10,
-      overflow: 'hidden'
+      overflow: 'hidden',
     },
     imageOverlay: {
         width: '100%',
