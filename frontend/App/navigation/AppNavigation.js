@@ -1,6 +1,9 @@
+import React from 'react';
+import { Dimensions,Image } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import { Ionicons } from '@expo/vector-icons';
 
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
@@ -11,15 +14,82 @@ const app = createDrawerNavigator({
     Main: {
         screen: MainScreen,
         navigationOptions: {
-            headerShown: true,
-            drawerLabel: 'MAIN',
+            drawerLabel: 'אימוץ כלב',
+            drawerIcon: () => (
+                <Image 
+                    source={require('../assets/dog.png')}
+                    style={{height: 24, width: 24}}
+                />
+            )
+        }
+    },
+    AddNewDog: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'מציאת מאמץ',
+            drawerIcon: () => (
+                <Ionicons name='home' size={24}/>
+            )
+        }
+    },
+    LikedDogs: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'כלבים שאהבתי',
+            drawerIcon: () => (
+                <Ionicons name='heart' size={24}/>
+            )
+        }
+    },
+    Chats: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: `צ'אטים `,
+            drawerIcon: () => (
+                <Ionicons name='chatbubble-ellipses' size={24}/>
+            )
+        }
+    },
+    TakeCare: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'דואגים לכלב',
+            drawerIcon: () => (
+                <Image 
+                    source={require('../assets/bigPlus.png')}
+                    style={{height: 24, width: 24}}
+                />
+            )
+        }
+    },
+    HangOut: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'מבלים עם הכלב',
+            drawerIcon: () => (
+                <Image 
+                    source={require('../assets/parasol.png')}
+                    style={{height: 24, width: 24}}
+                />
+            )
+        }
+    },
+    Profile: {
+        screen: MainScreen,
+        navigationOptions: {
+            drawerLabel: 'פרופיל',
+            drawerIcon: () => (
+                <Ionicons name='person' size={24}/>
+            )
         }
     }
 },
 {
     drawerPosition: 'right',
     drawerType: 'slide',
-    //contentComponent: Drawer
+    contentComponent: Drawer,
+    drawerWidth: Dimensions.get('window').width / 2,
+    initialRouteName: 'Main',
 });
 
 const auth = createStackNavigator({

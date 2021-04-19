@@ -29,7 +29,7 @@ const MainScreen = props => {
                 onSwipeLeft={() => {console.log("LEFT!")}} // TODO move the image and execute the relevant function
                 onSwipeRight={() => {console.log("RIGHT!")}}
             >
-                <ImageCard
+                <ImageCard // TODO remove static data and get real data from server
                     name={'גקי'} 
                     age={9}
                     additionalInfo={['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים']}
