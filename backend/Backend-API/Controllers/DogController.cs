@@ -18,7 +18,7 @@ namespace Backend_API.Controllers
     {
         private readonly IDogService _dogService;
 
-        public UserController(
+        public DogController(
             IDogService dogService)
         {
             _dogService = dogService;

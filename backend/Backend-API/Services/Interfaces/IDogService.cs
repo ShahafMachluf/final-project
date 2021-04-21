@@ -8,7 +8,6 @@ namespace Backend_API.Services.Interfaces
 {
     public interface IDogService
     {
-
-        Task<CreateDogReqRes> AddNewDogAsync(CreateDogReq req);
+        Task<CreateDogReqRes> CreateDogAsync(CreateDogReq req);
     }
 }
