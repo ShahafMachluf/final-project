@@ -8,27 +8,27 @@ namespace Backend_API.Models.Dog
 {
     public class CreateDogReq
     {
-        public int id { get; set; }
         [Required]
-        public string name { get; set; }
+        public string Name { get; set; }
         [Required]
-        public double age { get; set; }
-        public string race { get; set; }
-        public Size size { get; set; }
+        public double Age { get; set; }
         [Required]
-        public Gender gender { get; set; }
-        public string information { get; set; }
-        public bool isVaccinated { get; set; } //חיסון
-        public bool isNeutered { get; set; } //סירוס
+        public string Race { get; set; }
+        public eSize Size { get; set; }
+        [Required]
+        public eGender Gender { get; set; }
+        public string Information { get; set; }
+        public bool IsVaccinated { get; set; } //חיסון
+        public bool IsNeutered { get; set; } //סירוס
 
-        public enum Size
+        public enum eSize
         {
             Small,
             Medium,
             Large
         }
 
-        public enum Gender
+        public enum eGender
         {
             Male,
             Female
