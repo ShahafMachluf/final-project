@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Backend_API.Services.Interfaces
 {
-    public class IDogService
+    public interface IDogService
     {
     }
 }
