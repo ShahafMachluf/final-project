@@ -25,6 +25,7 @@ namespace Backend_API.Services.Implementations
         {
             Dog newDog = new Dog()
             {
+                OwnerId = req.OwnerId,
                 Name = req.Name,
                 Age = req.Age,
                 ImageURL = req.ImageURL,

@@ -11,6 +11,7 @@ namespace Backend_API.Models.Dog
 {
     public class CreateDogReq
     {
+        public string OwnerId { get; set; }
         public string Name { get; set; }
         public double Age { get; set; }
         public string ImageURL { get; set; }
