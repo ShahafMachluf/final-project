@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using static Backend_API.Models.Enums.Gender;
+using static Backend_API.Models.Enums.Size;
 
 namespace Backend_API.Models.DbModels
 {
@@ -15,7 +17,7 @@ namespace Backend_API.Models.DbModels
         [ForeignKey("Owner")]
         public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }
-        public int Age { get; set; }
+        public double Age { get; set; }
         public string ImageURL { get; set; }
         [Required]
         public string Breed { get; set; }
@@ -26,17 +28,5 @@ namespace Backend_API.Models.DbModels
         public string Information { get; set; }
         public bool IsVaccinated { get; set; } //חיסון
         public bool IsNeutered { get; set; } //סירוס
-        public enum eSize
-        {
-            Small,
-            Medium,
-            Large
-        }
-
-        public enum eGender
-        {
-            Male,
-            Female
-        }
     }
 }
