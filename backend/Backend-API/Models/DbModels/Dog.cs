@@ -9,21 +9,17 @@ namespace Backend_API.Models.DbModels
 {
     public class Dog
     {
-    [Key]
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-    [ForeignKey("Owner")]
-    public string OwnerId { get; set; }
-    public ApplicationUser Owner { get; set; }
-    public int Age { get; set; }
-    public string ImageURL { get; set; }
-    public string Size { get; set; }
-    public string Breed { get; set; }
-    public string Color { get; set; }
+        [ForeignKey("Owner")]
+        public string OwnerId { get; set; }
+        public ApplicationUser Owner { get; set; }
+        public int Age { get; set; }
+        public string ImageURL { get; set; }
         [Required]
-        public double Age { get; set; }
-        [Required]
-        public string Race { get; set; }
+        public string Breed { get; set; }
+        public string Color { get; set; }
         public eSize Size { get; set; }
         [Required]
         public eGender Gender { get; set; }
