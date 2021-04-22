@@ -8,9 +8,6 @@ import MainButton from '../components/MainButton';
 import Colors from '../constants/Colors';
 
 const CreateDogScreen = props => {
-
-
-
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
             <ScrollView style={{flex: 1}}>
@@ -24,10 +21,10 @@ const CreateDogScreen = props => {
                         <Input 
                             style={styles.input}
                             autoCapitalize='none'
-                            autoCorrect={false}
-                            value={text}
+                            //autoCorrect={false}
+                            //value={text}
                             keyboardType='default'
-                        //onChangeText={emailInputHandler}
+                            //onChangeText={emailInputHandler}
                             placeholder='שם'
                             returnKeyType='next'
                             //onSubmitEditing={() => {passwordInput.current.focus(); }}
@@ -36,55 +33,14 @@ const CreateDogScreen = props => {
                             style={styles.input}
                             autoCapitalize='none'
                             autoCorrect={false}
-                            value={number}
+                            //value={number}
                             keyboardType='numeric'
                             //onChangeText={passwordInputHandler}
                             placeholder='גיל'
-                            ref={passwordInput}
+                            //ref={passwordInput}
                         />
-                        {getErrorMessage()}
-                        <ActivityIndicator animating={isLoading} color="#0000ff" size='large'/>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <MainButton 
-                            disabled={isLoading}
-                            onPress={loginClickEventHandler} 
-                            buttonStyle={styles.loginButton} 
-                            linearGradientColor={Colors.mainColor}
-                        >
-                            <Text style={styles.loginText}>התחבר</Text>
-                        </MainButton>
-                        <MainButton 
-                            disabled={isLoading}
-                            onPress={() => {}}
-                            buttonStyle={styles.facebookButton}
-                            textStyle={styles.facebookText}
-                        >
-                            <Text style={styles.facebookText}>Facebook</Text>
-                        </MainButton>
-                        <MainButton
-                            disabled={isLoading}
-                            onPress={() => {}}
-                            buttonStyle={styles.googleButton}
-                            textStyle={styles.googleText}
-                        >
-                            <Text style={styles.googleText}>Google</Text>
-                        </MainButton>
-                        <MainButton 
-                            disabled={isLoading}
-                            onPress={() => {}}
-                            buttonStyle={styles.forgotPasswordButton}
-                        >
-                            <Text style={styles.forgotPasswordText}>שכחת סיסמא?</Text>
-                        </MainButton>
-                        <MainButton 
-                            disabled={isLoading}
-                            onPress={navigateToSignup}
-                            buttonStyle={styles.signupButton}
-                            textStyle={styles.signupText}
-                        >
-                            <Text style={styles.signupText}>משתמש חדש? הרשם</Text>
-                        </MainButton>
+                        
+                        
                     </View>
                 </View>
             </ScrollView>
@@ -99,7 +55,7 @@ screen: {
     marginTop: 10
 },
 headerText: {
-    fontSize: 40
+    fontSize: 25
 },
 input: {
     marginHorizontal: Dimensions.get('window').width / 10,
@@ -114,48 +70,6 @@ inputContainer: {
 buttonContainer: {
     height: Dimensions.get('window').height / 2.5,
     width: '50%',
-},
-loginButton: {
-    borderColor: 'black',
-},
-loginText: {
-    color: 'white',
-    fontSize: 20,
-    textAlign: 'center'
-},
-facebookButton: {
-    borderColor: Colors.facebook,
-    borderWidth: 3,
-    marginVertical: 15
-},
-facebookText: {
-    color: Colors.facebook,
-    fontSize: 20,
-    textAlign: 'center'
-},
-googleButton: {
-    borderColor: Colors.googleRed,
-    borderWidth: 3
-},
-googleText: {
-    color: Colors.googleRed,
-    fontSize: 20,
-    textAlign: 'center'
-},
-forgotPasswordButton: {
-    marginTop: 10
-},
-forgotPasswordText: {
-    color: 'grey',
-    fontSize: 17,
-    textAlign: 'center'
-},
-signupButton: {
-    marginTop: 5
-},
-signupText: {
-    color: 'grey',
-    fontSize: 17
 },
 errorMessage: {
     backgroundColor: 'red',
