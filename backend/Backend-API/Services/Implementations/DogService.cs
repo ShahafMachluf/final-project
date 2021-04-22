@@ -26,10 +26,15 @@ namespace Backend_API.Services.Implementations
             {
                 Name = req.Name,
                 Age = req.Age,
-                Race = req.Race,
-                Gender = req.Gender
-                
-            }
+                ImageURL = req.ImageURL,
+                Breed = req.Breed,
+                Color = req.Color,
+                Size = req.Size,
+                Gender = req.Gender,
+                Information = req.Information,
+                IsVaccinated = req.IsVaccinated,
+                IsNeutered = req.IsNeutered,
+            };
             _appDbContext.SaveChanges();//move to new function
         }
     }

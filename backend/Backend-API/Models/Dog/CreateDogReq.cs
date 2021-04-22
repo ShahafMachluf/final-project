@@ -8,19 +8,18 @@ namespace Backend_API.Models.Dog
 {
     public class CreateDogReq
     {
-        [Required]
         public string Name { get; set; }
-        [Required]
         public double Age { get; set; }
+        public string ImageURL { get; set; }
         [Required]
-        public string Race { get; set; }
+        public string Breed { get; set; }
+        public string Color { get; set; }
         public eSize Size { get; set; }
         [Required]
         public eGender Gender { get; set; }
         public string Information { get; set; }
         public bool IsVaccinated { get; set; } //חיסון
         public bool IsNeutered { get; set; } //סירוס
-
         public enum eSize
         {
             Small,
@@ -33,7 +32,7 @@ namespace Backend_API.Models.Dog
             Male,
             Female
         }
-}
+    }
 
 
 }

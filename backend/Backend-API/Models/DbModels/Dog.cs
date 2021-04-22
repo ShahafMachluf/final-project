@@ -15,7 +15,7 @@ namespace Backend_API.Models.DbModels
         [ForeignKey("Owner")]
         public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }
-        public int Age { get; set; }
+        public double Age { get; set; }
         public string ImageURL { get; set; }
         [Required]
         public string Breed { get; set; }
