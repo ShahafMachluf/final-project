@@ -8,7 +8,9 @@ import { Ionicons } from '@expo/vector-icons';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import MainScreen from '../screens/MainScreen';
+import CreateDogScreen from '../screens/CreateDogScreen';
 import Drawer from '../components/Drawer';
+import MainButton from '../components/MainButton';
 
 const app = createDrawerNavigator({
     Main: {
@@ -24,7 +26,7 @@ const app = createDrawerNavigator({
         }
     },
     AddNewDog: {
-        screen: MainScreen,
+        screen: CreateDogScreen,
         navigationOptions: {
             drawerLabel: 'מציאת מאמץ',
             drawerIcon: () => (
