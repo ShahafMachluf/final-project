@@ -2,6 +2,7 @@
 using Backend_API.Models.DbModels;
 using Backend_API.Models.Dog;
 using Backend_API.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,25 @@ namespace Backend_API.Services.Implementations
                 IsVaccinated = req.IsVaccinated,
                 IsNeutered = req.IsNeutered,
             };
-            _appDbContext.SaveChanges();//move to new function
+            int numOfRowsCreated = await _appDbContext.SaveChangesAsync();//move to new function
+            if (numOfRowsCreated <= 0)
+            {
+                throw new ApplicationException("Unable to create dog");
+            }
+            return new CreateDogReqRes()
+            {
+                Name = newDog.Name,
+                Age = newDog.Age,
+                ImageURL = newDog.ImageURL,
+                Breed = newDog.Breed,
+                Color = newDog.Color,
+                Size = newDog.Size,
+                Gender = newDog.Gender,
+                Information = newDog.Information,
+                IsVaccinated = newDog.IsVaccinated,
+                IsNeutered = newDog.IsNeutered,
+                Success = true,
+            };
         }
     }
 }

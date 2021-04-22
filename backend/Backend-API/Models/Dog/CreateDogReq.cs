@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using static Backend_API.Models.DbModels.Dog;
+using static Backend_API.Models.Enums.Gender;
+using static Backend_API.Models.Enums.Size;
 
 namespace Backend_API.Models.Dog
 {
@@ -20,18 +23,7 @@ namespace Backend_API.Models.Dog
         public string Information { get; set; }
         public bool IsVaccinated { get; set; } //חיסון
         public bool IsNeutered { get; set; } //סירוס
-        public enum eSize
-        {
-            Small,
-            Medium,
-            Large
-        }
 
-        public enum eGender
-        {
-            Male,
-            Female
-        }
     }
 
 
