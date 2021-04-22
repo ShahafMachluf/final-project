@@ -1,6 +1,8 @@
 import React, {useState, useRef } from 'react';
 import { View, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ActivityIndicator, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
+import DropDownPicker from 'react-native-dropdown-picker';
+
 
 import AuthHeader from '../components/AuthHeader';
 import Input from '../components/Input';
@@ -33,14 +35,44 @@ const CreateDogScreen = props => {
                             style={styles.input}
                             autoCapitalize='none'
                             autoCorrect={false}
-                            //value={number}
                             keyboardType='numeric'
-                            //onChangeText={passwordInputHandler}
                             placeholder='גיל'
-                            //ref={passwordInput}
+                        />
+                        <Input 
+                            style={styles.input}
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                            keyboardType='next'
+                            placeholder='גזע'
                         />
                         
-                        
+                        <DropDownPicker
+                            items={[
+                                {label: 'קטן', value: 'Small'},
+                                {label: 'בינוני', value: 'Medium'},
+                                {label: 'גדול', value: 'Large'},
+                            ]}
+                            style={styles.input}
+                            defaultIndex={0}
+                            containerStyle={{height: 40}}
+                            onChangeItem={item => console.log(item.label, item.value)}
+                            placeholder="גודל"
+                            labelStyle={{fontSize: 14, color: '#808080', textAlign: "center"}}
+                        />
+
+                        <DropDownPicker
+                            items={[
+                                {label: 'זכר', value: 'Male'},
+                                {label: 'נקבה', value: 'Female'},
+                            ]}
+                            style={styles.input}
+                            defaultIndex={0}
+                            containerStyle={{height: 40}}
+                            onChangeItem={item => console.log(item.label, item.value)}
+                            placeholder="מין"
+                            labelStyle={{fontSize: 14, color: '#808080', textAlign: "center"}}
+                        />
+      
                     </View>
                 </View>
             </ScrollView>
