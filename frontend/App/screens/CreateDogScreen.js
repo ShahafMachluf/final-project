@@ -1,29 +1,31 @@
 import React, {useState, useRef } from 'react';
-import { View, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ActivityIndicator, Text } from 'react-native';
-import { useDispatch } from 'react-redux';
-import DropDownPicker from 'react-native-dropdown-picker';
-
-
-import AuthHeader from '../components/AuthHeader';
+import { View, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, Text, KeyboardAvoidingView, Platform} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import Header from '../components/Header';
 import Input from '../components/Input';
-import MainButton from '../components/MainButton';
-import Colors from '../constants/Colors';
+import { Ionicons } from '@expo/vector-icons';
+import SelectMultiple from 'react-native-select-multiple';
+import SafeAreaView from 'react-native-safe-area-view';
+
 
 const CreateDogScreen = props => {
+    
+    const [selectedCheckBox, setSelectCheckBox] = useState([]);
+    
     return (
+        <KeyboardAvoidingView
+        behavior="padding"
+        style={{flex: 1}}>
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
             <ScrollView style={{flex: 1}}>
                 <View style={styles.screen}>
-                    <AuthHeader 
-                        textStyle={styles.headerText}
-                        >
-                        נא הזן את פרטי הכלב:
-                    </AuthHeader>
+                    <Header/>
+                    <Text style={styles.headerText} >נא הזן את פרטי הכלב:</Text>
                     <View style={styles.inputContainer}>
                         <Input 
-                            style={styles.input}
+                            style={styles.textInput}
                             autoCapitalize='none'
-                            //autoCorrect={false}
+                            autoCorrect={false}
                             //value={text}
                             keyboardType='default'
                             //onChangeText={emailInputHandler}
@@ -32,70 +34,137 @@ const CreateDogScreen = props => {
                             //onSubmitEditing={() => {passwordInput.current.focus(); }}
                         />
                         <Input 
-                            style={styles.input}
+                            style={styles.textInput}
                             autoCapitalize='none'
                             autoCorrect={false}
                             keyboardType='numeric'
                             placeholder='גיל'
                         />
                         <Input 
-                            style={styles.input}
+                            style={styles.textInput}
                             autoCapitalize='none'
                             autoCorrect={false}
                             keyboardType='next'
                             placeholder='גזע'
                         />
+
+                        <Input 
+                            style={styles.textInput}
+                            autoCapitalize='none'
+                            autoCorrect={true}
+                            keyboardType='next'
+                            placeholder='צבע'
+                        />
                         
-                        <DropDownPicker
+                        <RNPickerSelect
+                            placeholder={{
+                                label: 'בחר מין',
+                                value: null,
+                                color: '#808080',
+                            }}
                             items={[
-                                {label: 'קטן', value: 'Small'},
-                                {label: 'בינוני', value: 'Medium'},
-                                {label: 'גדול', value: 'Large'},
+                                { label: 'זכר', value: 'Male' },
+                                { label: 'נקבה', value: 'Female' },
                             ]}
-                            style={styles.input}
-                            defaultIndex={0}
-                            containerStyle={{height: 40}}
-                            onChangeItem={item => console.log(item.label, item.value)}
-                            placeholder="גודל"
-                            labelStyle={{fontSize: 14, color: '#808080', textAlign: "center"}}
+                            onValueChange={value => {}
+                            }
+                            style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
+                            useNativeAndroidPickerStyle={false}
+                            Icon={() => {
+                            return <Ionicons name="md-arrow-down" size={24} color="gray" />;
+                }}
+           />
+
+                        <RNPickerSelect
+                            placeholder={{
+                                label: 'בחר גודל',
+                                value: null,
+                                color: '#808080',
+                            }}
+                            items={[
+                                { label: 'קטן', value: 'Small' },
+                                { label: 'בינוני', value: 'Medium' },
+                                { label: 'גדול', value: 'Large' },
+                                ]}
+                            onValueChange={value => {}}
+                            style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
+                            useNativeAndroidPickerStyle={false}
+                            Icon={() => {
+                            return <Ionicons name="md-arrow-down" size={24} color="gray" />;
+                }}
+            />
+                        <SelectMultiple
+                            rowStyle = {styles.CheckBox}
+                            items={['מחוסן', 'מסורס / מעוקרת']}
+                            selectedItems={selectedCheckBox}
+                            onSelectionsChange={setSelectCheckBox}/>
+                                       
+                         <Input 
+                            multiline={true}
+                            style={{...styles.textInput,height: 70}}
+                            autoCapitalize='none'
+                            autoCorrect={true}
+                            keyboardType='next'
+                            placeholder='מידע כללי'
                         />
 
-                        <DropDownPicker
-                            items={[
-                                {label: 'זכר', value: 'Male'},
-                                {label: 'נקבה', value: 'Female'},
-                            ]}
-                            style={styles.input}
-                            defaultIndex={0}
-                            containerStyle={{height: 40}}
-                            onChangeItem={item => console.log(item.label, item.value)}
-                            placeholder="מין"
-                            labelStyle={{fontSize: 14, color: '#808080', textAlign: "center"}}
-                        />
-      
                     </View>
                 </View>
             </ScrollView>
         </TouchableWithoutFeedback>
-    )
+        </KeyboardAvoidingView>
+
+    );
 };
 
 const styles = StyleSheet.create({
-screen: {
+    screen: {
     flex: 1,
-    alignItems: 'center',
-    marginTop: 10
 },
 headerText: {
-    fontSize: 25
+    fontSize: 25,
+    color: '#808080', 
+    textAlign: "center",
+    marginTop: Dimensions.get('window').width / -10,
+
 },
-input: {
+textInput: {
     marginHorizontal: Dimensions.get('window').width / 10,
     textAlign: 'center',
-    fontSize: 17
+    fontSize: 17,
+    marginTop: Dimensions.get('window').width / 15,
+},
+DropDownInput: {
+    marginHorizontal: Dimensions.get('window').width / 10,
+    textAlign: 'center',
+    fontSize: 17,
+    marginTop: Dimensions.get('window').width / 15,
+    backgroundColor: 'red',
+},
+TextStyle: {
+    fontSize: 32,
+    textAlign: 'center',
+},
+DropDownOptions: {
+    marginTop: Dimensions.get('window').height / 35,
+    height:  Dimensions.get('window').height /10,
+    backgroundColor: 'green',
+},
+iconContainer: {
+    marginTop: Dimensions.get('window').width / 10.5,
+    right: Dimensions.get('window').width / 8,
+},
+CheckBox: {
+    display: 'flex',
+    textAlign: 'center',
+    flexDirection: 'row-reverse',
+    marginTop: Dimensions.get('window').width / 15,
+
+
 },
 inputContainer: {
-    height: Dimensions.get('window').height / 6,
+
+    flex: 1,
     width: '100%',
     marginBottom: Dimensions.get('window').height / 60,
 },
@@ -114,5 +183,33 @@ errorMessageText: {
     fontSize: 16
 }
 });
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+      textAlign: 'center',
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'black',
+      borderRadius: 4,
+      color: 'black',
+      marginHorizontal: Dimensions.get('window').width / 10,
+      marginTop: Dimensions.get('window').width / 15,
+    },
+    inputAndroid: {
+      textAlign: 'center',
+      fontSize: 16,
+      paddingHorizontal: 12,
+      paddingVertical: 10,
+      borderWidth: 1,
+      borderColor: 'black',
+      borderRadius: 8,
+      color: 'black',
+      marginHorizontal: Dimensions.get('window').width / 10,
+      marginTop: Dimensions.get('window').width / 15,
+    },
+  });
+  
 
 export default CreateDogScreen;
