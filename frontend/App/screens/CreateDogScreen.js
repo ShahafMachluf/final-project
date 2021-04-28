@@ -6,11 +6,51 @@ import Input from '../components/Input';
 import { Ionicons } from '@expo/vector-icons';
 import SelectMultiple from 'react-native-select-multiple';
 import SafeAreaView from 'react-native-safe-area-view';
-
+import ImagePicker from 'react-native-image-picker';
+import MainButton from '../components/MainButton';
+import {createDogHandler} from '../services/dogService';
+import {useSelector} from 'react-redux'
 
 const CreateDogScreen = props => {
-    
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [race, setRace] = useState('');
+    const [color, setColor] = useState('');
+    const [gender, setGender] = useState('');
+   
     const [selectedCheckBox, setSelectCheckBox] = useState([]);
+    
+    const userDetails = useSelector(state => state.auth);
+
+    const nameInputHandler = inputName => {
+        setName(inputName)
+    }
+    
+    const ageInputHandler = inputAge => {
+        setAge(inputAge)
+    }
+
+    const raceInputHandler = inputRace => {
+        setRace(inputRace)
+    }
+
+    const colorInputHandler = inputColor => {
+        setColor(inputColor)
+    }
+
+    const genderInputHandler = inputGender => {
+        setGender(inputGender)
+    }
+    
+    const clickDogHandler = () => {
+        //setErrorMessage('');
+       // setIsLoading(true);
+       createDogHandler(userDetails.id ,name, age, race, color, gender)
+      //  .catch(error => {
+           // setErrorMessage(error.message);
+           // setIsLoading(false);
+        // })
+    }
     
     return (
         <KeyboardAvoidingView
@@ -26,12 +66,10 @@ const CreateDogScreen = props => {
                             style={styles.textInput}
                             autoCapitalize='none'
                             autoCorrect={false}
-                            //value={text}
                             keyboardType='default'
-                            //onChangeText={emailInputHandler}
+                            onChangeText={nameInputHandler}
                             placeholder='שם'
                             returnKeyType='next'
-                            //onSubmitEditing={() => {passwordInput.current.focus(); }}
                         />
                         <Input 
                             style={styles.textInput}
@@ -39,6 +77,8 @@ const CreateDogScreen = props => {
                             autoCorrect={false}
                             keyboardType='numeric'
                             placeholder='גיל'
+                            onChangeText={ageInputHandler}
+
                         />
                         <Input 
                             style={styles.textInput}
@@ -46,6 +86,8 @@ const CreateDogScreen = props => {
                             autoCorrect={false}
                             keyboardType='next'
                             placeholder='גזע'
+                            onChangeText={raceInputHandler}
+
                         />
 
                         <Input 
@@ -54,6 +96,8 @@ const CreateDogScreen = props => {
                             autoCorrect={true}
                             keyboardType='next'
                             placeholder='צבע'
+                            onChangeText={colorInputHandler}
+
                         />
                         
                         <RNPickerSelect
@@ -66,14 +110,14 @@ const CreateDogScreen = props => {
                                 { label: 'זכר', value: 'Male' },
                                 { label: 'נקבה', value: 'Female' },
                             ]}
-                            onValueChange={value => {}
-                            }
+                            onValueChange = {genderInputHandler}
+                            
                             style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
                             useNativeAndroidPickerStyle={false}
                             Icon={() => {
                             return <Ionicons name="md-arrow-down" size={24} color="gray" />;
-                }}
-           />
+                            }}
+                        />
 
                         <RNPickerSelect
                             placeholder={{
@@ -91,8 +135,8 @@ const CreateDogScreen = props => {
                             useNativeAndroidPickerStyle={false}
                             Icon={() => {
                             return <Ionicons name="md-arrow-down" size={24} color="gray" />;
-                }}
-            />
+                            }}
+                         />
                         <SelectMultiple
                             rowStyle = {styles.CheckBox}
                             items={['מחוסן', 'מסורס / מעוקרת']}
@@ -108,6 +152,12 @@ const CreateDogScreen = props => {
                             placeholder='מידע כללי'
                         />
 
+                        <MainButton 
+                            onPress={clickDogHandler} 
+                            buttonStyle={styles.loginButton} 
+                        >
+                            <Text style={styles.loginText}>המשך</Text>
+                        </MainButton>
                     </View>
                 </View>
             </ScrollView>

@@ -25,7 +25,7 @@ export const Post = async (url, body, headers = {}, options = {}) => {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             ...headers,
-            'Authorization': getAuthToken()
+            //'Authorization': getAuthToken()
         },
         ...options,
         body: JSON.stringify(body)

@@ -12,9 +12,9 @@ enableScreens();
 export default function App() {
 
   return (
-    <CreateDogScreen></CreateDogScreen>
-    // <Provider store={store}>
-    //   <Root />
-    // </Provider>
+    //<CreateDogScreen></CreateDogScreen>
+      <Provider store={store}>
+        <Root />
+      </Provider>
     );
 }

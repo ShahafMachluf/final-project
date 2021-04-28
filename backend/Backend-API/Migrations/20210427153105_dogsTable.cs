@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Backend_API.Migrations
 {
-    public partial class dogTable : Migration
+    public partial class dogsTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

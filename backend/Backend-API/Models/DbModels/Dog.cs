@@ -14,19 +14,19 @@ namespace Backend_API.Models.DbModels
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        [ForeignKey("Owner")]
+        //[ForeignKey("Owner")]
         public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }
-        public double Age { get; set; }
+        public double? Age { get; set; }
         public string ImageURL { get; set; }
-        [Required]
-        public string Breed { get; set; }
+        //[Required]
+        public string Race { get; set; }
         public string Color { get; set; }
-        public eSize Size { get; set; }
-        [Required]
-        public eGender Gender { get; set; }
+        public eSize? Size { get; set; }
+        //[Required]
+        public eGender? Gender { get; set; }
         public string Information { get; set; }
-        public bool IsVaccinated { get; set; } //חיסון
-        public bool IsNeutered { get; set; } //סירוס
+        public bool? IsVaccinated { get; set; } //חיסון
+        public bool? IsNeutered { get; set; } //סירוס
     }
 }
