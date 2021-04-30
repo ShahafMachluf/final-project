@@ -10,9 +10,12 @@ using Microsoft.AspNetCore.Http;
 using Backend_API.Models.User;
 using Backend_API.Services.Interfaces;
 using Backend_API.Models.Dog;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Backend_API.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [Route("api/dog")]
     public class DogController : ControllerBase

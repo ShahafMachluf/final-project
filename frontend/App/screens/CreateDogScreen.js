@@ -23,7 +23,7 @@ const CreateDogScreen = props => {
     const [information, setInformation] = useState('');
 
     
-    const userDetails = useSelector(state => state.auth);
+    const userDetails = useSelector(state => state.userDetails);
 
     const nameInputHandler = inputName => {
         setName(inputName)
