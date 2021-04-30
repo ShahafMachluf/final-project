@@ -1,4 +1,4 @@
-import { saveUserDetails } from '../store/actions/auth';
+import { saveUserDetails } from '../store/actions/UserDetails';
 import { Login, Register } from './dataServices/userDataService';
 
 export const LoginEventHandler = (email, password, dispacher) => {

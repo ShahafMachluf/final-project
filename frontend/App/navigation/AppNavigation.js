@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import MainScreen from '../screens/MainScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import Drawer from '../components/Drawer';
 
 const app = createDrawerNavigator({
@@ -75,7 +76,7 @@ const app = createDrawerNavigator({
         }
     },
     Profile: {
-        screen: MainScreen,
+        screen: ProfileScreen,
         navigationOptions: {
             drawerLabel: 'פרופיל',
             drawerIcon: () => (

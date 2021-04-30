@@ -39,4 +39,4 @@ export const Post = async (url, body, headers = {}, options = {}) => {
     return response.json();
 }
 
-const getAuthToken = () => 'Bearer ' + store.getState().auth.token;
+const getAuthToken = () => 'Bearer ' + store.getState().userDetails.token;

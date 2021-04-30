@@ -55,6 +55,8 @@ namespace Backend_API.Services.Implementations
             return new RegisterReqRes()
             {
                 Id = newUser.Id,
+                Name = newUser.FullName,
+                Email = newUser.Email,
                 Success = true,
                 Token = GenerateJwtToken(newUser)
             };
@@ -77,6 +79,8 @@ namespace Backend_API.Services.Implementations
             return new LoginReqRes()
             {
                 Id = existingUser.Id,
+                Name = existingUser.FullName,
+                Email = existingUser.Email,
                 Success = true,
                 Token = GenerateJwtToken(existingUser)
             };

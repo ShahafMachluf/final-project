@@ -4,7 +4,18 @@ import { Provider } from 'react-redux';
 
 import store from './store/Store';
 import Root from './Root';
-import MainScreen from './screens/MainScreen';
+import { init, removeUserTable } from './store/db';
+import ProfileScreen from './screens/ProfileScreen';
+import MainScreen from './screens/MainScreen'
+
+init().then(() => {
+  console.log('init sucess');
+  // removeUserTable().then((res) => {
+  //   console.log(res);
+  // })
+}).catch((error) => {
+  console.log('init error ', error);
+})
 
 enableScreens();
 

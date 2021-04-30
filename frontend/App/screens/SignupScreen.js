@@ -135,8 +135,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         height: Dimensions.get('window').height / 4,
-        width: '100%',
-        marginVertical: Dimensions.get('window').height / 25
+        width: '100%'
     },
     input: {
         marginHorizontal: Dimensions.get('window').width / 10,

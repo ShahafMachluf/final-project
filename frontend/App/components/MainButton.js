@@ -1,28 +1,32 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const MainButton = props => {
-
     if(props.linearGradientColor) {
         return (
-            <TouchableOpacity disabled={props.disabled} onPress={props.onPress}>
+            <Pressable 
+                disabled={props.disabled} 
+                onPress={props.onPress} 
+            >
                 <LinearGradient 
-                    style={{...styles.button, ...props.buttonStyle}}
                     colors={props.linearGradientColor}
+                    style={{...styles.button, ...props.buttonStyle}}
                 >
                     {props.children}
                 </LinearGradient>
-            </TouchableOpacity>
+            </Pressable>
         )
     }
 
     return (
-        <TouchableOpacity disabled={props.disabled} onPress={props.onPress}>
-            <View style={{...styles.button, ...props.buttonStyle}}>
+        <Pressable 
+            disabled={props.disabled} 
+            onPress={props.onPress} 
+            style={{...styles.button, ...props.buttonStyle}}
+        >
                 {props.children}
-            </View>
-        </TouchableOpacity>
+        </Pressable>
     )
 }
 

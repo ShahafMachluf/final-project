@@ -1,6 +1,6 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import GestureRecognizer from 'react-native-swipe-gestures';
+import React, { useState, useRef } from 'react'
+import { View, StyleSheet, Text, Dimensions } from 'react-native'
+import Swiper from 'react-native-deck-swiper'
 
 import ImageCard from '../components/ImageCard'
 import MainButton from '../components/MainButton';
@@ -10,14 +10,32 @@ import LinearGradientIcon from '../components/LinearGradientIcon';
 import Header from '../components/Header';
 
 const MainScreen = props => {
-
+    const swiper = useRef(null);
+    const [dogs, setDogs] = useState([
+        {name: '1גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 1, image: 'https://image.cnbcfm.com/api/v1/image/105992231-1561667465295gettyimages-521697453.jpeg?v=1561667497&w=630&h=354'},
+        {name: '2גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 2, image: 'https://medias.timeout.co.il/www/uploads/2018/07/%D7%9B%D7%9C%D7%91-%D7%9E%D7%AA%D7%95%D7%A7-T-1140x641.jpg'},
+        {name: '3גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 3, image: 'https://shahaf.family/wp-content/uploads/2019/03/dog-4372036_1920.jpg'},
+        {name: '4גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 4, image: 'https://image.cnbcfm.com/api/v1/image/105992231-1561667465295gettyimages-521697453.jpeg?v=1561667497&w=630&h=354'}
+    ]);
+    
     const heartPressEventHandler = () => {
-        LikeDog();
-        GetNextDog();
+        swiper.current.swipeRight();
     }
 
     const nextPerssEventHandler = () => {
+        swiper.current.swipeLeft();
+    }
 
+    const swipeLeftEventHandler = () => {
+        console.log("next");
+    }
+
+    const swipeRightEventHandler = () => {
+        console.log("heart");
+    }
+
+    const renderDogCard = dogData => {
+        return <ImageCard {...dogData} />
     }
 
     return (
@@ -25,16 +43,22 @@ const MainScreen = props => {
             <Header 
                 menuClickEventHandler={props.navigation.toggleDrawer}
             />
-            <GestureRecognizer
-                onSwipeLeft={() => {console.log("LEFT!")}} // TODO move the image and execute the relevant function
-                onSwipeRight={() => {console.log("RIGHT!")}}
-            >
-                <ImageCard // TODO remove static data and get real data from server
-                    name={'גקי'} 
-                    age={9}
-                    additionalInfo={['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים']}
+
+                <Swiper
+                    cardStyle={{paddingTop: 20}}
+                    containerStyle={styles.cardContainer}
+                    backgroundColor={'white'}
+                    cardVerticalMargin={0}
+                    disableBottomSwipe={true}
+                    disableTopSwipe={true}
+                    verticalSwipe={false}
+                    cards={dogs}
+                    renderCard={renderDogCard}
+                    onSwipedLeft={swipeLeftEventHandler}
+                    onSwipedRight={swipeRightEventHandler}
+                    ref={swiper}
                 />
-            </GestureRecognizer>
+
             <View style={styles.buttonsContainer}>
                 <MainButton
                     buttonStyle={styles.buttons}
@@ -48,6 +72,7 @@ const MainScreen = props => {
                 </MainButton>
                 <MainButton 
                     buttonStyle={styles.buttons}
+                    onPress={heartPressEventHandler}
                 >
                     <LinearGradientIcon 
                         iconName="heart"
@@ -76,7 +101,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'space-between',
         width: '50%',
-        marginTop: 30
+        marginTop: 30,
+    },
+    cardContainer: {
+        position: 'relative',
+        height: '55%',
+        width: '100%'
     }
 });
 

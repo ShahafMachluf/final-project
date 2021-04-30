@@ -18,10 +18,10 @@ const ImageCard = props => {
     }
 
     return (
-        <View style={{...styles.container, ...props.style}}>
-            <ImageBackground
+        <View style={{...styles.container}}>
+           <ImageBackground
                 style={styles.image} 
-                source={{ uri: 'https://image.cnbcfm.com/api/v1/image/105992231-1561667465295gettyimages-521697453.jpeg?v=1561667497&w=630&h=354'}}
+                source={{ uri: props.image}}
             >
                 <View style={styles.imageOverlay}>
                     <Text style={styles.info}>{props.name}, {props.age}</Text>
@@ -36,14 +36,16 @@ const styles = StyleSheet.create({
     container: {
         marginHorizontal: '10%',
         height: Dimensions.get('window').height / 2,
-        // TODO fix card shadow, should work with the styles below
         // android
-        elevation: 40,
+        elevation: 20,
         // ios
         shadowColor: 'black',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.5,
         shadowRadius: 2,
+        backgroundColor: 'white',
+        overflow: 'hidden',
+        borderRadius: 10
     },
     image: {
       height: '100%',
