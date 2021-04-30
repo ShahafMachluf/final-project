@@ -162,13 +162,15 @@ namespace Backend_API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: false),
+                    Age = table.Column<double>(type: "float", nullable: true),
                     ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Size = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Breed = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Race = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsFromAssociation = table.Column<bool>(type: "bit", nullable: false),
-                    LinkFromAssociation = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Size = table.Column<int>(type: "int", nullable: true),
+                    Gender = table.Column<int>(type: "int", nullable: true),
+                    Information = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsVaccinated = table.Column<bool>(type: "bit", nullable: true),
+                    IsNeutered = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
