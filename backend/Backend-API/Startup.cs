@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using Backend_API.Services.Interfaces;
 using Backend_API.Services.Implementations;
 using Microsoft.AspNetCore.Identity;
+using Backend_API.Data.Repository;
 
 namespace Backend_API
 {
@@ -84,6 +85,7 @@ namespace Backend_API
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDogService, DogService>();
+            services.AddScoped<IDogRepo, DogRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

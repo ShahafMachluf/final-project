@@ -1,4 +1,5 @@
 ﻿using Backend_API.Data;
+using Backend_API.Data.Repository;
 using Backend_API.Models.DbModels;
 using Backend_API.Models.Dog;
 using Backend_API.Services.Interfaces;
@@ -15,10 +16,11 @@ namespace Backend_API.Services.Implementations
 
         //mofa shel ha dog
         private readonly AppDbContext _appDbContext;
-        public DogService(AppDbContext appDbContext)
+        private readonly IDogRepo _dogRepo;
+        public DogService(AppDbContext appDbContext, IDogRepo dogRepo)
         {
             _appDbContext = appDbContext;
-            // or new
+            _dogRepo = dogRepo;
         }
 
         public async Task<CreateDogReqRes> CreateDogAsync(CreateDogReq req)
@@ -37,8 +39,11 @@ namespace Backend_API.Services.Implementations
                 IsVaccinated = req.IsVaccinated,
                 IsNeutered = req.IsNeutered,
             };
-            int numOfRowsCreated = await _appDbContext.SaveChangesAsync();//move to new function
-            if (numOfRowsCreated <= 0)
+
+            await _dogRepo.CreateDogAsync(newDog);
+            bool isCreated =  await _dogRepo.SaveChangesAsync();
+
+            if (!isCreated)
             {
                 throw new ApplicationException("Unable to create dog");
             }

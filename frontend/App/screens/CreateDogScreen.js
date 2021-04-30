@@ -10,6 +10,7 @@ import ImagePicker from 'react-native-image-picker';
 import MainButton from '../components/MainButton';
 import {createDogHandler} from '../services/dogService';
 import {useSelector} from 'react-redux'
+import Dog from '../models/Dog'
 
 const CreateDogScreen = props => {
     const [name, setName] = useState('');
@@ -17,8 +18,10 @@ const CreateDogScreen = props => {
     const [race, setRace] = useState('');
     const [color, setColor] = useState('');
     const [gender, setGender] = useState('');
-   
+    const [size, setSize] = useState('');
     const [selectedCheckBox, setSelectCheckBox] = useState([]);
+    const [information, setInformation] = useState('');
+
     
     const userDetails = useSelector(state => state.auth);
 
@@ -41,15 +44,20 @@ const CreateDogScreen = props => {
     const genderInputHandler = inputGender => {
         setGender(inputGender)
     }
+
+    const sizeInputHandler = inputSize => {
+        setSize(inputSize)
+    }
+
+    const informationInputHandler = inputInformation => {
+        setInformation(inputInformation)
+    }
     
     const clickDogHandler = () => {
-        //setErrorMessage('');
-       // setIsLoading(true);
-       createDogHandler(userDetails.id ,name, age, race, color, gender)
-      //  .catch(error => {
-           // setErrorMessage(error.message);
-           // setIsLoading(false);
-        // })
+        console.log(selectedCheckBox);
+        const dog = new Dog(userDetails.id ,name, age, race, color, gender, size, selectedCheckBox, information, "dog")
+        createDogHandler(dog)
+
     }
     
     return (
@@ -107,8 +115,8 @@ const CreateDogScreen = props => {
                                 color: '#808080',
                             }}
                             items={[
-                                { label: 'זכר', value: 'Male' },
-                                { label: 'נקבה', value: 'Female' },
+                                { label: 'זכר', value: 0 },
+                                { label: 'נקבה', value: 1 },
                             ]}
                             onValueChange = {genderInputHandler}
                             
@@ -126,11 +134,11 @@ const CreateDogScreen = props => {
                                 color: '#808080',
                             }}
                             items={[
-                                { label: 'קטן', value: 'Small' },
-                                { label: 'בינוני', value: 'Medium' },
-                                { label: 'גדול', value: 'Large' },
+                                { label: 'קטן', value: 0 },
+                                { label: 'בינוני', value: 1 },
+                                { label: 'גדול', value: 2 },
                                 ]}
-                            onValueChange={value => {}}
+                            onValueChange={sizeInputHandler}
                             style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
                             useNativeAndroidPickerStyle={false}
                             Icon={() => {
@@ -139,9 +147,12 @@ const CreateDogScreen = props => {
                          />
                         <SelectMultiple
                             rowStyle = {styles.CheckBox}
-                            items={['מחוסן', 'מסורס / מעוקרת']}
+                            items={[{label: 'מחוסן', value: 'Vaccinated'},
+                            {label: 'מסורס/ מעוקרת', value: 'Neutered'}]}
                             selectedItems={selectedCheckBox}
-                            onSelectionsChange={setSelectCheckBox}/>
+                            onSelectionsChange={setSelectCheckBox}
+
+                        />
                                        
                          <Input 
                             multiline={true}
@@ -150,6 +161,7 @@ const CreateDogScreen = props => {
                             autoCorrect={true}
                             keyboardType='next'
                             placeholder='מידע כללי'
+                            onChangeText={informationInputHandler}
                         />
 
                         <MainButton 

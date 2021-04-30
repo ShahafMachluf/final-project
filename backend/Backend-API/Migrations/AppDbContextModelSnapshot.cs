@@ -97,17 +97,13 @@ namespace Backend_API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Age")
+                    b.Property<double?>("Age")
                         .HasColumnType("float");
-
-                    b.Property<string>("Breed")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Gender")
+                    b.Property<int?>("Gender")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageURL")
@@ -116,10 +112,10 @@ namespace Backend_API.Migrations
                     b.Property<string>("Information")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsNeutered")
+                    b.Property<bool?>("IsNeutered")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsVaccinated")
+                    b.Property<bool?>("IsVaccinated")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -128,7 +124,10 @@ namespace Backend_API.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Size")
+                    b.Property<string>("Race")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Size")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
