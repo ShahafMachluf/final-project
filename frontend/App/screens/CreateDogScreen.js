@@ -11,6 +11,7 @@ import MainButton from '../components/MainButton';
 import {createDogHandler} from '../services/dogService';
 import {useSelector} from 'react-redux'
 import Dog from '../models/Dog'
+import Colors from '../constants/Colors';
 
 const CreateDogScreen = props => {
     const [name, setName] = useState('');
@@ -67,7 +68,10 @@ const CreateDogScreen = props => {
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
             <ScrollView style={{flex: 1}}>
                 <View style={styles.screen}>
-                    <Header/>
+                     <Header 
+                        hideLogo={true}
+                        menuClickEventHandler={props.navigation.toggleDrawer} 
+                    />
                     <Text style={styles.headerText} >נא הזן את פרטי הכלב:</Text>
                     <View style={styles.inputContainer}>
                         <Input 
@@ -163,13 +167,15 @@ const CreateDogScreen = props => {
                             placeholder='מידע כללי'
                             onChangeText={informationInputHandler}
                         />
-
+                        <View style={styles.buttonContainer}>
                         <MainButton 
                             onPress={clickDogHandler} 
-                            buttonStyle={styles.loginButton} 
+                            buttonStyle={styles.continueButton} 
+                            linearGradientColor={Colors.mainColor}
                         >
-                            <Text style={styles.loginText}>המשך</Text>
+                            <Text style={styles.continueText}>המשך</Text>
                         </MainButton>
+                        </View>
                     </View>
                 </View>
             </ScrollView>
@@ -187,8 +193,6 @@ headerText: {
     fontSize: 25,
     color: '#808080', 
     textAlign: "center",
-    marginTop: Dimensions.get('window').width / -10,
-
 },
 textInput: {
     marginHorizontal: Dimensions.get('window').width / 10,
@@ -243,7 +247,21 @@ errorMessage: {
 },
 errorMessageText: {
     fontSize: 16
-}
+},
+continueButton: {
+    borderColor: 'black',
+    height: Dimensions.get('window').height / 20,
+},
+continueText: {
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center'
+},
+buttonContainer: {
+    width: '50%',
+    marginHorizontal: Dimensions.get('window').width / 4,
+    marginTop: Dimensions.get('window').width / 15,
+},
 });
 
 const pickerSelectStyles = StyleSheet.create({

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210430105358_dog1")]
-    partial class dog1
+    [Migration("20210504092716_dogs")]
+    partial class dogs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

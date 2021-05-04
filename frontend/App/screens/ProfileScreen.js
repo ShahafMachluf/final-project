@@ -16,8 +16,8 @@ const ProfileScreen = props => {
     return (
         <View style={styles.screen}>
             <Header 
-                hideLogo={true}
-                menuClickEventHandler={props.navigation.toggleDrawer} 
+               hideLogo={true}
+               menuClickEventHandler={props.navigation.toggleDrawer} 
             />
             <View style={styles.imageContainer}>
                 <Image
