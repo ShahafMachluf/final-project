@@ -11,24 +11,34 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Backend_API.Data.Repository;
 
 namespace Backend_API.Services.Implementations
 {
     public class UserService : IUserService
     {
+        private readonly AppDbContext _appDbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IRepo<ApplicationUser> _repo;
+        private readonly IFileService _fileService;
         private readonly JwtConfig _jwtConfig;
 
         public UserService(
             UserManager<ApplicationUser> userManager,
-            IOptionsMonitor<JwtConfig> optionsMonitor)
+            IOptionsMonitor<JwtConfig> optionsMonitor,
+            AppDbContext appDbContext,
+            IRepo<ApplicationUser> repo,
+            IFileService fileService)
         {
             _userManager = userManager;
             _jwtConfig = optionsMonitor.CurrentValue;
-            
+            _appDbContext = appDbContext;
+            _repo = repo;
+            _fileService = fileService;
         }
 
         public async Task<RegisterReqRes> RegisterAsync(RegisterReq req)
@@ -81,9 +91,33 @@ namespace Backend_API.Services.Implementations
                 Id = existingUser.Id,
                 Name = existingUser.FullName,
                 Email = existingUser.Email,
+                ImageUrl = existingUser.ImageUrl,
                 Success = true,
                 Token = GenerateJwtToken(existingUser)
             };
+        }
+
+        public async Task<string> UpdateProfilePictureUrl(string base64Image, ApplicationUser user)
+        {
+            string pictureUrl = await _fileService.UploadImageFromBase64Async(base64Image);
+            if(pictureUrl == string.Empty || pictureUrl == null)
+            {
+                throw new Exception("Unable to upload image.");
+            }
+
+            user.ImageUrl = pictureUrl;
+            bool isSaved = await _repo.SaveChangesAsync();
+            if(!isSaved)
+            {
+                throw new Exception("Unable to upload image.");
+            }
+
+            return pictureUrl;
+        }
+
+        public ApplicationUser GetById(string id)
+        {
+            return _appDbContext.Users.Where(u => u.Id == id).FirstOrDefault();
         }
 
         private string GenerateJwtToken(ApplicationUser user)

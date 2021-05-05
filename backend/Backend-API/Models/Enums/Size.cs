@@ -5,13 +5,10 @@ using System.Threading.Tasks;
 
 namespace Backend_API.Models.Enums
 {
-    public class Size
+    public enum eSize
     {
-        public enum eSize
-        {
-            Small,
-            Medium,
-            Large
-        }
+        Small,
+        Medium,
+        Large
     }
 }

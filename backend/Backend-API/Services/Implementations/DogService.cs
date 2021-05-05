@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend_API.Services.Implementations
 {
@@ -16,11 +17,11 @@ namespace Backend_API.Services.Implementations
 
         //mofa shel ha dog
         private readonly AppDbContext _appDbContext;
-        private readonly IDogRepo _dogRepo;
-        public DogService(AppDbContext appDbContext, IDogRepo dogRepo)
+        private readonly IRepo<Dog> _repo;
+        public DogService(AppDbContext appDbContext, IRepo<Dog> repo)
         {
             _appDbContext = appDbContext;
-            _dogRepo = dogRepo;
+            _repo = repo;
         }
 
         public async Task<CreateDogReqRes> CreateDogAsync(CreateDogReq req)
@@ -40,8 +41,8 @@ namespace Backend_API.Services.Implementations
                 IsNeutered = req.IsNeutered,
             };
 
-            await _dogRepo.CreateDogAsync(newDog);
-            bool isCreated =  await _dogRepo.SaveChangesAsync();
+            await _repo.CreateAsync(newDog);
+            bool isCreated =  await _repo.SaveChangesAsync();
 
             if (!isCreated)
             {
@@ -61,6 +62,11 @@ namespace Backend_API.Services.Implementations
                 IsNeutered = newDog.IsNeutered,
                 Success = true,
             };
+        }
+
+        public async Task<List<Dog>> GetAllDogsAsync()
+        {
+            return await _appDbContext.Dogs.ToListAsync();
         }
     }
 }

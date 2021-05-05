@@ -1,4 +1,5 @@
-﻿using Backend_API.Models.Dog;
+﻿using Backend_API.Models.DbModels;
+using Backend_API.Models.Dog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,7 @@ namespace Backend_API.Services.Interfaces
     public interface IDogService
     {
         Task<CreateDogReqRes> CreateDogAsync(CreateDogReq req);
+
+        Task<List<Dog>> GetAllDogsAsync();
     }
 }

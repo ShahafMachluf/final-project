@@ -1,10 +1,11 @@
-import { SAVE_USER_DETAILS, SET_USER_DETAILS } from '../actions/UserDetails';
+import { SAVE_USER_DETAILS, SET_USER_DETAILS, SET_USER_IMAGE_URL } from '../actions/UserDetails';
 
 const initialState = {
     id: null,
     token: null,
     name: null,
-    email: null
+    email: null,
+    imageUrl: null
 }
 
 const userDetaulshReducer = (state = initialState , action) => {
@@ -13,6 +14,11 @@ const userDetaulshReducer = (state = initialState , action) => {
             return action.details;
         case SAVE_USER_DETAILS:
             return action.details;
+        case SET_USER_IMAGE_URL:
+            return {
+                ...state,
+                imageUrl: action.details.imageUrl
+            }
         default:
             return state;
     }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Slider from '@react-native-community/slider';
 
 import Header from '../components/Header';
@@ -8,10 +8,17 @@ import MainButton from '../components/MainButton';
 import Separator from '../components/Separator';
 import Colors from '../constants/Colors';
 import LinearGradientIcon from '../components/LinearGradientIcon';
+import ProfileImagePicker from '../components/ProfileImagePicker';
+import {uploadImageEventHandler} from '../services/userService';
 
 const ProfileScreen = props => {
     const userDetails = useSelector(state => state.userDetails)
     const [sliderValue, setSliderValue] = useState(5);
+    const dispatch = useDispatch();
+
+    const imageTakenHandler = image => {
+        uploadImageEventHandler(image, dispatch);
+    }
 
     return (
         <View style={styles.screen}>
@@ -19,22 +26,9 @@ const ProfileScreen = props => {
                 hideLogo={true}
                 menuClickEventHandler={props.navigation.toggleDrawer} 
             />
-            <View style={styles.imageContainer}>
-                <Image
-                    style={styles.profilePicture}
-                    source={require('../assets/no-profile-picture.jpg')}
-                />
-                <MainButton
-                    buttonStyle={styles.addImageIcon}
-                    onPress={() => {setSliderValue(15)}}
-                >
-                    <LinearGradientIcon 
-                        iconName="add"
-                        iconSize={35}
-                        iconColor={Colors.mainColor}
-                    />
-                </MainButton>
-            </View>
+            <ProfileImagePicker 
+                onImageTaken={imageTakenHandler}
+            />
             <Text style={styles.name}>{userDetails.name}</Text>
             <View style={styles.propertiesContainer}>
                 <View style={styles.keyValuePair}>

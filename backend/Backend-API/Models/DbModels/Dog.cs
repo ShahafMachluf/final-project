@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using static Backend_API.Models.Enums.Gender;
-using static Backend_API.Models.Enums.Size;
+using  Backend_API.Models.Enums;
+using  Backend_API.Models.Enums;
 
 namespace Backend_API.Models.DbModels
 {

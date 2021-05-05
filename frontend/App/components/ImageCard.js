@@ -3,17 +3,26 @@ import { View, Text, StyleSheet, ImageBackground, Dimensions } from 'react-nativ
 
 const ImageCard = props => {
 
-    const getAdditionalInfo = () => {
-        let additionalInfoStr = '';
-        if(props.additionalInfo) {
-            props.additionalInfo.map((info, index) => {
-                if(index > 4){
-                    return additionalInfoStr.substring(0, additionalInfoStr.length - 2);
-                }
+    const getAdditionalInfo = (dogInfo) => {
+        let additionalInfoStr = dogInfo.race + ', ' + dogInfo.color + ', ';
 
-                additionalInfoStr = additionalInfoStr.concat(info, ', ');
-            })
+        if(dogInfo.isVaccinated) {
+            if(dogInfo.gender === 0) {
+               additionalInfoStr = additionalInfoStr.concat('מחוסן, ') 
+            }
+            else {
+                additionalInfoStr = additionalInfoStr.concat('מחוסנת, ') 
+            }
         }
+        if(dogInfo.IsNeutered) {
+            if(dogInfo.gender === 0) {
+                additionalInfoStr = additionalInfoStr.concat('מסורס, ') 
+            }
+            else {
+                additionalInfoStr = additionalInfoStr.concat('מעוקרת, ') 
+            }
+        }
+
         return additionalInfoStr.substring(0, additionalInfoStr.length - 2);
     }
 
@@ -21,11 +30,11 @@ const ImageCard = props => {
         <View style={{...styles.container}}>
            <ImageBackground
                 style={styles.image} 
-                source={{ uri: props.image}}
+                source={{ uri: props.imageURL}}
             >
                 <View style={styles.imageOverlay}>
                     <Text style={styles.info}>{props.name}, {props.age}</Text>
-                    <Text style={styles.info}>{getAdditionalInfo()}</Text>
+                    <Text style={styles.info}>{getAdditionalInfo(props)}</Text>
                 </View>
             </ImageBackground>
         </View>

@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 
 import ImageCard from '../components/ImageCard'
 import MainButton from '../components/MainButton';
-import { GetNextDog, LikeDog } from '../services/dogService';
+import { GetNextDog, LikeDog, getAllDogsHandler } from '../services/dogService';
 import Colors from '../constants/Colors';
 import LinearGradientIcon from '../components/LinearGradientIcon';
 import Header from '../components/Header';
@@ -12,12 +12,28 @@ import Header from '../components/Header';
 const MainScreen = props => {
     const swiper = useRef(null);
     const [dogs, setDogs] = useState([
-        {name: '1גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 1, image: 'https://image.cnbcfm.com/api/v1/image/105992231-1561667465295gettyimages-521697453.jpeg?v=1561667497&w=630&h=354'},
-        {name: '2גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 2, image: 'https://medias.timeout.co.il/www/uploads/2018/07/%D7%9B%D7%9C%D7%91-%D7%9E%D7%AA%D7%95%D7%A7-T-1140x641.jpg'},
-        {name: '3גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 3, image: 'https://shahaf.family/wp-content/uploads/2019/03/dog-4372036_1920.jpg'},
-        {name: '4גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 4, image: 'https://image.cnbcfm.com/api/v1/image/105992231-1561667465295gettyimages-521697453.jpeg?v=1561667497&w=630&h=354'}
+        // {name: '1גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 1, image: 'https://image.cnbcfm.com/api/v1/image/105992231-1561667465295gettyimages-521697453.jpeg?v=1561667497&w=630&h=354'},
+        // {name: '2גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 2, image: 'https://medias.timeout.co.il/www/uploads/2018/07/%D7%9B%D7%9C%D7%91-%D7%9E%D7%AA%D7%95%D7%A7-T-1140x641.jpg'},
+        // {name: '3גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 3, image: 'https://shahaf.family/wp-content/uploads/2019/03/dog-4372036_1920.jpg'},
+        // {name: '4גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 4, image: 'https://image.cnbcfm.com/api/v1/image/105992231-1561667465295gettyimages-521697453.jpeg?v=1561667497&w=630&h=354'}
     ]);
     
+    useEffect(() => {
+        console.log('in useEffect');
+        const getDogs = async () => {
+            try{
+                const receivedDogs = await getAllDogsHandler();
+                console.log(receivedDogs);
+                setDogs(receivedDogs);
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+
+        getDogs();
+    }, [setDogs])
+
     const heartPressEventHandler = () => {
         swiper.current.swipeRight();
     }
@@ -31,11 +47,14 @@ const MainScreen = props => {
     }
 
     const swipeRightEventHandler = () => {
+        console.log(swiper);
         console.log("heart");
     }
 
     const renderDogCard = dogData => {
-        return <ImageCard {...dogData} />
+        if(dogData) {
+            return <ImageCard {...dogData} />
+        }
     }
 
     return (
@@ -53,9 +72,12 @@ const MainScreen = props => {
                     disableTopSwipe={true}
                     verticalSwipe={false}
                     cards={dogs}
+                    stackSize={2}
+                    showSecondCard={true}
                     renderCard={renderDogCard}
                     onSwipedLeft={swipeLeftEventHandler}
                     onSwipedRight={swipeRightEventHandler}
+                    onSwipedAll={() => {console.log('all swiped')}}
                     ref={swiper}
                 />
 

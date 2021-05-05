@@ -14,6 +14,11 @@ export const Register = (email, password, fullName) => {
     return Post(url, {email, password, fullName});
 }
 
+export const UploadImage = profilePictureModel => {
+    const url = `${baseUrl}/profilePicture`
+    return Post(url, profilePictureModel);
+}
+
 export const FacebookLogin = () => {
 
 }

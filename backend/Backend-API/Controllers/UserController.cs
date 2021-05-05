@@ -5,21 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net;
+using System.Web;
 using Microsoft.AspNetCore.Http;
 using Backend_API.Models.User;
 using Backend_API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Backend_API.Controllers
 {
     [ApiController]
     [Route("api/user")]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly IUserService _userService;
 
-        public UserController(
-            IUserService userService)
+        public UserController(IUserService userService): base(userService)
         {
             _userService = userService;
         }
@@ -89,6 +90,23 @@ namespace Backend_API.Controllers
                 }
 
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("profilePicture")]
+        public async Task<IActionResult> UploadProfilePicture([FromBody] UploadImageReq request)
+        {
+            try
+            {
+                string imageUrl = await _userService.UpdateProfilePictureUrl(request.ImageBase64, _currentUser);
+
+                return Ok(imageUrl);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

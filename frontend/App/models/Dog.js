@@ -22,7 +22,4 @@ export default class Dog {
             this.isNeutered = checkBoxItems[0].value === 'Neutered';
         }
     }
-
-
-
 }

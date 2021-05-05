@@ -11,5 +11,6 @@ namespace Backend_API.Models.DbModels
     {
         public string FullName {get; set;}
         public string City { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

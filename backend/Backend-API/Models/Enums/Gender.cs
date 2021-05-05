@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace Backend_API.Models.Enums
 {
-    public class Gender
+    public enum eGender
     {
-        public enum eGender
-        {
-            Male,
-            Female
-        }
+        Male,
+        Female
     }
 }

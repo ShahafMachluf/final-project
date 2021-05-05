@@ -12,20 +12,24 @@ using Backend_API.Services.Interfaces;
 using Backend_API.Models.Dog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Backend_API.Models.DbModels;
 
 namespace Backend_API.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [Route("api/dog")]
-    public class DogController : ControllerBase
+    public class DogController : BaseController
     {
         private readonly IDogService _dogService;
+        private readonly IUserService _userService;
 
         public DogController(
-            IDogService dogService)
+            IDogService dogService,
+            IUserService userService) : base(userService)
         {
             _dogService = dogService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -59,7 +63,23 @@ namespace Backend_API.Controllers
                     });
                 }
 
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> getAllDogs()
+        {
+            try
+            {
+                List<Dog> dogs = await _dogService.GetAllDogsAsync();
+
+                return Ok(dogs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

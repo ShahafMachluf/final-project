@@ -35,14 +35,15 @@ namespace Backend_API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        // 33
         public void ConfigureServices(IServiceCollection services)
         {
+            #region DB connection string
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+            #endregion
 
-            // token authentication settings
+            #region  token authentication settings
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
 
             services.AddAuthentication(opt => {
@@ -75,6 +76,8 @@ namespace Backend_API
             })
             .AddEntityFrameworkStores<AppDbContext>();
 
+            #endregion
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -83,9 +86,12 @@ namespace Backend_API
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            #region services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDogService, DogService>();
-            services.AddScoped<IDogRepo, DogRepo>();
+            services.AddScoped<IFileService, FileService>();
+            services.AddScoped(typeof(IRepo<>), typeof(Repo<>));
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
