@@ -1,4 +1,5 @@
 ﻿using Backend_API.Models.DbModels;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Backend_API.Data.Repository
     {
         Task CreateDogAsync(Dog dog);
         Task<bool> SaveChangesAsync();
+        IEnumerable<Dog> getAllDogs(int idOfClient);
+        Dog GetDogById(int id);
 
     }
 }

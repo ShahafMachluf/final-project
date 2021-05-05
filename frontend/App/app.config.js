@@ -1,5 +1,5 @@
 export default {
     extra:{
-        APIAddress: "http://192.168.0.123:45455/api"
+        APIAddress: "http://http://169.254.81.170:45457/api"
     }
 };

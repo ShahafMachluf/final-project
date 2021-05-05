@@ -22,10 +22,48 @@ namespace Backend_API.Data.Repository
             }
             await _appDbContext.Dogs.AddAsync(dog);
         }
+
+        public IEnumerable<Dog> getAllDogs()
+        {
+            return _appDbContext.Dogs.ToList();
+        }
+
+        public IEnumerable<Dog> getAllDogs(int idOfClient)//reciving idOfClient from frontend, depends us how
+        {//
+            IEnumerable<Dog> dogsList = _appDbContext.Dogs;
+           return  getOwnerDogs(idOfClient);
+        }
+
+        private IEnumerable<Dog> getOwnerDogs(int i_IdOfClient)//Move function To Service?..
+        {
+           List<Dog> dogsList =  new List<Dog>();
+            foreach (Dog dog in dogsList)
+            {
+                if ((int.Parse(dog.OwnerId)) == i_IdOfClient)
+                {
+                    dogsList.Add(dog);
+                }
+            }
+
+            return dogsList;
+        }
+
+        //private getDogsByOwnerId(int idOfClient)
+        //{
+
+        //}
+
+        public Dog GetDogById(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
+        {
+          return _appDbContext.Dogs.FirstOrDefault(p => p.Id == id);//First object with id equal to paramter id )
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return await _appDbContext.SaveChangesAsync() >= 0;
         }
+
+       
 
     }
 }

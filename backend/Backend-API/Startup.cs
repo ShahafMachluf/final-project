@@ -86,6 +86,9 @@ namespace Backend_API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDogService, DogService>();
             services.AddScoped<IDogRepo, DogRepo>();
+            // services.AddScoped<IDogRepo, DogRepo>();
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
