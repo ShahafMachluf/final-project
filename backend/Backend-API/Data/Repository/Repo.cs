@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Backend_API.Models.DbModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,11 @@ namespace Backend_API.Data.Repository
         public async Task CreateAsync(TEntity newObject)
         {
             await _dbSet.AddAsync(newObject);
+        }
+
+        public async Task<IEnumerable<TEntity>> getAll()
+        {
+            return await _dbSet.ToListAsync();
         }
 
         public async Task<bool> SaveChangesAsync()

@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using  Backend_API.Models.Enums;
-using  Backend_API.Models.Enums;
 
 namespace Backend_API.Models.DbModels
 {
@@ -14,16 +13,14 @@ namespace Backend_API.Models.DbModels
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        //[ForeignKey("Owner")]
+        [ForeignKey("Owner")]
         public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }
         public double? Age { get; set; }
         public string ImageURL { get; set; }
-        //[Required]
         public string Race { get; set; }
         public string Color { get; set; }
         public eSize? Size { get; set; }
-        //[Required]
         public eGender? Gender { get; set; }
         public string Information { get; set; }
         public bool? IsVaccinated { get; set; } //חיסון

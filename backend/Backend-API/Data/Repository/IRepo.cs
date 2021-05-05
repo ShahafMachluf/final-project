@@ -11,8 +11,6 @@ namespace Backend_API.Data.Repository
     {
         Task CreateAsync(TEntity newObject);
         Task<bool> SaveChangesAsync();
-        IEnumerable<Dog> getAllDogs(int idOfClient);
-        Dog GetDogById(int id);
-
+        Task<IEnumerable<TEntity>> getAll();
     }
 }

@@ -92,9 +92,6 @@ namespace Backend_API
             services.AddScoped<IFileService, FileService>();
             services.AddScoped(typeof(IRepo<>), typeof(Repo<>));
             #endregion
-            services.AddScoped<IDogRepo, DogRepo>();
-            // services.AddScoped<IDogRepo, DogRepo>();
-            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         }
 

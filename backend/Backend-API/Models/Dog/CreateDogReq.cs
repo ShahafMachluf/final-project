@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using  Backend_API.Models.DbModels;
 using  Backend_API.Models.Enums;
-using  Backend_API.Models.Enums;
 
 namespace Backend_API.Models.Dog
 {
@@ -15,11 +14,9 @@ namespace Backend_API.Models.Dog
         public string Name { get; set; }
         public double? Age { get; set; }
         public string ImageURL { get; set; }
-        //[Required]
         public string Race { get; set; }
         public string Color { get; set; }
         public eSize? Size { get; set; }
-        //[Required]
         public eGender? Gender { get; set; }
         public string Information { get; set; }
         public bool? IsVaccinated { get; set; } //חיסון

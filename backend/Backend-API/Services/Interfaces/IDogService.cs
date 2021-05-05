@@ -12,5 +12,7 @@ namespace Backend_API.Services.Interfaces
         Task<CreateDogReqRes> CreateDogAsync(CreateDogReq req);
 
         Task<List<Dog>> GetAllDogsAsync();
+        Task<Dog> GetDogByIdAsync(int id);
+
     }
 }

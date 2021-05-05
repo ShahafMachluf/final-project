@@ -25,50 +25,63 @@ namespace Backend_API.Controllers
     {
         private readonly IDogService _dogService;
         private readonly IUserService _userService;
-        private readonly IDogRepo _dogRepository;
         private readonly IMapper _mapper;
 
         public DogController(
             IDogService dogService,
-            IUserService userService) : base(userService)
-            IDogService dogService, IDogRepo dogRepo, IMapper mapper)
+            IUserService userService, 
+            IMapper mapper) : base(userService)
         {
             _dogService = dogService;
-            _dogRepository = dogRepo;
+            _userService = userService;
             _mapper = mapper;
+            
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public ActionResult<IEnumerable<DogReadDto>> getAllDogs(int id)//id of client
+        [Route("")]
+        public async Task<IActionResult> getAllDogs()//id of client
         {
-            //return all dogs of client with that id 
-            var dogsItems = _dogRepository.getAllDogs(id);
-
-            return Ok(_mapper.Map<IEnumerable<DogReadDto>>(dogsItems)); // Will recive Dogs from function getAllDogs, and using the mapper to convert them to readDogDto and 
-            //Returning to the client.
+            try
+            {
+                var dogsItems = await _dogService.GetAllDogsAsync();
+                return Ok(_mapper.Map<IEnumerable<DogReadDto>>(dogsItems)); // Will recive Dogs from function getAllDogs, and using the mapper to convert them to readDogDto and 
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                
+            }
         }
 
-        [HttpGet("{id}", Name = "GetCommandByDog")]// /api/commands/ id ----Forgot what name is for :(
-        public ActionResult<DogReadDto> GetCommandByDog(int id)//id is from {id}
+        [HttpGet]// /api/commands/ id ----Forgot what name is for :(
+        [Route("{id}")]
+        public async Task<IActionResult> GetDogById(int id)//id is from {id}
         {
-            var dogItem = _dogRepository.GetDogById(id);
-            if (dogItem != null)
+
+            try
             {
-                return Ok(_mapper.Map<DogReadDto>(dogItem));
+                var dogItem = await _dogService.GetDogByIdAsync(id);
+                if (dogItem != null)
+                {
+                    return Ok(_mapper.Map<DogReadDto>(dogItem));
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+
             }
-            _userService = userService;
         }
 
         [HttpPost]
         [Route("createDog")]
         public async Task<IActionResult> createDog([FromBody] CreateDogReq request)
         {
-
             try
             {
                 if (!ModelState.IsValid)
@@ -95,22 +108,6 @@ namespace Backend_API.Controllers
                     });
                 }
 
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet]
-        [Route("")]
-        public async Task<IActionResult> getAllDogs()
-        {
-            try
-            {
-                List<Dog> dogs = await _dogService.GetAllDogsAsync();
-
-                return Ok(dogs);
-            }
-            catch (Exception ex)
-            {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
