@@ -24,15 +24,11 @@ export const RegisterEventHandler = (email, password, name, dispacher) => {
     })
 }
 
-export const uploadImageEventHandler = (image, dispacher) => {
+export const uploadImageEventHandler = async (image, dispacher) => {
     const uriParts = image.uri.split('.');
     const fileType = uriParts[uriParts.length - 1];
     const profilePictureModel = new profilePicture(image.base64, fileType);
 
-    UploadImage(profilePictureModel).then(imageUrl => {
-        dispacher(setImageUrl(imageUrl));
-    })
-    .catch(err => {
-        console.log(err);
-    })
+    const imageUrl = await UploadImage(profilePictureModel);
+    dispacher(setImageUrl(imageUrl));
 }

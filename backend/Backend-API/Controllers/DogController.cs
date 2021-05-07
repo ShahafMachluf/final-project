@@ -40,7 +40,7 @@ namespace Backend_API.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> getAllDogs()//id of client
+        public async Task<IActionResult> getAllDogs()
         {
             try
             {
@@ -54,7 +54,7 @@ namespace Backend_API.Controllers
             }
         }
 
-        [HttpGet]// /api/commands/ id ----Forgot what name is for :(
+        [HttpGet]// /api/dog/id 
         [Route("{id}")]
         public async Task<IActionResult> GetDogById(int id)//id is from {id}
         {

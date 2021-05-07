@@ -22,6 +22,7 @@ const CreateDogScreen = props => {
     const [size, setSize] = useState('');
     const [selectedCheckBox, setSelectCheckBox] = useState([]);
     const [information, setInformation] = useState('');
+    const [selectedImage, setSelectedImage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     const userDetails = useSelector(state => state.userDetails);
@@ -55,12 +56,11 @@ const CreateDogScreen = props => {
     }
     
     const clickDogHandler = () => {
-        const dog = new Dog(userDetails.id ,name, age, race, color, gender, size, selectedCheckBox, information, "dog")
+        const dog = new Dog(userDetails.id ,name, age, race, color, gender, size, selectedCheckBox, information, selectedImage.base64)
         setIsLoading(true);
         createDogHandler(dog)
         .then(newDog => {
             // TODO something with the created dog
-            console.log(newDog);
         })
         .catch(err => {
             console.log(err)
@@ -77,7 +77,6 @@ const CreateDogScreen = props => {
                 <Header/>
                 <Text style={styles.headerText} >נא הזן את פרטי הכלב:</Text>
                 <View style={styles.screen}>
-                    <ImgPicker />
                     <View style={styles.inputContainer}>
                         <Input 
                             style={styles.textInput}
@@ -112,6 +111,7 @@ const CreateDogScreen = props => {
                             placeholder='צבע'
                             onChangeText={colorInputHandler}
                         />
+                        <ImgPicker onImageTaken={setSelectedImage} />
                         <RNPickerSelect
                             placeholder={{
                                 label: 'בחר מין',
@@ -177,16 +177,16 @@ const CreateDogScreen = props => {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
+        alignItems: 'center',
+        marginHorizontal: Dimensions.get('window').width / 10
     },
     headerText: {
         fontSize: 25,
         color: '#808080', 
         textAlign: "center",
         marginTop: Dimensions.get('window').width / -10,
-
     },
     textInput: {
-        marginHorizontal: Dimensions.get('window').width / 10,
         textAlign: 'center',
         fontSize: 17,
         marginTop: Dimensions.get('window').width / 15,
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         flex: 1,
         width: '100%',
-        marginBottom: Dimensions.get('window').height / 60,
+        marginBottom: Dimensions.get('window').height / 60
     },
     errorMessage: {
         backgroundColor: 'red',
@@ -224,7 +224,6 @@ const styles = StyleSheet.create({
     },
     continueButton: {
         borderColor: 'black',
-        marginHorizontal: Dimensions.get('window').width / 10,
         marginVertical: 10
     },
     continueText: {

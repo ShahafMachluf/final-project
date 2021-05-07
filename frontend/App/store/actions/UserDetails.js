@@ -1,7 +1,6 @@
 import { insertUserDetails, fetchUserDetails, updateImageUrl } from '../db';
 
 export const SAVE_USER_DETAILS = 'SAVE_USER_DETAILS';
-export const SET_USER_DETAILS = 'SET_USER_DETAILS';
 export const SET_USER_IMAGE_URL = 'SET_USER_IMAGE_URL';
 
 export const saveUserDetails = (userDetails) => {
@@ -19,7 +18,7 @@ export const saveUserDetails = (userDetails) => {
                 }
             });
         }
-        catch (err) {
+        catch (err) { 
             console.log(err);
             throw err;
         }
@@ -55,13 +54,13 @@ export const loadUserDetails = () => {
                 userDetails.name = dbResult.rows._array[0].name;
                 userDetails.email = dbResult.rows._array[0].email;
                 userDetails.imageUrl = dbResult.rows._array[0].imageUrl;
+                dispatch({
+                    type: SAVE_USER_DETAILS,
+                    details: {
+                        ...userDetails
+                    }
+                })
             }
-            dispatch({
-                type: SET_USER_DETAILS,
-                details: {
-                    ...userDetails
-                }
-            })
         }
         catch (err) {
             throw err;

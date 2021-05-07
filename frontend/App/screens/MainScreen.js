@@ -19,11 +19,9 @@ const MainScreen = props => {
     ]);
     
     useEffect(() => {
-        console.log('in useEffect');
         const getDogs = async () => {
             try{
                 const receivedDogs = await getAllDogsHandler();
-                console.log(receivedDogs);
                 setDogs(receivedDogs);
             }
             catch (err) {

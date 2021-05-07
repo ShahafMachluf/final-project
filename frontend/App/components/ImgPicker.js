@@ -1,50 +1,56 @@
 import React, { useState } from 'react';
 import {View, StyleSheet, Image, Text, Alert} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
 
 import MainButton from './MainButton'; 
 
 const ImgPicker = props => {
-    const [pickedImage, setPickedImage] = useState();
+    const [pickedImage, setPickedImage] = useState(null);
 
-    const verifyPermissions = async () => {
-
-        const result = await Permissions.askAsync(Permissions.CAMERA, Permissions.MEDIA_LIBRARY);
-        if(result.status !== 'granted') {
-            Alert.alert('תן גישה יזין', 'יזין',[{text: 'טוב נו'}]);
-            return false;
-        }
-    
-        return true;
+    const askForLibraryPermission = async () => {
+        const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        return result.status === 'granted';
     }
-    
-    const takeImageHandler = async () => {
-        const hasPermission = await verifyPermissions()
-        if(!hasPermission) {
-            return;
+
+    const openGallery = async () => {
+        const permission = await ImagePicker.getMediaLibraryPermissionsAsync();
+        if(!permission.granted){
+            const grantedPermission = await askForLibraryPermission();
+            if(!grantedPermission){
+                return;
+            }
         }
-        
-        const image = await ImagePicker.launchCameraAsync({
+
+        const image = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
-            quality: 0.5
+            quality: 0.5,
+            base64: true
         });
-    
-        setPickedImage(image.uri);
+        if(!image.cancelled){
+            setPickedImage(image);
+            props.onImageTaken(image);
+        }
     }
+    
 
     return (
         <View style={styles.imagePicker}>
-            <View style={styles.imagePreview}>
+            <View style={styles.imageContainer}>
                 {!pickedImage ? 
                     <Text>לא נבחרה תמונה</Text> :
-                    <Image style={styles.image} source={{uri: pickedImage}} />
+                    <Image 
+                        style={styles.imagePreview}
+                        width={100}
+                        height={100} 
+                        source={{uri: pickedImage.uri}} 
+                    />
                 }
             </View>
             <MainButton
-                onPress={takeImageHandler}
+                onPress={openGallery}
+                buttonStyle={styles.selectImageButton}
             >
-                <Text>בחר</Text>
+                <Text>בחר תמונה</Text>
             </MainButton>
         </View>
     )
@@ -52,20 +58,28 @@ const ImgPicker = props => {
 
 const styles = StyleSheet.create({
     imagePicker: {
-        alignItems: 'center'
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent:'space-between',
+        alignItems: 'center',
+        width: '100%'
     },
     imagePreview: {
-        width: '100%',
-        height: 200,
+        width: 100,
+        height: 100,
         marginBottom: 10,
         justifyContent: 'center',
         alignItems: 'center',
         borderColor: 'black',
         borderWidth: 1
     },
-    image: {
-        width: '100%',
-        height: '100%'
+    imageContainer: {
+        marginVertical: 20
+    },
+    selectImageButton: {
+        backgroundColor: 'gray',
+        height: 35,
+        paddingHorizontal: 10
     }
 })
 

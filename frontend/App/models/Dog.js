@@ -1,5 +1,5 @@
 export default class Dog {
-    constructor(ownerId ,name, age, race, color, gender, size, checkBoxItems, information, imageUrl)
+    constructor(ownerId ,name, age, race, color, gender, size, checkBoxItems, information, imageBase64)
     {
         this.ownerId = ownerId;
         this.name = name;
@@ -11,7 +11,7 @@ export default class Dog {
         this.isVaccinated = false;
         this.isNeutered = false;
         this.information = information;
-        this.imageUrl = imageUrl;
+        this.imageBase64 = imageBase64;
 
         if(checkBoxItems.length === 2){
             this.isVaccinated = true;

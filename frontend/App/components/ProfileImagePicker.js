@@ -1,49 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {View, StyleSheet, Image, Alert} from 'react-native';
+import {View, StyleSheet, Image, Alert, ActivityIndicator} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
 
 import MainButton from './MainButton'; 
 import Colors from '../constants/Colors';
 import LinearGradientIcon from './LinearGradientIcon'
 
 const ProfileImagePicker = props => {
-    const [pickedImage, setPickedImage] = useState();
     const userDetails = useSelector(state => state.userDetails);
 
-    useEffect(() => {
-        console.log(`in useEffect updating image url to ${userDetails.imageUrl}`)
-        if(userDetails.imageUrl) {
-            setPickedImage(userDetails.imageUrl);
-        }
-    }, [userDetails])
+    const askForCameraPermissions = async () => {
+        const result = await ImagePicker.requestCameraPermissionsAsync();
+        return result.status === 'granted';
+    }
 
-    const verifyPermissions = async () => {
-        const result = await Permissions.askAsync(Permissions.CAMERA, Permissions.MEDIA_LIBRARY);
-        if(result.status !== 'granted') {
-            Alert.alert('תן גישה יזין', 'יזין',[{text: 'טוב נו'}]);
-            return false;
-        }
-    
-        return true;
+    const askForLibraryPermission = async () => {
+        const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        return result.status === 'granted';
     }
     
-    const takeImageHandler = async () => {
-        const hasPermission = await verifyPermissions()
-        if(!hasPermission) {
-            return;
+    const openCamera = async () => {
+        const permission = await ImagePicker.getCameraPermissionsAsync();
+        if(!permission.granted) {
+            const grantedPermission = await askForCameraPermissions();
+            if(!grantedPermission) {
+                return;
+            }
         }
-        
+
         const image = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
             quality: 0.5,
             base64: true
-
         });
 
-        setPickedImage(image.uri);
-        props.onImageTaken(image);
+        if(!image.cancelled) {
+            props.onImageTaken(image);
+        }
+    }
+
+    const openGallery = async () => {
+        const permission = await ImagePicker.getMediaLibraryPermissionsAsync();
+        if(!permission.granted){
+            const grantedPermission = await askForLibraryPermission();
+            if(!grantedPermission){
+                return;
+            }
+        }
+
+        const image = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            quality: 0.5,
+            base64: true
+        });
+        
+        if(!image.cancelled) {
+            props.onImageTaken(image);
+        }
     }
 
     return (
@@ -52,15 +66,25 @@ const ProfileImagePicker = props => {
                 style={styles.profilePicture}
                 width={150}
                 height={150}
-                source={ props.image ? props.image : ( pickedImage ? {uri: pickedImage} : require('../assets/no-profile-picture.jpg') )}
+                source={userDetails.imageUrl ? {uri: userDetails.imageUrl} : require('../assets/no-profile-picture.jpg')}
             />
             <MainButton
-                buttonStyle={styles.addImageIcon}
-                onPress={takeImageHandler}
+                buttonStyle={styles.cameraIcon}
+                onPress={openCamera}
             >
                 <LinearGradientIcon 
-                    iconName="add"
-                    iconSize={35}
+                    iconName="camera-outline"
+                    iconSize={28}
+                    iconColor={Colors.mainColor}
+                />
+            </MainButton>
+            <MainButton
+                buttonStyle={styles.imageIcon}
+                onPress={openGallery}
+            >
+                <LinearGradientIcon 
+                    iconName="image-outline"
+                    iconSize={28}
                     iconColor={Colors.mainColor}
                 />
             </MainButton>
@@ -79,7 +103,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         position: 'absolute',
     },
-    addImageIcon: {
+    cameraIcon: {
         backgroundColor: 'white',
         height: 40, 
         width: 40,
@@ -87,8 +111,27 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 1,
         position: 'absolute',
-        bottom: 10,
-        left: 10,
+        bottom: 7,
+        left: 7,
+        zIndex: 1,
+        // android
+        elevation: 10,
+        // ios
+        shadowColor: 'black',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+    },
+    imageIcon: {
+        backgroundColor: 'white',
+        height: 40, 
+        width: 40,
+        borderRadius: 40,
+        borderColor: 'black',
+        borderWidth: 1,
+        position: 'absolute',
+        bottom: 7,
+        right: 7,
         zIndex: 1,
         // android
         elevation: 10,

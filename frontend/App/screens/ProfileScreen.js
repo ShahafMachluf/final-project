@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux';
 import Slider from '@react-native-community/slider';
 
 import Header from '../components/Header';
-import MainButton from '../components/MainButton';
 import Separator from '../components/Separator';
-import Colors from '../constants/Colors';
-import LinearGradientIcon from '../components/LinearGradientIcon';
 import ProfileImagePicker from '../components/ProfileImagePicker';
 import {uploadImageEventHandler} from '../services/userService';
 
 const ProfileScreen = props => {
     const userDetails = useSelector(state => state.userDetails)
     const [sliderValue, setSliderValue] = useState(5);
+    const [isLoadingImage, setIsLoadingImage] = useState(false);
     const dispatch = useDispatch();
 
-    const imageTakenHandler = image => {
-        uploadImageEventHandler(image, dispatch);
+    const imageTakenHandler = async image => {
+        setIsLoadingImage(true);
+        await uploadImageEventHandler(image, dispatch);
+        setIsLoadingImage(false);
     }
 
     return (
@@ -28,6 +28,11 @@ const ProfileScreen = props => {
             />
             <ProfileImagePicker 
                 onImageTaken={imageTakenHandler}
+            />
+            <ActivityIndicator 
+                animating={isLoadingImage} 
+                color="#0000ff" 
+                size='large'
             />
             <Text style={styles.name}>{userDetails.name}</Text>
             <View style={styles.propertiesContainer}>

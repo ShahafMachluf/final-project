@@ -14,7 +14,7 @@ export const Register = (email, password, fullName) => {
     return Post(url, {email, password, fullName});
 }
 
-export const UploadImage = profilePictureModel => {
+export const UploadImage = async profilePictureModel => {
     const url = `${baseUrl}/profilePicture`
     return Post(url, profilePictureModel);
 }

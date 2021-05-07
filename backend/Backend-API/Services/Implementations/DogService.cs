@@ -20,17 +20,25 @@ namespace Backend_API.Services.Implementations
         private readonly AppDbContext _appDbContext;
         private readonly IRepo<Dog> _repo;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
 
-        public DogService(AppDbContext appDbContext, IRepo<Dog> repo, IMapper mapper)
+        public DogService(
+            AppDbContext appDbContext, 
+            IRepo<Dog> repo, 
+            IMapper mapper,
+            IFileService fileService)
         {
             _appDbContext = appDbContext;
             _repo = repo;
             _mapper = mapper;
+            _fileService = fileService;
         }
 
         public async Task<CreateDogReqRes> CreateDogAsync(CreateDogReq req)
         {
+            string imageUrl = await _fileService.UploadImageFromBase64Async(req.ImageBase64);
             Dog newDog = _mapper.Map<Dog>(req);
+            newDog.ImageURL = imageUrl;
 
             await _repo.CreateAsync(newDog);
             bool isCreated =  await _repo.SaveChangesAsync();
@@ -41,20 +49,6 @@ namespace Backend_API.Services.Implementations
             }
 
             return _mapper.Map<CreateDogReqRes>(newDog);
-            //return new CreateDogReqRes()
-            //{
-            //    Name = newDog.Name,
-            //    Age = newDog.Age,
-            //    ImageURL = newDog.ImageURL,
-            //    Race = newDog.Race,
-            //    Color = newDog.Color,
-            //    Size = newDog.Size,
-            //    Gender = newDog.Gender,
-            //    Information = newDog.Information,
-            //    IsVaccinated = newDog.IsVaccinated,
-            //    IsNeutered = newDog.IsNeutered,
-            //    Success = true,// For what?
-            //};
         }
 
         public async Task<List<Dog>> GetAllDogsAsync()
