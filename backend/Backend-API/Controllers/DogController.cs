@@ -24,7 +24,6 @@ namespace Backend_API.Controllers
     public class DogController : BaseController
     {
         private readonly IDogService _dogService;
-        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public DogController(
@@ -33,7 +32,6 @@ namespace Backend_API.Controllers
             IMapper mapper) : base(userService)
         {
             _dogService = dogService;
-            _userService = userService;
             _mapper = mapper;
             
         }
@@ -58,7 +56,6 @@ namespace Backend_API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetDogById(int id)//id is from {id}
         {
-
             try
             {
                 var dogItem = await _dogService.GetDogByIdAsync(id);
@@ -74,7 +71,6 @@ namespace Backend_API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-
             }
         }
 
@@ -84,15 +80,6 @@ namespace Backend_API.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(new CreateDogReqRes()
-                    {
-                        Error = "Invalid parameters",
-                        Success = false
-                    });
-                }
-
                 CreateDogReqRes result = await _dogService.CreateDogAsync(request);
 
                 return Ok(result);
@@ -101,11 +88,7 @@ namespace Backend_API.Controllers
             {
                 if (ex is ArgumentException || ex is ApplicationException)
                 {
-                    return BadRequest(new CreateDogReqRes()
-                    {
-                        Success = false,
-                        Error = ex.Message
-                    });
+                    return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
                 }
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

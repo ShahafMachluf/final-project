@@ -6,7 +6,7 @@ export const init = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(
-                'CREATE TABLE IF NOT EXISTS user (localId INTEGER PRIMARY KEY NOT NULL, id TEXT NOT NULL, token TEXT NOT NULL, name TEXT NOT NULL, email TEXT NOT NULL, imageUrl TEXT);',
+                'CREATE TABLE IF NOT EXISTS user (localId INTEGER PRIMARY KEY NOT NULL, id TEXT NOT NULL, token TEXT NOT NULL, fullName TEXT NOT NULL, email TEXT NOT NULL, imageUrl TEXT, maxDistance INTEGER NOT NULL);',
                 [],
                 () => {
                     resolve();
@@ -24,8 +24,8 @@ export const insertUserDetails = userDetails => {
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(
-                'INSERT INTO user (id, token, name, email, imageUrl) VALUES (?, ?, ?, ?, ?);',
-                [userDetails.id, userDetails.token, userDetails.name, userDetails.email, userDetails.imageUrl],
+                'INSERT INTO user (id, token, fullName, email, imageUrl, maxDistance) VALUES (?, ?, ?, ?, ?, ?);',
+                [userDetails.id, userDetails.token, userDetails.fullName, userDetails.email, userDetails.imageUrl, userDetails.maxDistance],
                 (_, result) => {
                     resolve(result);
                 },
@@ -57,6 +57,22 @@ export const updateImageUrl = imageUrl => {
         db.transaction((tx) => {
             tx.executeSql(
                 `UPDATE user SET imageUrl = '${imageUrl}' ;`,
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, error) => {
+                    reject(error); 
+                })
+        });
+    });
+}
+
+export const updateMaxDistance = maxDistance => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                `UPDATE user SET maxDistance = ${maxDistance} ;`,
                 [],
                 (_, result) => {
                     resolve(result);

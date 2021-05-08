@@ -39,4 +39,25 @@ export const Post = async (url, body, headers = {}, options = {}) => {
     return response.json();
 }
 
+export const Put = async (url, body, headers = {}, options = {}) => {
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            ...headers,
+            'Authorization': getAuthToken()
+        },
+        ...options,
+        body: JSON.stringify(body)
+    });
+
+    if(!response.ok) {
+        const error = await response.json();
+        throw new Error(error);
+    }
+
+    return response.json();
+}
+
 const getAuthToken = () => 'Bearer ' + store.getState().userDetails.token;

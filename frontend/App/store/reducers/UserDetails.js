@@ -1,14 +1,15 @@
-import { SAVE_USER_DETAILS, SET_USER_IMAGE_URL } from '../actions/UserDetails';
+import { SAVE_USER_DETAILS, SET_MAX_DISTANCE, SET_USER_IMAGE_URL } from '../actions/UserDetails';
 
 const initialState = {
     id: null,
     token: null,
-    name: null,
+    fullName: null,
     email: null,
-    imageUrl: null
+    imageUrl: null,
+    maxDistance: 0
 }
 
-const userDetaulshReducer = (state = initialState , action) => {
+const userDetailsReducer = (state = initialState , action) => {
     switch (action.type) {
         case SAVE_USER_DETAILS:
             return action.details;
@@ -17,9 +18,14 @@ const userDetaulshReducer = (state = initialState , action) => {
                 ...state,
                 imageUrl: action.details.imageUrl
             }
+        case SET_MAX_DISTANCE:
+            return {
+                ...state,
+                maxDistance: action.details.maxDistance
+            }
         default:
             return state;
     }
 }
 
-export default userDetaulshReducer;
+export default userDetailsReducer;

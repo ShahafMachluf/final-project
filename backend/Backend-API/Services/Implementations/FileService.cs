@@ -25,7 +25,17 @@ namespace Backend_API.Services.Implementations
             
             ImageUploadResult uploadResult = await cloudinaryService.UploadAsync(uploadParams);
 
-            return uploadResult.Url.OriginalString;
+            return uploadResult.SecureUrl.OriginalString;
+        }
+
+        public async Task<bool> DeleteImage(string imageUrl)
+        {
+            Cloudinary cloudinaryService = new Cloudinary();
+            string[] imageUrlParts = imageUrl.Split("/");
+            string imageId = imageUrlParts[imageUrlParts.Length - 1].Split(".")[0];
+
+            var result = await cloudinaryService.DeleteResourcesAsync(ResourceType.Image, imageId);
+            return result.DeletedCounts.Count > 0;
         }
     }
 }

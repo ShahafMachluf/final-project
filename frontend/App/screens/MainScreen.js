@@ -11,14 +11,9 @@ import Header from '../components/Header';
 
 const MainScreen = props => {
     const swiper = useRef(null);
-    const [dogs, setDogs] = useState([
-        // {name: '1גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 1, image: 'https://image.cnbcfm.com/api/v1/image/105992231-1561667465295gettyimages-521697453.jpeg?v=1561667497&w=630&h=354'},
-        // {name: '2גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 2, image: 'https://medias.timeout.co.il/www/uploads/2018/07/%D7%9B%D7%9C%D7%91-%D7%9E%D7%AA%D7%95%D7%A7-T-1140x641.jpg'},
-        // {name: '3גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 3, image: 'https://shahaf.family/wp-content/uploads/2019/03/dog-4372036_1920.jpg'},
-        // {name: '4גקי', age: 9, additionalInfo: ['קטן','פינצר','מחונך','שקט','נקי','אוהב ילדים'], key: 4, image: 'https://image.cnbcfm.com/api/v1/image/105992231-1561667465295gettyimages-521697453.jpeg?v=1561667497&w=630&h=354'}
-    ]);
+    const [dogs, setDogs] = useState([]);
     
-    useEffect(() => {
+    useEffect(() => { // get all dogs when the screen is being rendered
         const getDogs = async () => {
             try{
                 const receivedDogs = await getAllDogsHandler();
@@ -45,7 +40,6 @@ const MainScreen = props => {
     }
 
     const swipeRightEventHandler = () => {
-        console.log(swiper);
         console.log("heart");
     }
 

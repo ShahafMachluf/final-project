@@ -1,5 +1,6 @@
 ﻿using Backend_API.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Backend_API.Data.Repository
             await _dbSet.AddAsync(newObject);
         }
 
-        public async Task<IEnumerable<TEntity>> getAll()
+        public async Task<IEnumerable<TEntity>> getAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
@@ -30,6 +31,11 @@ namespace Backend_API.Data.Repository
         public async Task<bool> SaveChangesAsync()
         {
             return await _appDbContext.SaveChangesAsync() >= 0;
+        }
+
+        public IQueryable<TEntity> Get(Func<TEntity, bool> predicate)
+        {
+            return _dbSet.Where(predicate).AsQueryable();
         }
     }
 }

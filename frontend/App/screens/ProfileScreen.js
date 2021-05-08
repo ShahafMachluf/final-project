@@ -6,13 +6,19 @@ import Slider from '@react-native-community/slider';
 import Header from '../components/Header';
 import Separator from '../components/Separator';
 import ProfileImagePicker from '../components/ProfileImagePicker';
-import {uploadImageEventHandler} from '../services/userService';
+import {uploadImageEventHandler, updateMaxDistance} from '../services/userService';
 
 const ProfileScreen = props => {
     const userDetails = useSelector(state => state.userDetails)
-    const [sliderValue, setSliderValue] = useState(5);
+    const [sliderValue, setSliderValue] = useState(userDetails.maxDistance);
     const [isLoadingImage, setIsLoadingImage] = useState(false);
     const dispatch = useDispatch();
+
+    const setMaxDistance = async () => {
+        if(userDetails.maxDistance !== sliderValue) {
+            await updateMaxDistance(sliderValue, dispatch);
+        }
+    }
 
     const imageTakenHandler = async image => {
         setIsLoadingImage(true);
@@ -34,7 +40,7 @@ const ProfileScreen = props => {
                 color="#0000ff" 
                 size='large'
             />
-            <Text style={styles.name}>{userDetails.name}</Text>
+            <Text style={styles.name}>{userDetails.fullName}</Text>
             <View style={styles.propertiesContainer}>
                 <View style={styles.keyValuePair}>
                     <Text style={styles.propertiesText}>דוא"ל</Text>
@@ -51,10 +57,12 @@ const ProfileScreen = props => {
                     minimumTrackTintColor="#000000"
                     maximumTrackTintColor="#000000"
                     onValueChange={setSliderValue}
+                    onSlidingComplete={setMaxDistance}
                     step={1}
                     thumbTintColor='gray'
                     value={sliderValue}
                     style={styles.thumb}
+                    
                 />
             </View>
         </View>

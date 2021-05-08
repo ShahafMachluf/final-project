@@ -1,6 +1,6 @@
 import Constants from 'expo-constants'
 
-import { Post } from './httpService';
+import { Post, Put } from './httpService';
 
 const baseUrl = `${Constants.manifest.extra.APIAddress}/user`;
 
@@ -14,9 +14,14 @@ export const Register = (email, password, fullName) => {
     return Post(url, {email, password, fullName});
 }
 
-export const UploadImage = async profilePictureModel => {
+export const UploadImage = profilePictureModel => {
     const url = `${baseUrl}/profilePicture`
     return Post(url, profilePictureModel);
+}
+
+export const UpdateMaxDistance = maxDistance => {
+    const url = `${baseUrl}/maxDistance`;
+    return Put(url, maxDistance);
 }
 
 export const FacebookLogin = () => {

@@ -9,5 +9,6 @@ namespace Backend_API.Services.Interfaces
     public interface IFileService
     {
         Task<string> UploadImageFromBase64Async(string base64);
+        Task<bool> DeleteImage(string imageId);
     }
 }

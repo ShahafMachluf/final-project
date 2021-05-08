@@ -16,29 +16,30 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Backend_API.Data.Repository;
+using AutoMapper;
 
 namespace Backend_API.Services.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly AppDbContext _appDbContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRepo<ApplicationUser> _repo;
         private readonly IFileService _fileService;
         private readonly JwtConfig _jwtConfig;
+        private readonly IMapper _mapper;
 
         public UserService(
             UserManager<ApplicationUser> userManager,
             IOptionsMonitor<JwtConfig> optionsMonitor,
-            AppDbContext appDbContext,
             IRepo<ApplicationUser> repo,
-            IFileService fileService)
+            IFileService fileService,
+            IMapper mapper)
         {
             _userManager = userManager;
             _jwtConfig = optionsMonitor.CurrentValue;
-            _appDbContext = appDbContext;
             _repo = repo;
             _fileService = fileService;
+            _mapper = mapper;
         }
 
         public async Task<RegisterReqRes> RegisterAsync(RegisterReq req)
@@ -46,7 +47,7 @@ namespace Backend_API.Services.Implementations
             ApplicationUser existingUser = await _userManager.FindByEmailAsync(req.Email);
             if(existingUser != null)
             {
-                throw new ArgumentException("Email already in use");
+                throw new ArgumentException("דוא\"ל נמצא בשימוש");
             }
 
             ApplicationUser newUser = new ApplicationUser()
@@ -54,22 +55,20 @@ namespace Backend_API.Services.Implementations
                 Email = req.Email,
                 UserName = req.Email,
                 FullName = req.FullName,
+                MaxDistance = 50
             };
 
             IdentityResult isCreated = await _userManager.CreateAsync(newUser, req.Password);
             if(!isCreated.Succeeded)
             {
-                throw new ApplicationException("Unable to create user");
+                throw new ApplicationException(isCreated.Errors.First().Description);
             }
 
-            return new RegisterReqRes()
-            {
-                Id = newUser.Id,
-                Name = newUser.FullName,
-                Email = newUser.Email,
-                Success = true,
-                Token = GenerateJwtToken(newUser)
-            };
+
+            RegisterReqRes result = _mapper.Map<RegisterReqRes>(existingUser);
+            result.Token = GenerateJwtToken(existingUser);
+
+            return result;
         }
 
         public async Task<LoginReqRes> LoginAsync(LoginReq req)
@@ -77,39 +76,39 @@ namespace Backend_API.Services.Implementations
             ApplicationUser existingUser = await _userManager.FindByEmailAsync(req.Email);
             if(existingUser == null)
             {
-                throw new ArgumentException("Incorrect email or password");
+                throw new ArgumentException("דוא\"ל או הסיסמא אינם נכונים");
             }
 
             bool isCorrectPassword = await _userManager.CheckPasswordAsync(existingUser, req.Password);
             if(!isCorrectPassword)
             {
-                throw new ArgumentException("Incorrect email or password");
+                throw new ArgumentException("דוא\"ל או הסיסמא אינם נכונים");
             }
 
-            return new LoginReqRes()
-            {
-                Id = existingUser.Id,
-                Name = existingUser.FullName,
-                Email = existingUser.Email,
-                ImageUrl = existingUser.ImageUrl,
-                Success = true,
-                Token = GenerateJwtToken(existingUser)
-            };
+            LoginReqRes result = _mapper.Map<LoginReqRes>(existingUser);
+            result.Token = GenerateJwtToken(existingUser);
+
+            return result;
         }
 
-        public async Task<string> UpdateProfilePictureUrl(string base64Image, ApplicationUser user)
+        public async Task<string> UpdateProfilePictureUrlAsync(string base64Image, ApplicationUser user)
         {
+            if(user.ImageUrl != null)
+            {
+                await _fileService.DeleteImage(user.ImageUrl);
+            }
+
             string pictureUrl = await _fileService.UploadImageFromBase64Async(base64Image);
             if(pictureUrl == string.Empty || pictureUrl == null)
             {
-                throw new Exception("Unable to upload image.");
+                throw new Exception("התרחשה תקלה, נסה שוב מאוחר יותר");
             }
 
             user.ImageUrl = pictureUrl;
             bool isSaved = await _repo.SaveChangesAsync();
             if(!isSaved)
             {
-                throw new Exception("Unable to upload image.");
+                throw new Exception("התרחשה תקלה, נסה שוב מאוחר יותר");
             }
 
             return pictureUrl;
@@ -117,7 +116,13 @@ namespace Backend_API.Services.Implementations
 
         public ApplicationUser GetById(string id)
         {
-            return _appDbContext.Users.Where(u => u.Id == id).FirstOrDefault();
+            return _repo.Get(u => u.Id == id).FirstOrDefault();
+        }
+
+        public async Task UpdateMaxDistanceAsync(ApplicationUser user, int maxDistnace)
+        {
+            user.MaxDistance = maxDistnace;
+            await _repo.SaveChangesAsync();
         }
 
         private string GenerateJwtToken(ApplicationUser user)

@@ -11,7 +11,7 @@ import MainScreen from '../screens/MainScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import CreateDogScreen from '../screens/CreateDogScreen';
 import Drawer from '../components/Drawer';
-import MainButton from '../components/MainButton';
+import HangOutScreen from '../screens/HangOutScreen';
 
 const app = createDrawerNavigator({
     Main: {
@@ -66,7 +66,7 @@ const app = createDrawerNavigator({
         }
     },
     HangOut: {
-        screen: MainScreen,
+        screen: HangOutScreen,
         navigationOptions: {
             drawerLabel: 'מבלים עם הכלב',
             drawerIcon: () => (
@@ -83,7 +83,8 @@ const app = createDrawerNavigator({
             drawerLabel: 'פרופיל',
             drawerIcon: () => (
                 <Ionicons name='person' size={24}/>
-            )
+            ),
+        
         }
     }
 },
@@ -93,6 +94,7 @@ const app = createDrawerNavigator({
     contentComponent: Drawer,
     drawerWidth: Dimensions.get('window').width / 2,
     initialRouteName: 'Main',
+    backBehavior: 'history'
 });
 
 const auth = createStackNavigator({

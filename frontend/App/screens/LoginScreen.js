@@ -6,34 +6,46 @@ import AuthHeader from '../components/AuthHeader';
 import Input from '../components/Input';
 import MainButton from '../components/MainButton';
 import Colors from '../constants/Colors';
-import { LoginEventHandler } from '../services/userService';
+import * as userService from '../services/userService';
 
 const LoginScreen = props => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [serverErrorMessage, setServerErrorMessage] = useState('');
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const passwordInput = useRef();
     const dispatch = useDispatch();
 
-    const emailInputHandler = inputText => {
-        setEmail(inputText);
-    }
+    const isValidInput = () => {
+        const validEmail = userService.isValidEmail(email);
+        if(!validEmail) {
+            setEmailErrorMessage('דוא"ל לא תקין')
+        }
 
-    const passwordInputHandler = inputText => {
-        setPassword(inputText);
-    }
+        const validPassword = userService.isValidPassword(password);
+        if(!validPassword) {
+            setPasswordErrorMessage('אורך סיסמא הינו לפחות 6 תווים')
+        }
 
-    
+        return validEmail && validPassword;
+    }
 
     const loginClickEventHandler = () => {
-        setErrorMessage('');
-        setIsLoading(true);
-        LoginEventHandler(email, password, dispatch)
-        .catch(error => {
-            setErrorMessage(error.message);
-            setIsLoading(false);
-         })
+        setServerErrorMessage('');
+        setEmailErrorMessage('');
+        setPasswordErrorMessage('');
+
+        const validInput = isValidInput();
+        if(validInput) {
+            setIsLoading(true);
+            userService.LoginEventHandler(email, password, dispatch)
+            .catch(error => {
+                setServerErrorMessage(error.message);
+                setIsLoading(false);
+            })
+        }
     }
 
     const navigateToSignup = () => {
@@ -42,7 +54,7 @@ const LoginScreen = props => {
         })
     }
 
-    const getErrorMessage = () => {
+    const getErrorMessage = (errorMessage) => {
         if(errorMessage.length > 0) {
             return (
                 <View style={styles.errorMessage}>
@@ -68,22 +80,24 @@ const LoginScreen = props => {
                             autoCorrect={false}
                             value={email}
                             keyboardType='email-address'
-                            onChangeText={emailInputHandler}
+                            onChangeText={setEmail}
                             placeholder='דוא"ל'
                             returnKeyType='next'
                             onSubmitEditing={() => {passwordInput.current.focus(); }}
                         />
+                        {getErrorMessage(emailErrorMessage)}
                         <Input 
                             style={styles.input}
                             autoCapitalize='none'
                             autoCorrect={false}
                             value={password}
                             secureTextEntry={true}
-                            onChangeText={passwordInputHandler}
+                            onChangeText={setPassword}
                             placeholder='סיסמא'
                             ref={passwordInput}
                         />
-                        {getErrorMessage()}
+                        {getErrorMessage(passwordErrorMessage)}
+                        {getErrorMessage(serverErrorMessage)}
                         <ActivityIndicator animating={isLoading} color="#0000ff" size='large'/>
                     </View>
                     <View style={styles.buttonContainer}>
@@ -148,12 +162,12 @@ const styles = StyleSheet.create({
         fontSize: 17
     },
     inputContainer: {
-        height: Dimensions.get('window').height / 6,
+        flex: 1,
         width: '100%',
         marginBottom: Dimensions.get('window').height / 60,
     },
     buttonContainer: {
-        height: Dimensions.get('window').height / 2.5,
+        flex: 2,
         width: '50%',
     },
     loginButton: {

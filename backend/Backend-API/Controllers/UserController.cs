@@ -31,15 +31,6 @@ namespace Backend_API.Controllers
         {
             try
             {
-                if(!ModelState.IsValid)
-                {
-                    return BadRequest(new RegisterReqRes()
-                    {
-                        Error = "Invalid email, password or name",
-                        Success = false
-                    });
-                }
-
                 RegisterReqRes result = await _userService.RegisterAsync(request);
 
                 return Ok(result);
@@ -48,14 +39,10 @@ namespace Backend_API.Controllers
             {
                 if(ex is ArgumentException || ex is ApplicationException)
                 {
-                    return BadRequest(new RegisterReqRes()
-                    {
-                        Success = false,
-                        Error = ex.Message
-                    });
+                    return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
                 }
 
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
@@ -65,15 +52,6 @@ namespace Backend_API.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(new RegisterReqRes()
-                    {
-                        Error = "Invalid email or password",
-                        Success = false
-                    });
-                }
-
                 LoginReqRes result = await _userService.LoginAsync(request);
 
                 return Ok(result);
@@ -82,14 +60,10 @@ namespace Backend_API.Controllers
             {
                 if(ex is ArgumentException)
                 {
-                    return BadRequest(new LoginReqRes()
-                    {
-                        Success= false,
-                        Error =  ex.Message
-                    });
+                    return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
                 }
 
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
@@ -100,9 +74,26 @@ namespace Backend_API.Controllers
         {
             try
             {
-                string imageUrl = await _userService.UpdateProfilePictureUrl(request.ImageBase64, _currentUser);
+                string imageUrl = await _userService.UpdateProfilePictureUrlAsync(request.ImageBase64, _currentUser);
 
                 return Ok(imageUrl);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("maxDistance")]
+        public async Task<IActionResult> UpdateMaxDistance([FromBody] int maxDistance)
+        {
+            try
+            {
+                await _userService.UpdateMaxDistanceAsync(_currentUser, maxDistance);
+
+                return Ok(true);
             }
             catch (Exception ex)
             {

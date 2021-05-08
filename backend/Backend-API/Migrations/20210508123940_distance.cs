@@ -2,21 +2,22 @@
 
 namespace Backend_API.Migrations
 {
-    public partial class image : Migration
+    public partial class distance : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ImageUrl",
+            migrationBuilder.AddColumn<int>(
+                name: "MaxDistance",
                 table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ImageUrl",
+                name: "MaxDistance",
                 table: "AspNetUsers");
         }
     }

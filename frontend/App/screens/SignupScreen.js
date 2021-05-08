@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import AuthHeader from '../components/AuthHeader';
 import Input from '../components/Input';
 import MainButton from '../components/MainButton';
-import { RegisterEventHandler } from '../services/userService';
+import * as userService from '../services/userService';
 import Colors from '../constants/Colors';
 
 const SignupScreen = props => {
@@ -13,22 +13,13 @@ const SignupScreen = props => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [serverErrorMessage, setServerErrorMessage] = useState('');
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [nameErrorMessage, setNameErrorMessage] = useState('');
     const passwordInput = useRef();
     const nameInput = useRef();
     const dispatch = useDispatch();
-
-    const emailInputHandler = email => {
-        setEmail(email);
-    }
-
-    const passwordInputHandler = password => {
-        setPassword(password);
-    }
-
-    const nameInputHandler = name => {
-        setName(name);
-    }
 
     const navigateToLoginScreen = () => {
         props.navigation.navigate({ 
@@ -36,17 +27,43 @@ const SignupScreen = props => {
         })
     }
 
-    const signupClickEventHandler = () => {
-        setErrorMessage('');
-        setIsLoading(true);
-        RegisterEventHandler(email, password, name, dispatch)
-        .catch(error => {
-            setErrorMessage(error.message)
-            setIsLoading(false);
-         })
+    const isValidInput = () => {
+        const validEmail = userService.isValidEmail(email);
+        if(!validEmail) {
+            setEmailErrorMessage('דוא"ל לא תקין')
+        }
+
+        const validPassword = userService.isValidPassword(password);
+        if(!validPassword) {
+            setPasswordErrorMessage('אורך סיסמא הינו לפחות 6 תווים')
+        }
+
+        const isValidName = userService.isValidName(name);
+        if(!isValidName) {
+            setNameErrorMessage('יש להזין שם')
+        }
+
+        return validEmail && validPassword && isValidName;
     }
 
-    const getErrorMessage = () => {
+    const signupClickEventHandler = () => {
+        setServerErrorMessage('');
+        setEmailErrorMessage('');
+        setPasswordErrorMessage('');
+        setNameErrorMessage('');
+
+        const validInput = isValidInput();
+        if(validInput) {
+            setIsLoading(true);
+            userService.RegisterEventHandler(email, password, name, dispatch)
+            .catch(error => {
+                setServerErrorMessage(error.message)
+                setIsLoading(false);
+            })
+        }
+    }
+
+    const getErrorMessage = (errorMessage) => {
         if(errorMessage.length > 0) {
             return (
                 <View style={styles.errorMessage}>
@@ -72,33 +89,36 @@ const SignupScreen = props => {
                             autoCorrect={false}
                             value={email}
                             keyboardType='email-address'
-                            onChangeText={emailInputHandler}
+                            onChangeText={setEmail}
                             placeholder='דוא"ל'
                             returnKeyType='next'
                             onSubmitEditing={() => passwordInput.current.focus() }
                         />
+                        {getErrorMessage(emailErrorMessage)}
                         <Input 
                             style={styles.input}
                             autoCapitalize='none'
                             autoCorrect={false}
                             value={password}
                             secureTextEntry={true}
-                            onChangeText={passwordInputHandler}
+                            onChangeText={setPassword}
                             placeholder='סיסמא'
                             returnKeyType='next'
                             onSubmitEditing={() => nameInput.current.focus() }
                             ref={passwordInput}
                         />
+                        {getErrorMessage(passwordErrorMessage)}
                         <Input 
                             style={styles.input}
                             autoCapitalize='none'
                             autoCorrect={false}
                             value={name}
-                            onChangeText={nameInputHandler}
+                            onChangeText={setName}
                             placeholder='שם מלא'
                             ref={nameInput}
                         />
-                        {getErrorMessage()}
+                        {getErrorMessage(nameErrorMessage)}
+                        {getErrorMessage(serverErrorMessage)}
                         <ActivityIndicator animating={isLoading} color="#0000ff" size='large'/>
                     </View>
                     <View style={styles.buttonContainer}>
@@ -134,7 +154,7 @@ const styles = StyleSheet.create({
         fontSize: 40
     },
     inputContainer: {
-        height: Dimensions.get('window').height / 4,
+        flex: 2,
         width: '100%'
     },
     input: {
@@ -143,7 +163,7 @@ const styles = StyleSheet.create({
         fontSize: 17
     },
     buttonContainer: {
-        height: Dimensions.get('window').height /4,
+        flex: 1,
         width: '50%'
     },
     signupButton: {
@@ -166,6 +186,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         opacity: 0.6,
         marginHorizontal: Dimensions.get('window').width / 10,
+        marginBottom: 10,
         alignItems: 'center',
         height: Dimensions.get('window').height / 35,
     },

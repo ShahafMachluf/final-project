@@ -15,20 +15,15 @@ namespace Backend_API.Services.Implementations
 {
     public class DogService : IDogService
     {
-
-        //mofa shel ha dog
-        private readonly AppDbContext _appDbContext;
         private readonly IRepo<Dog> _repo;
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
 
         public DogService(
-            AppDbContext appDbContext, 
             IRepo<Dog> repo, 
             IMapper mapper,
             IFileService fileService)
         {
-            _appDbContext = appDbContext;
             _repo = repo;
             _mapper = mapper;
             _fileService = fileService;
@@ -45,20 +40,20 @@ namespace Backend_API.Services.Implementations
 
             if (!isCreated)
             {
-                throw new ApplicationException("Unable to create dog");
+                throw new ApplicationException("התרחשה תקלה, נסה שוב מאוחר יותר");
             }
 
             return _mapper.Map<CreateDogReqRes>(newDog);
         }
 
-        public async Task<List<Dog>> GetAllDogsAsync()
+        public async Task<IEnumerable<Dog>> GetAllDogsAsync()
         {
-            return await _appDbContext.Dogs.ToListAsync();
+            return await _repo.getAllAsync();
         }
 
         public async Task<Dog> GetDogByIdAsync(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
         {
-            return await _appDbContext.Dogs.FirstOrDefaultAsync(p => p.Id == id);//First object with id equal to paramter id )
+            return await _repo.Get(d => d.Id == id).FirstOrDefaultAsync();//First object with id equal to paramter id )
         }
     }
 }

@@ -9,10 +9,9 @@ namespace Backend_API.Models.User
     {
         public string Id { get; set; }
         public string Token { get; set; }
-        public string Name { get; set; }
+        public string FullName { get; set; }
         public string Email { get; set; }
         public string ImageUrl { get; set; }
-        public bool Success { get; set; }
-        public string Error { get; set; }
+        public int MaxDistance { get; set; }
     }
 }

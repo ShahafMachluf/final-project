@@ -13,6 +13,7 @@ namespace Backend_API.Services.Interfaces
         Task<RegisterReqRes> RegisterAsync(RegisterReq req);
         Task<LoginReqRes> LoginAsync(LoginReq req);
         ApplicationUser GetById(string id);
-        Task<string> UpdateProfilePictureUrl(string base64Image, ApplicationUser user);
+        Task<string> UpdateProfilePictureUrlAsync(string base64Image, ApplicationUser user);
+        Task UpdateMaxDistanceAsync(ApplicationUser user, int maxDistnace);
     }
 }

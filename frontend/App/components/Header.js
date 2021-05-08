@@ -6,7 +6,7 @@ import MainButton from '../components/MainButton';
 
 const Header = props => {
     return (
-        <View style={styles.container}>
+        <View style={{...styles.container, ...props.style}}>
             <MainButton
                 buttonStyle={styles.button}
                 onPress={props.menuClickEventHandler}
