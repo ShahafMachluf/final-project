@@ -7,8 +7,29 @@ import LinearGradientIcon from '../components/LinearGradientIcon';
 import Colors from '../constants/Colors';
 
 const DogProfileScreen = props => {
-    const userDetails = useSelector(state => state.userDetails)
-    console.log(props)
+    
+    const setGender = gender => {
+        if(gender == '0')
+            return 'זכר';
+        else
+            return 'נקבה';
+    }
+
+    const setSize = size => {
+        if(size == '0')
+            return 'קטן';
+        else if(size == '1')
+            return 'בינוני';
+        else
+            return 'גדול';
+    }
+
+    const setIsVaccinated = isVaccinated => {
+        if(isVaccinated == true)
+            return '√';
+        else
+            return 'X';
+    }
 
     return (
         <ScrollView style={{flex: 1}}>
@@ -16,7 +37,7 @@ const DogProfileScreen = props => {
             <View style={styles.imageContainer}>
                 <Image
                     style={styles.profilePicture}
-                    source={require('../assets/testDog.jpg')}
+                    source={{uri: props.dog.imageURL}}
                 />
                     <MainButton
                     buttonStyle={styles.addImageIcon}
@@ -31,35 +52,35 @@ const DogProfileScreen = props => {
                     />
                 </MainButton>
             </View>
-            <Text style={styles.name}>{props.dog.name}</Text>
+            <Text style={styles.name}>{props.dog.name}, {props.dog.age}</Text>
             <View style={styles.propertiesContainer}>
             <View style={styles.keyValuePair}>
                     <Text style={styles.propertiesText}>גזע</Text>
-                    <Text style={styles.propertiesText}>{userDetails.email}</Text>
+                    <Text style={styles.propertiesText}>{props.dog.race}</Text>
             </View>
             <View style={styles.keyValuePair}>
                     <Text style={styles.propertiesText}>צבע</Text>
-                    <Text style={styles.propertiesText}>{userDetails.email}</Text>
+                    <Text style={styles.propertiesText}>{props.dog.color}</Text>
             </View>
             <View style={styles.keyValuePair}>
                     <Text style={styles.propertiesText}>מין</Text>
-                    <Text style={styles.propertiesText}>{userDetails.email}</Text>
+                    <Text style={styles.propertiesText}>{setGender(props.dog.gender)}</Text>
             </View>
             <View style={styles.keyValuePair}>
                     <Text style={styles.propertiesText}>גודל</Text>
-                    <Text style={styles.propertiesText}>{userDetails.email}</Text>
+                    <Text style={styles.propertiesText}>{setSize(props.dog.size)}</Text>
             </View>
             <View style={styles.keyValuePair}>
                     <Text style={styles.propertiesText}>מחוסן</Text>
-                    <Text style={styles.propertiesText}>{userDetails.email}</Text>
+                    <Text style={styles.propertiesText}>{setIsVaccinated(props.dog.isVaccinated)}</Text>
             </View>
             <View style={styles.keyValuePair}>
                     <Text style={styles.propertiesText}>מסורס/מעוקרת</Text>
-                    <Text style={styles.propertiesText}>{userDetails.email}</Text>
+                    <Text style={styles.propertiesText}>{setIsVaccinated(props.dog.isNeutered)}</Text>
             </View>
             <View style={styles.keyValuePair}>
                     <Text style={styles.propertiesText}>מידע כללי</Text>
-                    <Text style={styles.propertiesText}>{userDetails.email}</Text>
+                    <Text style={styles.propertiesText}>{props.dog.information}</Text>
             </View>
             </View>
         </View>

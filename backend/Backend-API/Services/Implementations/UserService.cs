@@ -65,8 +65,8 @@ namespace Backend_API.Services.Implementations
             }
 
 
-            RegisterReqRes result = _mapper.Map<RegisterReqRes>(existingUser);
-            result.Token = GenerateJwtToken(existingUser);
+            RegisterReqRes result = _mapper.Map<RegisterReqRes>(newUser);
+            result.Token = GenerateJwtToken(newUser);
 
             return result;
         }
