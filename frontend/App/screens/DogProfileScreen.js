@@ -6,17 +6,13 @@ import MainButton from '../components/MainButton';
 import LinearGradientIcon from '../components/LinearGradientIcon';
 import Colors from '../constants/Colors';
 
-const ProfileScreen = props => {
+const DogProfileScreen = props => {
     const userDetails = useSelector(state => state.userDetails)
-    const [tmp, tmpTest] = useState("add");
+    console.log(props)
 
     return (
         <ScrollView style={{flex: 1}}>
         <View style={styles.screen}>
-            <Header 
-               hideLogo={true}
-               menuClickEventHandler={props.navigation.toggleDrawer} 
-            />
             <View style={styles.imageContainer}>
                 <Image
                     style={styles.profilePicture}
@@ -24,7 +20,9 @@ const ProfileScreen = props => {
                 />
                     <MainButton
                     buttonStyle={styles.addImageIcon}
-                    onPress={() => {}}
+                    onPress={() => props.navigation.navigate({ 
+                        routeName: 'Main'
+                    })}
                 >
                         <LinearGradientIcon 
                         iconName="arrow-down"
@@ -33,7 +31,7 @@ const ProfileScreen = props => {
                     />
                 </MainButton>
             </View>
-            <Text style={styles.name}>Nitzan , 15</Text>
+            <Text style={styles.name}>{props.dog.name}</Text>
             <View style={styles.propertiesContainer}>
             <View style={styles.keyValuePair}>
                     <Text style={styles.propertiesText}>גזע</Text>
@@ -130,4 +128,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ProfileScreen;
+export default DogProfileScreen;

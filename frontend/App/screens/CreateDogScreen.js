@@ -12,6 +12,8 @@ import {createDogHandler} from '../services/dogService';
 import Dog from '../models/Dog'
 import Colors from '../constants/Colors'
 import ImgPicker from '../components/ImgPicker';
+import DogProfileScreen from './DogProfileScreen';
+import { SafeAreaView } from 'react-navigation';
 
 const CreateDogScreen = props => {
     const [name, setName] = useState('');
@@ -24,6 +26,10 @@ const CreateDogScreen = props => {
     const [information, setInformation] = useState('');
     const [selectedImage, setSelectedImage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [newDog, setNewDog] = useState(null);
+    const [isDogCreated, setIsDogCreated] = useState(false);
+
+
 
     const userDetails = useSelector(state => state.userDetails);
 
@@ -59,8 +65,10 @@ const CreateDogScreen = props => {
         const dog = new Dog(userDetails.id ,name, age, race, color, gender, size, selectedCheckBox, information, selectedImage.base64)
         setIsLoading(true);
         createDogHandler(dog)
-        .then(newDog => {
+        .then(createDog => {
             // TODO something with the created dog
+            setNewDog(createDog);
+            setIsDogCreated(true);
         })
         .catch(err => {
             console.log(err)
@@ -71,10 +79,19 @@ const CreateDogScreen = props => {
 
     }
     
+
+    if(isDogCreated)
+    {
+        return( 
+            <DogProfileScreen dog={newDog}/>
+        )
+    }
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
             <ScrollView style={{flex: 1}}>
-                <Header/>
+            <Header 
+               menuClickEventHandler={props.navigation.toggleDrawer} 
+            />
                 <Text style={styles.headerText} >נא הזן את פרטי הכלב:</Text>
                 <View style={styles.screen}>
                     <View style={styles.inputContainer}>
@@ -169,7 +186,6 @@ const CreateDogScreen = props => {
                         </MainButton>
                         </View>
                     </View>
-                </View>
             </ScrollView>
         </TouchableWithoutFeedback>
     );
@@ -179,13 +195,12 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         alignItems: 'center',
-        marginHorizontal: Dimensions.get('window').width / 10
+        marginHorizontal: Dimensions.get('window').width / 10,
     },
     headerText: {
         fontSize: 25,
         color: '#808080', 
         textAlign: "center",
-        marginTop: Dimensions.get('window').width / -10,
     },
     textInput: {
         textAlign: 'center',
@@ -225,7 +240,10 @@ const styles = StyleSheet.create({
     },
     continueButton: {
         borderColor: 'black',
-        marginVertical: 10
+        marginHorizontal: Dimensions.get('window').width / 8,
+        height: Dimensions.get('window').height / 18,
+        width: '70%',
+        marginTop: 10,
     },
     continueText: {
         color: 'white',

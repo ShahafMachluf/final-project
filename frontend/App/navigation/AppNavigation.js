@@ -37,7 +37,7 @@ const app = createDrawerNavigator({
         }
     },
     LikedDogs: {
-        screen: MainScreen,
+        screen: DogProfileScreen,
         navigationOptions: {
             drawerLabel: 'כלבים שאהבתי',
             drawerIcon: () => (
