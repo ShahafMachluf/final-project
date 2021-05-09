@@ -9,6 +9,7 @@ import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import MainScreen from '../screens/MainScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import DogProfileScreen from '../screens/DogProfileScreen';
 import CreateDogScreen from '../screens/CreateDogScreen';
 import Drawer from '../components/Drawer';
 import HangOutScreen from '../screens/HangOutScreen';

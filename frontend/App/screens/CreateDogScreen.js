@@ -167,6 +167,7 @@ const CreateDogScreen = props => {
                         >
                             <Text style={styles.continueText}>המשך</Text>
                         </MainButton>
+                        </View>
                     </View>
                 </View>
             </ScrollView>
