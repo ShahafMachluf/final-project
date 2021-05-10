@@ -54,24 +54,23 @@ const MainScreen = props => {
             <Header 
                 menuClickEventHandler={props.navigation.toggleDrawer}
             />
-
-                <Swiper
-                    cardStyle={{paddingTop: 20}}
-                    containerStyle={styles.cardContainer}
-                    backgroundColor={'white'}
-                    cardVerticalMargin={0}
-                    disableBottomSwipe={true}
-                    disableTopSwipe={true}
-                    verticalSwipe={false}
-                    cards={dogs}
-                    stackSize={2}
-                    showSecondCard={true}
-                    renderCard={renderDogCard}
-                    onSwipedLeft={swipeLeftEventHandler}
-                    onSwipedRight={swipeRightEventHandler}
-                    onSwipedAll={() => {console.log('all swiped')}}
-                    ref={swiper}
-                />
+            <Swiper
+                cardStyle={{paddingTop: 20}}
+                containerStyle={styles.cardContainer}
+                backgroundColor={'white'}
+                cardVerticalMargin={0}
+                disableBottomSwipe={true}
+                disableTopSwipe={true}
+                verticalSwipe={false}
+                cards={dogs}
+                stackSize={2}
+                showSecondCard={true}
+                renderCard={renderDogCard}
+                onSwipedLeft={swipeLeftEventHandler}
+                onSwipedRight={swipeRightEventHandler}
+                onSwipedAll={() => {console.log('all swiped')}}
+                ref={swiper}
+            />
 
             <View style={styles.buttonsContainer}>
                 <MainButton
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'space-between',
         width: '50%',
-        marginTop: 30,
+        marginTop: 30
     },
     cardContainer: {
         position: 'relative',

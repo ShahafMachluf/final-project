@@ -21,8 +21,8 @@ const HnagOutScreen = props => {
     return (
         <View style={styles.screen}>
             <MapView style={styles.map} region={mapRegion}>
-                <Marker coordinate={example} title="test title" description="test description">
-                    <Callout tooltip>
+                <Marker coordinate={example}>
+                    <Callout tooltip={true} >
                         <MapCard />
                     </Callout>
                 </Marker>
@@ -39,7 +39,6 @@ const HnagOutScreen = props => {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-
     },
     menuButton:{
         position: 'absolute',
@@ -48,10 +47,6 @@ const styles = StyleSheet.create({
     map: {
         flex:1,
         zIndex: -1
-    },
-    card: {
-        width: 150,
-        height: 150
     }
 })
 

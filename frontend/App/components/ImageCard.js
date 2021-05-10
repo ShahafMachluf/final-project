@@ -45,16 +45,15 @@ const styles = StyleSheet.create({
     container: {
         marginHorizontal: '10%',
         height: Dimensions.get('window').height / 2,
+        backgroundColor: 'white',
+        borderRadius: 10,
         // android
-        elevation: 20,
+        elevation: 15,
         // ios
         shadowColor: 'black',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.5,
-        shadowRadius: 2,
-        backgroundColor: 'white',
-        overflow: 'hidden',
-        borderRadius: 10
+        shadowOffset: {width: 0, height: 10},
+        shadowOpacity: 0.51,
+        shadowRadius: 13.16,
     },
     image: {
       height: '100%',
@@ -72,7 +71,8 @@ const styles = StyleSheet.create({
     info: {
         color: 'white',
         fontSize: 20,
-        marginHorizontal: '3%'
+        marginHorizontal: '3%',
+        textAlign: 'right'
     }
 });
 

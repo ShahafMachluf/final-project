@@ -12,6 +12,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import CreateDogScreen from '../screens/CreateDogScreen';
 import Drawer from '../components/Drawer';
 import HangOutScreen from '../screens/HangOutScreen';
+import MapCard from '../components/MapCard'
 
 const app = createDrawerNavigator({
     Main: {
@@ -54,7 +55,7 @@ const app = createDrawerNavigator({
         }
     },
     TakeCare: {
-        screen: MainScreen,
+        screen: MapCard,
         navigationOptions: {
             drawerLabel: 'דואגים לכלב',
             drawerIcon: () => (
