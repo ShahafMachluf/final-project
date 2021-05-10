@@ -24,74 +24,110 @@ const CreateDogScreen = props => {
     const [size, setSize] = useState('');
     const [selectedCheckBox, setSelectCheckBox] = useState([]);
     const [information, setInformation] = useState('');
-    const [selectedImage, setSelectedImage] = useState('');
+    const [selectedImage, setSelectedImage] = useState(null);
+    
+    const [nameErrorMessage, setNameErrorMessage] = useState('');
+    const [ageErrorMessage, setAgeErrorMessage] = useState('');
+    const [raceErrorMessage, setRaceErrorMessage] = useState('');
+    const [colorErrorMessage, setColorErrorMessage] = useState('');
+    const [genderErrorMessage, setGenderErrorMessage] = useState('');
+    const [sizeErrorMessage, setSizeErrorMessage] = useState('');
+    const [imageErrorMessage, setImageErrorMessage] = useState('');
+    
     const [isLoading, setIsLoading] = useState(false);
     const [newDog, setNewDog] = useState(null);
     const [isDogCreated, setIsDogCreated] = useState(false);
 
-
-
     const userDetails = useSelector(state => state.userDetails);
 
-    const nameInputHandler = inputName => {
-        setName(inputName)
+    const clearErrorMessages = () => {
+        setNameErrorMessage('');
+        setAgeErrorMessage('');
+        setRaceErrorMessage('');
+        setColorErrorMessage('');
+        setGenderErrorMessage('');
+        setSizeErrorMessage('');
+        setImageErrorMessage('');
     }
     
-    const ageInputHandler = inputAge => {
-        setAge(inputAge)
+    const validateForm = () => {
+        let validForm = true;
+        if(name.length === 0) {
+            setNameErrorMessage('נדרש');
+            validForm = false;
+        }
+        if(age.length === 0 || isNaN(age) || age < 0) {
+            setAgeErrorMessage('נדרש, יש לזין ספרות בלבד');
+            validForm = false;
+        }
+        if(race.length === 0) {
+            setRaceErrorMessage('נדרש');
+            validForm = false
+        }
+        if(color.length === 0) {
+            setColorErrorMessage('נדרש');
+            validForm = false;
+        }
+        if(gender.length === 0) {
+            setGenderErrorMessage('נדרש');
+            validForm = false;
+        }
+        if(size.length === 0) {
+            setSizeErrorMessage('נדרש');
+            validForm = false;
+        }
+        if(selectedImage === null) {
+            setImageErrorMessage('נדרש');
+            validForm = false;
+        }
+
+        return validForm;
     }
 
-    const raceInputHandler = inputRace => {
-        setRace(inputRace)
-    }
-
-    const colorInputHandler = inputColor => {
-        setColor(inputColor)
-    }
-
-    const genderInputHandler = inputGender => {
-        setGender(inputGender)
-    }
-
-    const sizeInputHandler = inputSize => {
-        setSize(inputSize)
-    }
-
-    const informationInputHandler = inputInformation => {
-        setInformation(inputInformation)
-    }
-    
     const clickDogHandler = () => {
-        const dog = new Dog(userDetails.id ,name, age, race, color, gender, size, selectedCheckBox, information, selectedImage.base64)
-        setIsLoading(true);
-        createDogHandler(dog)
-        .then(createDog => {
-            // TODO something with the created dog
-            setNewDog(createDog);
-            setIsDogCreated(true);
-        })
-        .catch(err => {
-            console.log(err)
-        })
-        .finally(() => {
-            setIsLoading(false);
-        })
+        clearErrorMessages();
+        const isValidForm = validateForm();
+        if(isValidForm) {
+            const dog = new Dog(userDetails.id ,name, age, race, color, gender, size, selectedCheckBox, information, selectedImage.base64)
+            setIsLoading(true);
+            createDogHandler(dog)
+            .then(createdDog => {
+                setNewDog(createdDog);
+                setIsDogCreated(true);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
+        }
+    }
 
+    const getErrorMessage = errorMessage => {
+        if(errorMessage.length > 0) {
+            return (
+                <View style={styles.errorMessage}>
+                    <Text style={styles.errorMessageText}>{errorMessage}</Text>
+                </View>
+            )
+        }
     }
     
 
     if(isDogCreated)
     {
         return( 
-            <DogProfileScreen dog={newDog}/>
+            <DogProfileScreen dog={newDog} navigation={props.navigation}/>
         )
     }
+
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
             <ScrollView style={{flex: 1}}>
-            <Header 
-               menuClickEventHandler={props.navigation.toggleDrawer} 
-            />
+                <Header 
+                menuClickEventHandler={props.navigation.toggleDrawer} 
+                />
                 <Text style={styles.headerText} >נא הזן את פרטי הכלב:</Text>
                 <View style={styles.screen}>
                     <View style={styles.inputContainer}>
@@ -100,35 +136,40 @@ const CreateDogScreen = props => {
                             autoCapitalize='none'
                             autoCorrect={false}
                             keyboardType='default'
-                            onChangeText={nameInputHandler}
+                            onChangeText={setName}
                             placeholder='שם'
                             returnKeyType='next'
                         />
+                        {getErrorMessage(nameErrorMessage)}
                         <Input 
                             style={styles.textInput}
                             autoCapitalize='none'
                             autoCorrect={false}
                             keyboardType='numeric'
                             placeholder='גיל'
-                            onChangeText={ageInputHandler}
+                            onChangeText={setAge}
                         />
+                        {getErrorMessage(ageErrorMessage)}
                         <Input 
                             style={styles.textInput}
                             autoCapitalize='none'
                             autoCorrect={false}
                             keyboardType='next'
                             placeholder='גזע'
-                            onChangeText={raceInputHandler}
+                            onChangeText={setRace}
                         />
+                        {getErrorMessage(raceErrorMessage)}
                         <Input 
                             style={styles.textInput}
                             autoCapitalize='none'
                             autoCorrect={true}
                             keyboardType='next'
                             placeholder='צבע'
-                            onChangeText={colorInputHandler}
+                            onChangeText={setColor}
                         />
+                        {getErrorMessage(colorErrorMessage)}
                         <ImgPicker onImageTaken={setSelectedImage} />
+                        {getErrorMessage(imageErrorMessage)}
                         <RNPickerSelect
                             placeholder={{
                                 label: 'בחר מין',
@@ -139,11 +180,12 @@ const CreateDogScreen = props => {
                                 { label: 'זכר', value: 0 },
                                 { label: 'נקבה', value: 1 },
                             ]}
-                            onValueChange = {genderInputHandler}
+                            onValueChange = {setGender}
                             style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
                             useNativeAndroidPickerStyle={false}
                             Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
                         />
+                        {getErrorMessage(genderErrorMessage)}
                         <RNPickerSelect
                             placeholder={{
                                 label: 'בחר גודל',
@@ -155,11 +197,12 @@ const CreateDogScreen = props => {
                                 { label: 'בינוני', value: 1 },
                                 { label: 'גדול', value: 2 },
                                 ]}
-                            onValueChange={sizeInputHandler}
+                            onValueChange={setSize}
                             style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
                             useNativeAndroidPickerStyle={false}
                             Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
                          />
+                         {getErrorMessage(sizeErrorMessage)}
                         <SelectMultiple
                             rowStyle = {styles.CheckBox}
                             items={[{label: 'מחוסן', value: 'Vaccinated'},
@@ -174,9 +217,14 @@ const CreateDogScreen = props => {
                             autoCorrect={true}
                             keyboardType='next'
                             placeholder='מידע כללי'
-                            onChangeText={informationInputHandler}
+                            onChangeText={setInformation}
                         />
-                        {isLoading && <ActivityIndicator />}
+                        {isLoading && 
+                            <ActivityIndicator 
+                                animating={isLoading} 
+                                color="#0000ff" 
+                                size='large'
+                            />}
                         <MainButton 
                             onPress={clickDogHandler} 
                             buttonStyle={styles.continueButton}

@@ -14,8 +14,8 @@ const HnagOutScreen = props => {
     }
 
     const example = {
-        latitude: 32.079157,
-        longitude: 34.774181,
+        latitude: 32.09198,
+        longitude: 34.77071,
     }
 
     return (

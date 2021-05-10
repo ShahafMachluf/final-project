@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, StyleSheet, Text, Dimensions } from 'react-native'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 
 import ImageCard from '../components/ImageCard'
@@ -12,6 +12,7 @@ import Header from '../components/Header';
 const MainScreen = props => {
     const swiper = useRef(null);
     const [dogs, setDogs] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     
     useEffect(() => { // get all dogs when the screen is being rendered
         const getDogs = async () => {
@@ -22,8 +23,11 @@ const MainScreen = props => {
             catch (err) {
                 console.log(err);
             }
+            finally {
+                setIsLoading(false);
+            }
         }
-
+        
         getDogs();
     }, [setDogs])
 
@@ -47,6 +51,18 @@ const MainScreen = props => {
         if(dogData) {
             return <ImageCard {...dogData} />
         }
+    }
+
+    if(isLoading) {
+        return (
+            <View style={styles.loader}>
+                <ActivityIndicator                
+                    animating={true} 
+                    color="#0000ff" 
+                    size='large' 
+                />
+            </View>
+        )
     }
 
     return (
@@ -102,6 +118,11 @@ const MainScreen = props => {
 const styles = StyleSheet.create({
     screen: {
         flex: 1
+    },
+    loader: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     buttons: {
         backgroundColor: 'gray',

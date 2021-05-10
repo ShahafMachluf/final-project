@@ -38,7 +38,7 @@ const app = createDrawerNavigator({
         }
     },
     LikedDogs: {
-        screen: DogProfileScreen,
+        screen: MainScreen,
         navigationOptions: {
             drawerLabel: 'כלבים שאהבתי',
             drawerIcon: () => (
@@ -85,9 +85,8 @@ const app = createDrawerNavigator({
             drawerLabel: 'פרופיל',
             drawerIcon: () => (
                 <Ionicons name='person' size={24}/>
-            ),
-        
-        }
+            )
+        },
     }
 },
 {
@@ -96,7 +95,8 @@ const app = createDrawerNavigator({
     contentComponent: Drawer,
     drawerWidth: Dimensions.get('window').width / 2,
     initialRouteName: 'Main',
-    backBehavior: 'history'
+    backBehavior: 'history',
+    unmountInactiveRoutes: true
 });
 
 const auth = createStackNavigator({
