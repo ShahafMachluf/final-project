@@ -10,7 +10,7 @@ export const LikeDog = () => {
 export const createDogHandler = (dog) => {
     return createDog(dog)
     .then(dog =>{
-        console.log(dog)
+        return dog;
     })
     .catch(error => {
         throw error
