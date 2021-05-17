@@ -42,7 +42,8 @@
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "symbol-observable": "^4.0.0"
+    "symbol-observable": "^4.0.0",
+    "react-native-webview": "11.2.3"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import {View, StyleSheet, Image, Text, Alert} from 'react-native';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import {View, StyleSheet, Image, Text} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import MainButton from './MainButton'; 
 
-const ImgPicker = props => {
+const ImgPicker = forwardRef((props, ref) => {
     const [pickedImage, setPickedImage] = useState(null);
+
+    useImperativeHandle(ref, () => ({
+        clear() {
+            setPickedImage(null);
+        }
+    }))
 
     const askForLibraryPermission = async () => {
         const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -54,7 +60,7 @@ const ImgPicker = props => {
             </MainButton>
         </View>
     )
-}
+})
 
 const styles = StyleSheet.create({
     imagePicker: {

@@ -1,36 +1,33 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {Svg, Image as ImageSvg} from 'react-native-svg';
+import { WebView } from 'react-native-webview';
 
 const MapCard = props => {
-    // TODO get location details from props
+    const getImage = (imageURL) => (
+        `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+        <html xmlns="http://www.w3.org/1999/xhtml">
+           <head>
+              <style> * { margin:0; padding:0; } </style>
+           </head>
+           <body>
+              <div>
+                 <img src="${imageURL}" alt="image" width="1000" height="400" /> 
+              </div>
+           </body>
+        </html>`
+    )
 
-    const props1 = {
-        name: 'חוף הכלבים',
-        address: 'טיילת שלמה להט, תל אביב יפו',
-        imageUrl: 'http://cdn.shopify.com/s/files/1/1497/0598/files/470193e66b5b27bf818d98bd6fe7e32b_large.jpg'
-    }
 
     return (
         <View style={styles.screen}>
-            <Svg style={styles.imageContainer}>
-                <ImageSvg 
-                    width={'100%'}
-                    height={'100%'}
-                    style={styles.image}
-                    preserveAspectRatio='xMidYMid slice'
-                    href={{ uri: props1.imageUrl}}
-                />
-            </Svg>
+            <WebView 
+                style={styles.image}
+                source={{html: getImage(props.data.imageURL)}}
+            />
             <View style={styles.detailsContainer}>                    
-                <Text style={styles.title}>{props1.name}</Text>
-                <Text>{props1.address}</Text>
-                <Text>{props1.address}</Text>
-                <Text>{props1.address}</Text>
-                <Text>{props1.address}</Text>
-                <Text>{props1.address}</Text>
-                <Text>{props1.address}</Text>
-                <Text>{props1.address}</Text>
+                <Text style={styles.title}>{props.data.name}</Text>
+                <Text>{props.data.address}</Text>
             </View>
         </View>
     )
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
     },
     detailsContainer: {
         flex: 1,
-        marginHorizontal: 20
+        //marginHorizontal: 20
     },
     title: {
         fontSize: 20,
@@ -55,14 +52,8 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     image: {
-
-        height: 100,
-        width: 200
-    },
-    imageContainer: {
         height: 100,
         width: 200,
-        
     }
 });
 

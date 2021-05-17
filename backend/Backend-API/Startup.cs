@@ -90,6 +90,7 @@ namespace Backend_API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDogService, DogService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IAttractionsService, AttractionsService>();
             services.AddScoped(typeof(IRepo<>), typeof(Repo<>));
             #endregion
 

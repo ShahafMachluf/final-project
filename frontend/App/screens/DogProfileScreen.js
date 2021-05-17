@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { View, Image, StyleSheet, Dimensions, ScrollView, Text, ActivityIndicator, Platform} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
+import { StackActions } from 'react-navigation';
 
 import MainButton from '../components/MainButton';
 import LinearGradientIcon from '../components/LinearGradientIcon';
@@ -8,7 +9,15 @@ import Colors from '../constants/Colors';
 
 const DogProfileScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
-    
+    const dog = props.navigation.state.params.dog;
+
+    const navigateToMainScreen = () => {
+        props.navigation.dispatch(StackActions.popToTop());
+        props.navigation.navigate({ 
+            routeName: 'Main'
+        })
+    }
+
     const setGender = gender => {
         if(gender == '0')
             return 'זכר';
@@ -39,7 +48,7 @@ const DogProfileScreen = props => {
                     <View style={styles.imageContainer}>
                         <Image
                             style={styles.profilePicture}
-                            source={{uri: props.dog.imageURL}}
+                            source={{uri: dog.imageURL}}
                             onLoadStart={() => {setIsLoading(true)}}
                             onLoad={() => {setIsLoading(false)}} 
                         />
@@ -52,9 +61,7 @@ const DogProfileScreen = props => {
                         </View>
                         <MainButton
                             buttonStyle={styles.addImageIcon}
-                            onPress={() => props.navigation.navigate({ 
-                                routeName: 'Main'
-                            })}
+                            onPress={navigateToMainScreen}
                         >
                             <LinearGradientIcon 
                                 iconName="arrow-down"
@@ -63,35 +70,35 @@ const DogProfileScreen = props => {
                             />
                         </MainButton>
                     </View>
-                    <Text style={styles.name}>{props.dog.name}, {props.dog.age}</Text>
+                    <Text style={styles.name}>{dog.name}, {dog.age}</Text>
                     <View style={styles.propertiesContainer}>
                     <View style={styles.keyValuePair}>
                             <Text style={styles.propertiesText}>גזע</Text>
-                            <Text style={styles.propertiesText}>{props.dog.race}</Text>
+                            <Text style={styles.propertiesText}>{dog.race}</Text>
                     </View>
                     <View style={styles.keyValuePair}>
                             <Text style={styles.propertiesText}>צבע</Text>
-                            <Text style={styles.propertiesText}>{props.dog.color}</Text>
+                            <Text style={styles.propertiesText}>{dog.color}</Text>
                     </View>
                     <View style={styles.keyValuePair}>
                             <Text style={styles.propertiesText}>מין</Text>
-                            <Text style={styles.propertiesText}>{setGender(props.dog.gender)}</Text>
+                            <Text style={styles.propertiesText}>{setGender(dog.gender)}</Text>
                     </View>
                     <View style={styles.keyValuePair}>
                             <Text style={styles.propertiesText}>גודל</Text>
-                            <Text style={styles.propertiesText}>{setSize(props.dog.size)}</Text>
+                            <Text style={styles.propertiesText}>{setSize(dog.size)}</Text>
                     </View>
                     <View style={styles.keyValuePair}>
                             <Text style={styles.propertiesText}>מחוסן</Text>
-                            <Text style={styles.propertiesText}>{setIsVaccinated(props.dog.isVaccinated)}</Text>
+                            <Text style={styles.propertiesText}>{setIsVaccinated(dog.isVaccinated)}</Text>
                     </View>
                     <View style={styles.keyValuePair}>
                             <Text style={styles.propertiesText}>מסורס/מעוקרת</Text>
-                            <Text style={styles.propertiesText}>{setIsVaccinated(props.dog.isNeutered)}</Text>
+                            <Text style={styles.propertiesText}>{setIsVaccinated(dog.isNeutered)}</Text>
                     </View>
                     <View style={styles.keyValuePair}>
                             <Text style={styles.propertiesText}>מידע כללי</Text>
-                            <Text style={styles.propertiesText}>{props.dog.information}</Text>
+                            <Text style={styles.propertiesText}>{dog.information}</Text>
                     </View>
                     </View>
                 </View>

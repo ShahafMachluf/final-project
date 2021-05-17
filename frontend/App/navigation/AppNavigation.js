@@ -14,6 +14,37 @@ import CreateDogScreen from '../screens/CreateDogScreen';
 import Drawer from '../components/Drawer';
 import HangOutScreen from '../screens/HangOutScreen';
 import MapCard from '../components/MapCard'
+import LikedDogsScreen from '../screens/LikedDogsScreen';
+
+const createDog = createStackNavigator({
+    Form: {
+        screen: CreateDogScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    DogProfile: {
+        screen: DogProfileScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
+})
+
+const likedDogs = createStackNavigator({
+    LikedDogs: {
+        screen: LikedDogsScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    DogProfile: {
+        screen: DogProfileScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
+}, {detachInactiveScreens: true})
 
 const app = createDrawerNavigator({
     Main: {
@@ -29,7 +60,7 @@ const app = createDrawerNavigator({
         }
     },
     AddNewDog: {
-        screen: CreateDogScreen,
+        screen: createDog,
         navigationOptions: {
             drawerLabel: 'מציאת מאמץ',
             drawerIcon: () => (
@@ -38,7 +69,7 @@ const app = createDrawerNavigator({
         }
     },
     LikedDogs: {
-        screen: MainScreen,
+        screen: likedDogs,
         navigationOptions: {
             drawerLabel: 'כלבים שאהבתי',
             drawerIcon: () => (
@@ -95,8 +126,7 @@ const app = createDrawerNavigator({
     contentComponent: Drawer,
     drawerWidth: Dimensions.get('window').width / 2,
     initialRouteName: 'Main',
-    backBehavior: 'history',
-    unmountInactiveRoutes: true
+    backBehavior: 'history'
 });
 
 const auth = createStackNavigator({
@@ -113,6 +143,7 @@ const auth = createStackNavigator({
         }
     }
 });
+
 
 export const AppNavigation = createAppContainer(app);
 

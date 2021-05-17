@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Text } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 
 import ImageCard from '../components/ImageCard'
@@ -13,12 +13,16 @@ const MainScreen = props => {
     const swiper = useRef(null);
     const [dogs, setDogs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [noDogs, setNoDogs] = useState(false);
     
     useEffect(() => { // get all dogs when the screen is being rendered
         const getDogs = async () => {
             try{
                 const receivedDogs = await getAllDogsHandler();
                 setDogs(receivedDogs);
+                if(receivedDogs.length === 0) {
+                    setNoDogs(true);
+                }
             }
             catch (err) {
                 console.log(err);
@@ -70,7 +74,7 @@ const MainScreen = props => {
             <Header 
                 menuClickEventHandler={props.navigation.toggleDrawer}
             />
-            <Swiper
+            { !noDogs && <Swiper
                 cardStyle={{paddingTop: 20}}
                 containerStyle={styles.cardContainer}
                 backgroundColor={'white'}
@@ -84,14 +88,18 @@ const MainScreen = props => {
                 renderCard={renderDogCard}
                 onSwipedLeft={swipeLeftEventHandler}
                 onSwipedRight={swipeRightEventHandler}
-                onSwipedAll={() => {console.log('all swiped')}}
+                onSwipedAll={() => {setNoDogs(true);}}
                 ref={swiper}
-            />
-
+            />}
+            { noDogs && <View style={styles.noDogs}>
+                <Text>לא מצאנו כלבים נוספים</Text>
+                <Text>הגדל את המרחק המירבי או נסה שוב מאוחר יותר</Text>
+            </View>}
             <View style={styles.buttonsContainer}>
                 <MainButton
                     buttonStyle={styles.buttons}
                     onPress={nextPerssEventHandler}
+                    disabled={noDogs}
                 >
                     <LinearGradientIcon 
                         iconName="arrow-back"
@@ -102,6 +110,7 @@ const MainScreen = props => {
                 <MainButton 
                     buttonStyle={styles.buttons}
                     onPress={heartPressEventHandler}
+                    disabled={noDogs}
                 >
                     <LinearGradientIcon 
                         iconName="heart"
@@ -141,6 +150,12 @@ const styles = StyleSheet.create({
         position: 'relative',
         height: '55%',
         width: '100%'
+    },
+    noDogs: {
+        height: '55%',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

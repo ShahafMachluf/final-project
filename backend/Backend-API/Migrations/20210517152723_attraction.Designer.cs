@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210509150255_database")]
-    partial class database
+    [Migration("20210517152723_attraction")]
+    partial class attraction
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,6 +96,71 @@ namespace Backend_API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Backend_API.Models.DbModels.Attraction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attractions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "יפת, קדם, תל אביב יפו",
+                            ImageURL = "https://lh5.googleusercontent.com/p/AF1QipMhf6Z16ZIfaq2XwW-hSZCOjndODw_Nnn_6-Hs=w408-h304-k-no",
+                            Latitude = 32.039332389353092,
+                            Longitude = 34.745416855801309,
+                            Name = "חוף עליה תל אביב יפו"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "טיילת שלמה להט, תל אביב יפו",
+                            ImageURL = "https://lh5.googleusercontent.com/p/AF1QipM3-k-Cx-grQzaczPPEGdDBbx7ErjzihT8yUdud=w408-h306-k-no",
+                            Latitude = 32.093060412683101,
+                            Longitude = 34.770929383805104,
+                            Name = "חוף הכלבים"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "שביל ישראל, תל אביב יפו",
+                            ImageURL = "https://lh5.googleusercontent.com/p/AF1QipPeRLFHW8modnyo7mN4AD6XEDgDieF4CIzJmMQ4=w408-h306-k-no",
+                            Latitude = 32.116458689969946,
+                            Longitude = 34.779863188779913,
+                            Name = "חוף הכלבים הצפוני - תל ברוך"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "תל אביב יפו",
+                            ImageURL = "https://lh5.googleusercontent.com/p/AF1QipOXwbXKGAlscGmDZ_0n6z_fgdcfUsxP6FpTV-dS=w408-h306-k-no",
+                            Latitude = 32.144486238831021,
+                            Longitude = 34.790942155733418,
+                            Name = "חוף הצוק הצפוני"
+                        });
                 });
 
             modelBuilder.Entity("Backend_API.Models.DbModels.Dog", b =>

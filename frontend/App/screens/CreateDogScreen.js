@@ -25,6 +25,13 @@ const CreateDogScreen = props => {
     const [selectedCheckBox, setSelectCheckBox] = useState([]);
     const [information, setInformation] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
+
+    const nameInput = useRef();
+    const ageInput = useRef();
+    const raceInput = useRef();
+    const colorInput = useRef();
+    const imageInput = useRef();
+    const additionalInput = useRef();
     
     const [nameErrorMessage, setNameErrorMessage] = useState('');
     const [ageErrorMessage, setAgeErrorMessage] = useState('');
@@ -35,10 +42,20 @@ const CreateDogScreen = props => {
     const [imageErrorMessage, setImageErrorMessage] = useState('');
     
     const [isLoading, setIsLoading] = useState(false);
-    const [newDog, setNewDog] = useState(null);
-    const [isDogCreated, setIsDogCreated] = useState(false);
 
     const userDetails = useSelector(state => state.userDetails);
+
+    const clearForm = () => {
+        nameInput.current.clear();
+        ageInput.current.clear();
+        raceInput.current.clear();
+        colorInput.current.clear();
+        imageInput.current.clear();
+        additionalInput.current.clear();
+        setSelectCheckBox([]);
+        setGender(null);
+        setSize(null);
+    } 
 
     const clearErrorMessages = () => {
         setNameErrorMessage('');
@@ -92,8 +109,13 @@ const CreateDogScreen = props => {
             setIsLoading(true);
             createDogHandler(dog)
             .then(createdDog => {
-                setNewDog(createdDog);
-                setIsDogCreated(true);
+                clearForm();
+                props.navigation.navigate({ 
+                    routeName: 'DogProfile',
+                    params: {
+                        dog: createdDog
+                    }
+                })
             })
             .catch(err => {
                 console.log(err)
@@ -113,14 +135,6 @@ const CreateDogScreen = props => {
             )
         }
     }
-    
-
-    if(isDogCreated)
-    {
-        return( 
-            <DogProfileScreen dog={newDog} navigation={props.navigation}/>
-        )
-    }
 
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
@@ -135,10 +149,11 @@ const CreateDogScreen = props => {
                             style={styles.textInput}
                             autoCapitalize='none'
                             autoCorrect={false}
-                            keyboardType='default'
                             onChangeText={setName}
                             placeholder='שם'
                             returnKeyType='next'
+                            ref={nameInput}
+                            onSubmitEditing={() => ageInput.current.focus() }
                         />
                         {getErrorMessage(nameErrorMessage)}
                         <Input 
@@ -148,29 +163,36 @@ const CreateDogScreen = props => {
                             keyboardType='numeric'
                             placeholder='גיל'
                             onChangeText={setAge}
+                            returnKeyType='next'
+                            ref={ageInput}
+                            onSubmitEditing={() => raceInput.current.focus() }
                         />
                         {getErrorMessage(ageErrorMessage)}
                         <Input 
                             style={styles.textInput}
                             autoCapitalize='none'
                             autoCorrect={false}
-                            keyboardType='next'
+                            returnKeyType='next'
                             placeholder='גזע'
                             onChangeText={setRace}
+                            ref={raceInput}
+                            onSubmitEditing={() => colorInput.current.focus() }
                         />
                         {getErrorMessage(raceErrorMessage)}
                         <Input 
                             style={styles.textInput}
                             autoCapitalize='none'
                             autoCorrect={true}
-                            keyboardType='next'
+                            returnKeyType='next'
                             placeholder='צבע'
                             onChangeText={setColor}
+                            ref={colorInput}
                         />
                         {getErrorMessage(colorErrorMessage)}
-                        <ImgPicker onImageTaken={setSelectedImage} />
+                        <ImgPicker onImageTaken={setSelectedImage} ref={imageInput} />
                         {getErrorMessage(imageErrorMessage)}
                         <RNPickerSelect
+                            value={gender}
                             placeholder={{
                                 label: 'בחר מין',
                                 value: null,
@@ -187,6 +209,7 @@ const CreateDogScreen = props => {
                         />
                         {getErrorMessage(genderErrorMessage)}
                         <RNPickerSelect
+                            value={size}
                             placeholder={{
                                 label: 'בחר גודל',
                                 value: null,
@@ -215,9 +238,9 @@ const CreateDogScreen = props => {
                             style={{...styles.textInput, ...styles.bigTextBox}}
                             autoCapitalize='none'
                             autoCorrect={true}
-                            keyboardType='next'
                             placeholder='מידע כללי'
                             onChangeText={setInformation}
+                            ref={additionalInput}
                         />
                         {isLoading && 
                             <ActivityIndicator 
