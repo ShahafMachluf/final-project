@@ -50,9 +50,9 @@ namespace Backend_API.Services.Implementations
             return _mapper.Map<CreateDogReqRes>(newDog);
         }
 
-        public async Task<IEnumerable<Dog>> GetAllDogsAsync()
+        public async Task<IEnumerable<Dog>> GetAllDogsAsync(string City)
         {
-            return await _repo.getAllAsync();
+            return await _repo.Get(dogs => dogs.Owner.City == City).ToListAsync();//Returns list of dogs living in current City
         }
 
         public Dog GetDogByIdAsync(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
