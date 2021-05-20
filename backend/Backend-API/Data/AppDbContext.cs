@@ -12,6 +12,7 @@ namespace Backend_API.Data
     {
         public DbSet<Dog> Dogs { get; set; }
         public DbSet<Attraction> Attractions { get; set; }
+        public DbSet<Reaction> Reactions { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
         }

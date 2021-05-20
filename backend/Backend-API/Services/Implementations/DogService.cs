@@ -10,23 +10,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Backend_API.Models.Enums;
 
 namespace Backend_API.Services.Implementations
 {
     public class DogService : IDogService
     {
         private readonly IRepo<Dog> _repo;
+        private readonly IRepo<Reaction> _reactionRepo;
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
 
         public DogService(
-            IRepo<Dog> repo, 
+            IRepo<Dog> repo,
+            IRepo<Reaction> reactionRepo,
             IMapper mapper,
             IFileService fileService)
         {
             _repo = repo;
             _mapper = mapper;
             _fileService = fileService;
+            _reactionRepo = reactionRepo;
         }
 
         public async Task<CreateDogReqRes> CreateDogAsync(CreateDogReq req)
@@ -51,9 +55,33 @@ namespace Backend_API.Services.Implementations
             return await _repo.getAllAsync();
         }
 
-        public async Task<Dog> GetDogByIdAsync(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
+        public Dog GetDogByIdAsync(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
         {
-            return await _repo.Get(d => d.Id == id).FirstOrDefaultAsync();//First object with id equal to paramter id )
+            return _repo.Get(d => d.Id == id).FirstOrDefault();
+        }
+
+        public async Task ReactToDogAsync(ApplicationUser user, ReactToDogReq reaction)
+        {
+            Dog likedDog = GetDogByIdAsync(reaction.DogId);
+            Reaction newReaction = new Reaction()
+            {
+                Dog = likedDog,
+                ReactionToDog = reaction.Reaction,
+                User = user
+            };
+
+            await _reactionRepo.CreateAsync(newReaction);
+            await _reactionRepo.SaveChangesAsync();
+        }
+
+        public IEnumerable<Dog> GetLikedDogsAsync(ApplicationUser user)
+        {
+            var likedDogs =  _reactionRepo.Get(r => r.UserId == user.Id && r.ReactionToDog == ReactionToDog.Like)
+                                                     .Include(r => r.Dog)
+                                                     //.Select(r => r.Dog)
+                                                     .ToList();
+
+            return null;
         }
     }
 }

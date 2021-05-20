@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import Separator from '../components/Separator';
 import ProfileImagePicker from '../components/ProfileImagePicker';
 import {uploadImageEventHandler, updateMaxDistance} from '../services/userService';
+import Loader from '../components/Loader';
 
 const ProfileScreen = props => {
     const userDetails = useSelector(state => state.userDetails)
@@ -35,11 +36,7 @@ const ProfileScreen = props => {
             <ProfileImagePicker 
                 onImageTaken={imageTakenHandler}
             />
-            <ActivityIndicator 
-                animating={isLoadingImage} 
-                color="#0000ff" 
-                size='large'
-            />
+            <Loader active={isLoadingImage} />
             <Text style={styles.name}>{userDetails.fullName}</Text>
             <View style={styles.propertiesContainer}>
                 <View style={styles.keyValuePair}>

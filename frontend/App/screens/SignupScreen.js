@@ -7,6 +7,7 @@ import Input from '../components/Input';
 import MainButton from '../components/MainButton';
 import * as userService from '../services/userService';
 import Colors from '../constants/Colors';
+import Loader from '../components/Loader'; 
 
 const SignupScreen = props => {
     const [email, setEmail] = useState('');
@@ -119,7 +120,7 @@ const SignupScreen = props => {
                         />
                         {getErrorMessage(nameErrorMessage)}
                         {getErrorMessage(serverErrorMessage)}
-                        <ActivityIndicator animating={isLoading} color="#0000ff" size='large'/>
+                        <Loader active={isLoading} />
                     </View>
                     <View style={styles.buttonContainer}>
                         <MainButton 
@@ -132,7 +133,7 @@ const SignupScreen = props => {
                         </MainButton>
                         <MainButton 
                             disabled={isLoading}
-                            onPress={navigateToLoginScreen} 
+                            onPress={navigateToLoginScreen}  
                             buttonStyle={styles.loginButton}
                         >
                             <Text style={styles.loginText}>משתמש קיים? התחבר</Text>

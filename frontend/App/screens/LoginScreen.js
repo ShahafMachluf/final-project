@@ -7,6 +7,7 @@ import Input from '../components/Input';
 import MainButton from '../components/MainButton';
 import Colors from '../constants/Colors';
 import * as userService from '../services/userService';
+import Loader from '../components/Loader';
 
 const LoginScreen = props => {
     const [email, setEmail] = useState('');
@@ -98,7 +99,7 @@ const LoginScreen = props => {
                         />
                         {getErrorMessage(passwordErrorMessage)}
                         {getErrorMessage(serverErrorMessage)}
-                        <ActivityIndicator animating={isLoading} color="#0000ff" size='large'/>
+                        <Loader active={isLoading} />
                     </View>
                     <View style={styles.buttonContainer}>
                         <MainButton 

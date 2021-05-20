@@ -1,22 +1,20 @@
-import {createDog, getAllDogs} from './dataServices/dogDataService';
-export const GetNextDog = () => {
+import * as dogDataService from './dataServices/dogDataService';
 
+export const ReactToDog = (dogId, reaction) => {
+    return dogDataService.reactToDog({dogId, reaction})
 }
 
-export const LikeDog = () => {
-    
+export const createDogHandler = async (dog) => {
+    const createdDog = await dogDataService.createDog(dog)
+    return createdDog;
 }
 
-export const createDogHandler = (dog) => {
-    return createDog(dog)
-    .then(dog =>{
-        return dog;
-    })
-    .catch(error => {
-        throw error
-    });
+export const getAllDogsHandler = async () => {
+    const dogs = await dogDataService.getAllDogs();
+    return dogs;
 }
 
-export const getAllDogsHandler = () => {
-    return getAllDogs()
+export const GetLikedDogs = async () => {
+    const dogs = await dogDataService.getLikedDogs();
+    return dogs;
 }

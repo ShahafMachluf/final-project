@@ -4,10 +4,11 @@ import Swiper from 'react-native-deck-swiper'
 
 import ImageCard from '../components/ImageCard'
 import MainButton from '../components/MainButton';
-import { GetNextDog, LikeDog, getAllDogsHandler } from '../services/dogService';
+import { ReactToDog, getAllDogsHandler } from '../services/dogService';
 import Colors from '../constants/Colors';
 import LinearGradientIcon from '../components/LinearGradientIcon';
 import Header from '../components/Header';
+import Loader from '../components/Loader';
 
 const MainScreen = props => {
     const swiper = useRef(null);
@@ -43,12 +44,9 @@ const MainScreen = props => {
         swiper.current.swipeLeft();
     }
 
-    const swipeLeftEventHandler = () => {
-        console.log("next");
-    }
-
-    const swipeRightEventHandler = () => {
-        console.log("heart");
+    const swipeEventHandler = (index, reaction) => {
+        const swipedDog = dogs[index];
+        ReactToDog(swipedDog.id, reaction);
     }
 
     const renderDogCard = dogData => {
@@ -60,11 +58,7 @@ const MainScreen = props => {
     if(isLoading) {
         return (
             <View style={styles.loader}>
-                <ActivityIndicator                
-                    animating={true} 
-                    color="#0000ff" 
-                    size='large' 
-                />
+                <Loader active={true} />
             </View>
         )
     }
@@ -86,8 +80,8 @@ const MainScreen = props => {
                 stackSize={2}
                 showSecondCard={true}
                 renderCard={renderDogCard}
-                onSwipedLeft={swipeLeftEventHandler}
-                onSwipedRight={swipeRightEventHandler}
+                onSwipedLeft={(index) => {swipeEventHandler(index, 2)}}
+                onSwipedRight={(index) => {swipeEventHandler(index, 1)}}
                 onSwipedAll={() => {setNoDogs(true);}}
                 ref={swiper}
             />}

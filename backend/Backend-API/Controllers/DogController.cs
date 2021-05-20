@@ -58,7 +58,7 @@ namespace Backend_API.Controllers
         {
             try
             {
-                var dogItem = await _dogService.GetDogByIdAsync(id);
+                var dogItem =  _dogService.GetDogByIdAsync(id);
                 if (dogItem != null)
                 {
                     return Ok(_mapper.Map<DogReadDto>(dogItem));
@@ -94,5 +94,37 @@ namespace Backend_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+    [HttpPost]
+    [Route("react")]
+    public async Task<IActionResult> ReactToDog([FromBody] ReactToDogReq reaction)
+    {
+      try
+      {
+        await _dogService.ReactToDogAsync(_currentUser, reaction);
+
+        return Ok(true);
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+      }
+     }
+
+    [HttpGet]
+    [Route("liked")]
+    public async Task<IActionResult> GetLikedDogs()
+    {
+      try
+      {
+        var dogs = _dogService.GetLikedDogsAsync(_currentUser);
+
+        return Ok(dogs);
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+      }
+    }
     }
 }

@@ -1,64 +1,78 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, FlatList, StyleSheet, Text, Image, Pressable} from 'react-native';
 
 import Header from '../components/Header'
+import {GetLikedDogs} from '../services/dogService';
+import Loader from '../components/Loader';
 
 const LikedDogsScreen = props => {
-    // TODO get liked dogs from server
+    // TODO 
     //      add option to remove a dog from this list (by long press or something like this)
     //      edit renderItem() to show name, age, race (and more?)
+    const [isLoading, setIsLoading] = useState(false);
     const [likedDogs, setLikedDogs] = useState([
-        {
-            id: 1,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        },
-        {
-            id: 2,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        },
-        {
-            id: 3,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        },
-        {
-            id: 4,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        },
-        {
-            id: 5,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        },
-        {
-            id: 6,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        },
-        {
-            id: 7,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        },
-        {
-            id: 8,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        },
-        {
-            id: 9,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        },
-        {
-            id: 10,
-            name: `ג'קי`,
-            imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        }
+        // {
+        //     id: 1,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // },
+        // {
+        //     id: 2,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // },
+        // {
+        //     id: 3,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // },
+        // {
+        //     id: 4,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // },
+        // {
+        //     id: 5,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // },
+        // {
+        //     id: 6,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // },
+        // {
+        //     id: 7,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // },
+        // {
+        //     id: 8,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // },
+        // {
+        //     id: 9,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // },
+        // {
+        //     id: 10,
+        //     name: `ג'קי`,
+        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
+        // }
     ]);
+
+    useEffect(() => {
+        const getLikedDogs = async () => {
+            setIsLoading(true);
+            const likedDogs = await GetLikedDogs();
+            setLikedDogs(likedDogs);
+            setIsLoading(false);
+        }
+
+        getLikedDogs();
+    }, [setLikedDogs])
 
     const renderItem = ({item}) => {
         return (
@@ -80,11 +94,13 @@ const LikedDogsScreen = props => {
             <Header 
                 menuClickEventHandler={props.navigation.toggleDrawer}
             />
+            { !isLoading && 
             <FlatList 
                 style={styles.list}
                 data={likedDogs}
                 renderItem={renderItem}
-            />
+            />}
+            <Loader active={isLoading}/> 
         </View>
     )
 }

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { AppNavigation, AuthNavigation } from './navigation/AppNavigation';
 import { loadUserDetails } from './store/actions/UserDetails';
+import Loader from './components/Loader';
 
 const Root = props => {
     const [isLoading, setIsLoading] = useState(true);
@@ -23,16 +24,11 @@ const Root = props => {
     )
 
     if(isLoading) {
-        // TODO change this to loader
         return (
             <View 
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
             >
-                <ActivityIndicator 
-                    animating={true} 
-                    color="#0000ff" 
-                    size='large'
-                />
+                <Loader active={true}/>
             </View>
         )
     }

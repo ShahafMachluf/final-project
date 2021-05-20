@@ -14,6 +14,7 @@ import Colors from '../constants/Colors'
 import ImgPicker from '../components/ImgPicker';
 import DogProfileScreen from './DogProfileScreen';
 import { SafeAreaView } from 'react-navigation';
+import Loader from '../components/Loader';
 
 const CreateDogScreen = props => {
     const [name, setName] = useState('');
@@ -242,12 +243,7 @@ const CreateDogScreen = props => {
                             onChangeText={setInformation}
                             ref={additionalInput}
                         />
-                        {isLoading && 
-                            <ActivityIndicator 
-                                animating={isLoading} 
-                                color="#0000ff" 
-                                size='large'
-                            />}
+                        {isLoading &&  <Loader active={isLoading} />}
                         <MainButton 
                             onPress={clickDogHandler} 
                             buttonStyle={styles.continueButton}

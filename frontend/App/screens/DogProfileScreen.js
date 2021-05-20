@@ -6,6 +6,7 @@ import { StackActions } from 'react-navigation';
 import MainButton from '../components/MainButton';
 import LinearGradientIcon from '../components/LinearGradientIcon';
 import Colors from '../constants/Colors';
+import Loader from '../components/Loader';
 
 const DogProfileScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
@@ -53,11 +54,7 @@ const DogProfileScreen = props => {
                             onLoad={() => {setIsLoading(false)}} 
                         />
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <ActivityIndicator 
-                                animating={isLoading} 
-                                color="#0000ff" 
-                                size='large'
-                            />
+                            <Loader active={isLoading} />
                         </View>
                         <MainButton
                             buttonStyle={styles.addImageIcon}

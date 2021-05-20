@@ -13,3 +13,13 @@ export const createDog = (dog) => {
 export const getAllDogs = () => {
     return Get(baseUrl);
 }
+
+export const reactToDog = (reaction) => {
+    const url = `${baseUrl}/react`;
+    return Post(url, reaction);
+}
+
+export const getLikedDogs = () => {
+    const url = `${baseUrl}/liked`;
+    return Get(url);
+}

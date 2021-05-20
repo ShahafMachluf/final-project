@@ -5,6 +5,7 @@ import MapView, { Marker, Callout } from 'react-native-maps'
 import Header from '../components/Header';
 import MapCard from '../components/MapCard';
 import {getAttractions} from '../services/attractionsService';
+import Loader from '../components/Loader';
 
 const HnagOutScreen = props => {
     const [attractions, setAttractions] = useState([]);
@@ -46,11 +47,7 @@ const HnagOutScreen = props => {
     if(attractions.length === 0) {
         return (
             <View style={styles.loader}>
-                <ActivityIndicator                
-                    animating={true} 
-                    color="#0000ff" 
-                    size='large' 
-                />
+                <Loader active={true} />
             </View>
         )
     }
