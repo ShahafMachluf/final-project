@@ -117,7 +117,7 @@ namespace Backend_API.Controllers
     {
       try
       {
-        var dogs = _dogService.GetLikedDogsAsync(_currentUser);
+        var dogs = await _dogService.GetLikedDogsAsync(_currentUser);
 
         return Ok(dogs);
       }

@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, FlatList, StyleSheet, Text, Image, Pressable} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {View, FlatList, ScrollView, StyleSheet, Text, Image, Pressable, RefreshControl} from 'react-native';
 
 import Header from '../components/Header'
 import {GetLikedDogs} from '../services/dogService';
@@ -10,8 +10,9 @@ const LikedDogsScreen = props => {
     //      add option to remove a dog from this list (by long press or something like this)
     //      edit renderItem() to show name, age, race (and more?)
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [likedDogs, setLikedDogs] = useState([
-        // {
+        //{
         //     id: 1,
         //     name: `ג'קי`,
         //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
@@ -63,6 +64,7 @@ const LikedDogsScreen = props => {
         // }
     ]);
 
+
     useEffect(() => {
         const getLikedDogs = async () => {
             setIsLoading(true);
@@ -74,6 +76,13 @@ const LikedDogsScreen = props => {
         getLikedDogs();
     }, [setLikedDogs])
 
+    const refresh = async () => {
+        setIsRefreshing(true);
+        const likedDogs = await GetLikedDogs();
+        setLikedDogs(likedDogs);
+        setIsRefreshing(false);
+    }
+
     const renderItem = ({item}) => {
         return (
             <Pressable onPress={() => {props.navigation.navigate({routeName: 'DogProfile', params: {dog: item}})}}>
@@ -81,25 +90,29 @@ const LikedDogsScreen = props => {
                     <Image source={{uri: item.imageURL}} style={styles.dogImage} />
                     <View style={styles.detailsContainer}>
                         <Text>{item.name}</Text>
-                        <Text>{item.name}1</Text>
-                        <Text>{item.name}2</Text>
+                        <Text>{item.age}</Text>
+                        <Text>{item.race}</Text>
                     </View>
                 </View>
             </Pressable>
         )
     }
 
+
     return (
-        <View style={styles.screen}>
-            <Header 
-                menuClickEventHandler={props.navigation.toggleDrawer}
-            />
-            { !isLoading && 
+        <View style={{flex: 1}}>
             <FlatList 
-                style={styles.list}
+                style={styles.screen}
                 data={likedDogs}
                 renderItem={renderItem}
-            />}
+                ListHeaderComponent={ <Header menuClickEventHandler={props.navigation.toggleDrawer}/>}
+                refreshControl={
+                    <RefreshControl 
+                        refreshing={isRefreshing}
+                        onRefresh={refresh}
+                    />
+                } 
+            />
             <Loader active={isLoading}/> 
         </View>
     )
@@ -107,7 +120,8 @@ const LikedDogsScreen = props => {
 
 const styles = StyleSheet.create({
     screen:{
-        flex: 1
+        flex: 1,
+        marginBottom: 10,
     },
     dogImage: {
         height: 70,
@@ -118,10 +132,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'black'
     },
-    list: {
-        marginHorizontal: 20,
-        marginBottom: 10
-    },
     listItem: {
         display: 'flex',
         flexDirection: 'row-reverse',
@@ -130,7 +140,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 10,
         overflow: 'hidden',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginHorizontal: 20,
     },
     detailsContainer: {
         display: 'flex',

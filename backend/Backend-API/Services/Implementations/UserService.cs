@@ -116,7 +116,7 @@ namespace Backend_API.Services.Implementations
 
         public ApplicationUser GetById(string id)
         {
-            return _repo.Get(u => u.Id == id).FirstOrDefault();
+            return _repo.Get().Where(u => u.Id == id).FirstOrDefault();
         }
 
         public async Task UpdateMaxDistanceAsync(ApplicationUser user, int maxDistnace)

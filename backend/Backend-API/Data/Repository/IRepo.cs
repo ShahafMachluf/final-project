@@ -12,6 +12,6 @@ namespace Backend_API.Data.Repository
         Task CreateAsync(TEntity newObject);
         Task<bool> SaveChangesAsync();
         Task<IEnumerable<TEntity>> getAllAsync();
-        IQueryable<TEntity> Get(Func<TEntity, bool> predicat);
+        IQueryable<TEntity> Get();
     }
 }

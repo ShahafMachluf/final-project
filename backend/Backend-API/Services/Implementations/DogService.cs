@@ -20,17 +20,20 @@ namespace Backend_API.Services.Implementations
         private readonly IRepo<Reaction> _reactionRepo;
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
+        private readonly IChatService _chatService;
 
         public DogService(
             IRepo<Dog> repo,
             IRepo<Reaction> reactionRepo,
             IMapper mapper,
-            IFileService fileService)
+            IFileService fileService,
+            IChatService chatService)
         {
             _repo = repo;
             _mapper = mapper;
             _fileService = fileService;
             _reactionRepo = reactionRepo;
+            _chatService = chatService;
         }
 
         public async Task<CreateDogReqRes> CreateDogAsync(CreateDogReq req)
@@ -55,33 +58,38 @@ namespace Backend_API.Services.Implementations
             return await _repo.getAllAsync();
         }
 
-        public Dog GetDogByIdAsync(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
+        public async Task<Dog> GetDogByIdAsync(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
         {
-            return _repo.Get(d => d.Id == id).FirstOrDefault();
+            return await _repo.Get().Where(d => d.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task ReactToDogAsync(ApplicationUser user, ReactToDogReq reaction)
         {
-            Dog likedDog = GetDogByIdAsync(reaction.DogId);
             Reaction newReaction = new Reaction()
             {
-                Dog = likedDog,
+                DogId = reaction.DogId,
                 ReactionToDog = reaction.Reaction,
-                User = user
+                UserId = user.Id
             };
 
             await _reactionRepo.CreateAsync(newReaction);
             await _reactionRepo.SaveChangesAsync();
+
+            if(reaction.Reaction == ReactionToDog.Like)
+            {
+                string dogOwnerId = (await GetDogByIdAsync(reaction.DogId)).Owner.Id;
+                await _chatService.CreateChatAsync(user.Id, dogOwnerId, reaction.DogId);
+            }      
         }
 
-        public IEnumerable<Dog> GetLikedDogsAsync(ApplicationUser user)
+        public async Task<IEnumerable<Dog>> GetLikedDogsAsync(ApplicationUser user)
         {
-            var likedDogs =  _reactionRepo.Get(r => r.UserId == user.Id && r.ReactionToDog == ReactionToDog.Like)
-                                                     .Include(r => r.Dog)
-                                                     //.Select(r => r.Dog)
-                                                     .ToList();
+            var likedDogs = await _reactionRepo.Get().Where(r => r.UserId == user.Id && r.ReactionToDog == ReactionToDog.Like)
+                                               .Include(r => r.Dog)
+                                               .Select(r => r.Dog)
+                                               .ToListAsync();
 
-            return null;
+            return likedDogs;
         }
     }
 }

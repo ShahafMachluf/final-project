@@ -20,6 +20,7 @@ namespace Backend_API.Profiles
             CreateMap<Dog, CreateDogReqRes>();
             CreateMap<ApplicationUser, LoginReqRes>();
             CreateMap<ApplicationUser, RegisterReqRes>();
+            CreateMap<Chat, UserChatModel>();
         }
 
     }

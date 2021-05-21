@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { View, StyleSheet, ActivityIndicator, Text } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
+import { Ionicons } from '@expo/vector-icons';
 
 import ImageCard from '../components/ImageCard'
 import MainButton from '../components/MainButton';
@@ -11,42 +12,81 @@ import Header from '../components/Header';
 import Loader from '../components/Loader';
 
 const MainScreen = props => {
-    const swiper = useRef(null);
+    const swiperRef = useRef(null);
     const [dogs, setDogs] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [noDogs, setNoDogs] = useState(false);
     
-    useEffect(() => { // get all dogs when the screen is being rendered
-        const getDogs = async () => {
-            try{
-                const receivedDogs = await getAllDogsHandler();
-                setDogs(receivedDogs);
-                if(receivedDogs.length === 0) {
-                    setNoDogs(true);
-                }
-            }
-            catch (err) {
-                console.log(err);
-            }
-            finally {
-                setIsLoading(false);
+    const getDogs = async () => {
+        try{
+            setIsLoading(true);
+            const receivedDogs = await getAllDogsHandler();
+            setDogs(receivedDogs);
+            if(receivedDogs.length === 0) {
+                setNoDogs(true);
+            } else {
+                setNoDogs(false);
             }
         }
-        
+        catch (err) {
+            console.log(err);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => { // get all dogs when the screen is being rendered
         getDogs();
     }, [setDogs])
 
     const heartPressEventHandler = () => {
-        swiper.current.swipeRight();
+        swiperRef.current.swipeRight();
     }
 
     const nextPerssEventHandler = () => {
-        swiper.current.swipeLeft();
+        swiperRef.current.swipeLeft();
     }
 
     const swipeEventHandler = (index, reaction) => {
         const swipedDog = dogs[index];
         ReactToDog(swipedDog.id, reaction);
+    }
+
+    const emptyMessage = () => {
+        return (
+            <View style={styles.noDogs}>
+                <Text>לא מצאנו כלבים נוספים</Text>
+                <Text>הגדל את המרחק המירבי או נסה שוב מאוחר יותר</Text>
+                <MainButton 
+                    onPress={getDogs}
+                >
+                    <Ionicons name='refresh' size={30} />
+                </MainButton>
+            </View>
+        )
+    }
+
+    const swiper = () => {
+        return (
+            <Swiper
+                cardStyle={{paddingTop: 20}}
+                containerStyle={styles.cardContainer}
+                backgroundColor={'white'}
+                cardVerticalMargin={0}
+                disableBottomSwipe={true}
+                disableTopSwipe={true}
+                verticalSwipe={false}
+                cards={dogs}
+                stackSize={2}
+                showSecondCard={true}
+                renderCard={renderDogCard}
+                onSwipedLeft={(index) => {swipeEventHandler(index, 2)}}
+                onSwipedRight={(index) => {swipeEventHandler(index, 1)}}
+                onSwipedAll={() => {setNoDogs(true);}}
+                ref={swiperRef}
+            />
+        )
     }
 
     const renderDogCard = dogData => {
@@ -68,27 +108,8 @@ const MainScreen = props => {
             <Header 
                 menuClickEventHandler={props.navigation.toggleDrawer}
             />
-            { !noDogs && <Swiper
-                cardStyle={{paddingTop: 20}}
-                containerStyle={styles.cardContainer}
-                backgroundColor={'white'}
-                cardVerticalMargin={0}
-                disableBottomSwipe={true}
-                disableTopSwipe={true}
-                verticalSwipe={false}
-                cards={dogs}
-                stackSize={2}
-                showSecondCard={true}
-                renderCard={renderDogCard}
-                onSwipedLeft={(index) => {swipeEventHandler(index, 2)}}
-                onSwipedRight={(index) => {swipeEventHandler(index, 1)}}
-                onSwipedAll={() => {setNoDogs(true);}}
-                ref={swiper}
-            />}
-            { noDogs && <View style={styles.noDogs}>
-                <Text>לא מצאנו כלבים נוספים</Text>
-                <Text>הגדל את המרחק המירבי או נסה שוב מאוחר יותר</Text>
-            </View>}
+            { !noDogs && swiper()}
+            { noDogs && emptyMessage()}
             <View style={styles.buttonsContainer}>
                 <MainButton
                     buttonStyle={styles.buttons}
@@ -132,6 +153,9 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 80
+    },
+    refreshButton: {
+        
     },
     buttonsContainer: {
         flexDirection: 'row',
