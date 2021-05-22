@@ -16,6 +16,7 @@ import HangOutScreen from '../screens/HangOutScreen';
 import MapCard from '../components/MapCard'
 import LikedDogsScreen from '../screens/LikedDogsScreen';
 import ChatsScreen from '../screens/ChatsScreen';
+import ChatScreen from '../screens/ChatScreen';
 
 
 const createDog = createStackNavigator({
@@ -47,6 +48,21 @@ const likedDogs = createStackNavigator({
         }
     }
 }, {detachInactiveScreens: true})
+
+const chat = createStackNavigator({
+    Chats: {
+        screen: ChatsScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    Chat: {
+        screen: ChatScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
+})
 
 const app = createDrawerNavigator({
     Main: {
@@ -80,7 +96,7 @@ const app = createDrawerNavigator({
         }
     },
     Chats: {
-        screen: ChatsScreen,
+        screen: chat,
         navigationOptions: {
             drawerLabel: `צ'אטים `,
             drawerIcon: () => (

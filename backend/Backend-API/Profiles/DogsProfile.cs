@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Backend_API.Models.User;
+using Backend_API.Models.Chat;
 
 //used For Sending client Only part needed for him from contract , we dont want to expose him to data member Platform for exmaple.
 
@@ -20,8 +21,9 @@ namespace Backend_API.Profiles
             CreateMap<Dog, CreateDogReqRes>();
             CreateMap<ApplicationUser, LoginReqRes>();
             CreateMap<ApplicationUser, RegisterReqRes>();
-            CreateMap<Chat, UserChatModel>();
-        }
+            CreateMap<ApplicationUser, UserChatModel>();
+            CreateMap<Chat, ChatModel>();
+    }
 
     }
 }

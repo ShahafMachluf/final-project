@@ -8,6 +8,7 @@ namespace Backend_API.Models.Chat
 {
   public class ChatModel
   {
+    public int Id { get; set; }
     public UserChatModel DogOwner { get; set; }
     public UserChatModel Adopter { get; set; }
     public ICollection<ChatMessageModel> Messages { get; set; }

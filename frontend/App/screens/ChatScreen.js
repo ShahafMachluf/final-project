@@ -3,6 +3,7 @@ import { GiftedChat } from 'react-native-gifted-chat'
 
  const ChatScreen = props => {
   const [messages, setMessages] = useState([]);
+  const chat = props.navigation.state.params.chat;
 
   useEffect(() => {
     setMessages([

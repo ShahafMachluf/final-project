@@ -26,7 +26,10 @@ namespace Backend_API.Services.Implementations
 
     public async Task<IEnumerable<ChatModel>> GetMyChatsAsync(ApplicationUser user)
     {
-      var chats = await _repo.Get().Where(c => c.DogOwnerId == user.Id || c.AdopterId == user.Id).ToListAsync();
+      var chats = await _repo.Get().Where(c => c.DogOwnerId == user.Id || c.AdopterId == user.Id)
+                                   .Include(c => c.Adopter)
+                                   .Include(c => c.DogOwner)
+                                   .ToListAsync();
 
       return _mapper.Map<IEnumerable<ChatModel>>(chats);
     }

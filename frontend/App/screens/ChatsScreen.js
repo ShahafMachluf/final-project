@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {View, FlatList, ScrollView, StyleSheet, Text, Image, Pressable, RefreshControl} from 'react-native';
+import {useSelector} from 'react-redux';
 
 import Header from '../components/Header';
 import Loader from '../components/Loader';
@@ -8,6 +9,7 @@ import {GetMyChats} from '../services/chatService';
 const ChatsScreen = props => {
     const [chats, setChats] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const userDetails = useSelector(state => state.userDetails);
 
     useEffect(() => {
         const getChats = async () => {
@@ -20,14 +22,28 @@ const ChatsScreen = props => {
         getChats();
     }, [setChats])
 
+    const getOtherPersonDetails = (chatDetails) => {
+        if (userDetails.id === chatDetails.adopter.id) {
+            return chatDetails.dogOwner;
+        }
+
+        return chatDetails.adopter;
+    }
 
     const renderItem = ({item}) => {
+        const otherPerson = getOtherPersonDetails(item);
+
         return (
-            <Pressable onPress={() => {}}>
+            <Pressable onPress={() => {props.navigation.navigate({routeName: 'Chat', params: {chat: item}})}}>
                 <View style={styles.listItem}>
                     <View style={styles.detailsContainer}>
-                        <Text>{item.dogOwner.fullName}</Text>
-                        <Text>{item.adopter.fullName}</Text>
+                        <Image 
+                            style={styles.profilePicture}
+                            source={otherPerson.imageUrl ? {uri: otherPerson.imageUrl} : require('../assets/no-profile-picture.jpg')}
+                            height={50}
+                            width={50}    
+                        />
+                        <Text style={styles.name}>{otherPerson.fullName}</Text>
                     </View>
                 </View>
             </Pressable>
@@ -80,10 +96,23 @@ const styles = StyleSheet.create({
     },
     detailsContainer: {
         display: 'flex',
-        flex: 1,
         flexDirection: 'row-reverse',
-        justifyContent: 'space-between',
-        marginRight: 50
+        flex: 1,
+        marginLeft: 10,
+        marginVertical: 10,
+        alignItems: 'center'
+    },
+    profilePicture: {
+        width: 50,
+        height: 50,
+        alignSelf: 'center',
+        borderRadius: 50,
+        borderColor: 'black',
+        borderWidth: 1,
+        overflow: 'hidden'
+    },
+    name: {
+        marginRight: 20
     }
 })
 
