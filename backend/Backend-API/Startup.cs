@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Identity;
 using Backend_API.Data.Repository;
 using System.Net.WebSockets;
 using System.Threading;
+using Backend_API.Middleware;
 
 namespace Backend_API
 {
@@ -87,7 +88,7 @@ namespace Backend_API
             });
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            
             #region services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDogService, DogService>();
@@ -96,6 +97,8 @@ namespace Backend_API
             services.AddScoped<IChatService, ChatService>();
             services.AddScoped(typeof(IRepo<>), typeof(Repo<>));
             #endregion
+
+            services.AddWebSocketManager();
 
         }
 
@@ -111,11 +114,7 @@ namespace Backend_API
 
             //app.UseHttpsRedirection();
             app.UseWebSockets();
-            app.Use(async (context, next) =>
-            {
-                
-            });
-
+            app.UseWebSocketServer();
 
             app.UseRouting();
 

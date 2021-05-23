@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { View, StyleSheet, ActivityIndicator, Text } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import { Ionicons } from '@expo/vector-icons';
+import * as Notifications from 'expo-notifications';
 
 import ImageCard from '../components/ImageCard'
 import MainButton from '../components/MainButton';
@@ -38,6 +39,12 @@ const MainScreen = props => {
 
     useEffect(() => { // get all dogs when the screen is being rendered
         getDogs();
+        // get notification permissions
+        Notifications.getPermissionsAsync().then(status => {
+            if (!status.granted) {
+                return Notifications.requestPermissionsAsync()
+            }
+        })
     }, [setDogs])
 
     const heartPressEventHandler = () => {

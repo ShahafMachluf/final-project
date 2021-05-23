@@ -44,7 +44,8 @@
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "symbol-observable": "^4.0.0"
+    "symbol-observable": "^4.0.0",
+    "expo-notifications": "~0.11.6"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

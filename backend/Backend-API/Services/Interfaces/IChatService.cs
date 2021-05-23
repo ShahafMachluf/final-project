@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace Backend_API.Services.Interfaces
 {
-  public interface IChatService
-  {
-    Task<IEnumerable<ChatModel>> GetMyChatsAsync(ApplicationUser user);
-    Task CreateChatAsync(string adopterId, string ownerId, int likedDogId);
-  }
+    public interface IChatService
+    {
+        Task<IEnumerable<ChatModel>> GetMyChatsAsync(ApplicationUser user);
+        Task CreateChatAsync(string adopterId, string ownerId, int likedDogId);
+
+        Task SaveMessageAsync(ChatMessageModel message);
+    }
 }
