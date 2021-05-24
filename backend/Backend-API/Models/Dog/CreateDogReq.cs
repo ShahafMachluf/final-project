@@ -21,6 +21,7 @@ namespace Backend_API.Models.Dog
         public string Information { get; set; }
         public bool IsVaccinated { get; set; } //חיסון
         public bool IsNeutered { get; set; } //סירוס
+        public string City { get; set; }//עיר מגוריו של הכלב והבעלים
 
     }
 
