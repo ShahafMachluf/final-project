@@ -83,5 +83,10 @@ namespace Backend_API.Services.Implementations
 
             return null;
         }
+
+        Task<Dog> IDogService.GetDogByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
