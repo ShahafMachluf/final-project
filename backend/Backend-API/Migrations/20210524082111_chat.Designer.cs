@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210521171911_chat")]
+    [Migration("20210524082111_chat")]
     partial class chat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -200,7 +200,7 @@ namespace Backend_API.Migrations
                     b.Property<int>("ChatId")
                         .HasColumnType("int");
 
-                    b.Property<string>("FromUsedId")
+                    b.Property<string>("FromUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Message")
@@ -209,16 +209,16 @@ namespace Backend_API.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ToUsedId")
+                    b.Property<string>("ToUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
 
-                    b.HasIndex("FromUsedId");
+                    b.HasIndex("FromUserId");
 
-                    b.HasIndex("ToUsedId");
+                    b.HasIndex("ToUserId");
 
                     b.ToTable("ChatMessages");
                 });
@@ -463,11 +463,11 @@ namespace Backend_API.Migrations
 
                     b.HasOne("Backend_API.Models.DbModels.ApplicationUser", "FromUser")
                         .WithMany()
-                        .HasForeignKey("FromUsedId");
+                        .HasForeignKey("FromUserId");
 
                     b.HasOne("Backend_API.Models.DbModels.ApplicationUser", "ToUser")
                         .WithMany()
-                        .HasForeignKey("ToUsedId");
+                        .HasForeignKey("ToUserId");
 
                     b.Navigation("Chat");
 

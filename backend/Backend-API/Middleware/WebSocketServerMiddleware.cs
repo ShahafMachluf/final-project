@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Backend_API.Models.Chat;
 using Backend_API.Services.Interfaces;
 using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Backend_API.Middleware
 {
@@ -30,8 +31,7 @@ namespace Backend_API.Middleware
             if (context.WebSockets.IsWebSocketRequest)
             {
                 WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-
-                string userId = context.User.FindFirst("id").Value;
+                string userId = GetUserIdFromToken(context.WebSockets.WebSocketRequestedProtocols[1]);
                 _manager.AddSocket(webSocket, userId);
                 await ReceiveMessage(webSocket, async (result, buffer) =>
                 {
@@ -65,6 +65,14 @@ namespace Backend_API.Middleware
                 var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                 handleMessage(result, buffer);
             }
+        }
+
+        private string GetUserIdFromToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var decodedToken =  handler.ReadJwtToken(token);
+            var idClaim = decodedToken.Claims.Where(c => c.Type == "Id").FirstOrDefault();
+            return idClaim.Value;
         }
 
         public async Task RouteJsonMessageAsync(string message, IChatService chatService)

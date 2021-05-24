@@ -23,6 +23,7 @@ namespace Backend_API.Profiles
             CreateMap<ApplicationUser, RegisterReqRes>();
             CreateMap<ApplicationUser, UserChatModel>();
             CreateMap<Chat, ChatModel>();
+            CreateMap<ChatMessageModel, ChatMessage>();
     }
 
     }

@@ -14,9 +14,9 @@ namespace Backend_API.Models.DbModels
     public ApplicationUser FromUser { get; set; }
     public ApplicationUser ToUser { get; set; }
     [ForeignKey("FromUser")]
-    public string FromUsedId { get; set; }
+    public string FromUserId { get; set; }
     [ForeignKey("ToUser")]
-    public string ToUsedId { get; set; }
+    public string ToUserId { get; set; }
     public Chat Chat { get; set; }
     [ForeignKey("Chat")]
     public int ChatId { get; set; }
