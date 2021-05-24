@@ -50,11 +50,16 @@ namespace Backend_API.Services.Implementations
             await _chatRepo.SaveChangesAsync();
         }
 
-        public async Task SaveMessageAsync(ChatMessageModel message)
+        public async Task<int> SaveMessageAsync(ChatMessageModel message)
         {
             ChatMessage newMessage = _mapper.Map<ChatMessage>(message);
             await _chatMessageRepo.CreateAsync(newMessage);
             await _chatMessageRepo.SaveChangesAsync();
+
+            int messageId = _chatMessageRepo.Get().Where(m => m.Time == newMessage.Time && m.FromUserId == newMessage.FromUserId && m.ToUserId == newMessage.ToUserId)
+                                                  .Select(m => m.Id).FirstOrDefault();
+
+            return messageId;
         }
     }
 }

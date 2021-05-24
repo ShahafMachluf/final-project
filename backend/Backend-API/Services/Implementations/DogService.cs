@@ -60,7 +60,7 @@ namespace Backend_API.Services.Implementations
 
         public async Task<Dog> GetDogByIdAsync(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
         {
-            return await _repo.Get().Where(d => d.Id == id).FirstOrDefaultAsync();
+            return await _repo.Get().Where(d => d.Id == id).Include(d => d.Owner).FirstOrDefaultAsync();
         }
 
         public async Task ReactToDogAsync(ApplicationUser user, ReactToDogReq reaction)

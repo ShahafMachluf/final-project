@@ -1,15 +1,17 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {View, FlatList, ScrollView, StyleSheet, Text, Image, Pressable, RefreshControl} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import {GetMyChats} from '../services/chatService';
+import {InitChat} from '../store/actions/Chats';
 
 const ChatsScreen = props => {
     const [chats, setChats] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector(state => state.userDetails);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const getChats = async () => {
@@ -21,6 +23,16 @@ const ChatsScreen = props => {
 
         getChats();
     }, [setChats])
+
+    const openChat = chatDetails => {
+        dispatch(InitChat(chatDetails.id));
+        props.navigation.navigate({
+            routeName: 'Chat', 
+            params: {
+                chat: chatDetails
+            }
+        })
+    }
 
     const getOtherPersonDetails = (chatDetails) => {
         if (userDetails.id === chatDetails.adopter.id) {
@@ -34,7 +46,7 @@ const ChatsScreen = props => {
         const otherPerson = getOtherPersonDetails(item);
 
         return (
-            <Pressable onPress={() => {props.navigation.navigate({routeName: 'Chat', params: {chat: item}})}}>
+            <Pressable onPress={() => {openChat(item)}}>
                 <View style={styles.listItem}>
                     <View style={styles.detailsContainer}>
                         <Image 
