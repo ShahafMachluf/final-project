@@ -13,6 +13,10 @@ namespace Backend_API.Data
         public DbSet<Dog> Dogs { get; set; }
         public DbSet<Attraction> Attractions { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+
+
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
         }
@@ -20,6 +24,23 @@ namespace Backend_API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Reaction>(builder =>
+            {
+                builder.HasKey(r => r.Id);
+                builder.HasOne(r => r.Dog);
+                builder.Navigation(r => r.Dog).IsRequired();
+            });
+
+/*            builder.Entity<Chat>(builder =>
+            {
+                builder.HasKey(c => c.Id);
+                builder.HasMany(c => c.Messages).WithOne(cm => cm.Chat);
+                builder.HasOne(c => c.Adopter);
+                builder.HasOne(c => c.DogOwner);
+                builder.HasOne(c => c.Dog);
+            });*/
+
             builder.Entity<Attraction>().HasData(
               new Attraction()
               {
@@ -59,5 +80,11 @@ namespace Backend_API.Data
               }
             );
         }
-    }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+          base.OnConfiguring(optionsBuilder);
+          optionsBuilder.LogTo(Console.WriteLine);
+        }
+  }
 }

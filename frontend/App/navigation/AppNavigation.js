@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions,Image } from 'react-native';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, ThemeColors } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,6 +15,9 @@ import Drawer from '../components/Drawer';
 import HangOutScreen from '../screens/HangOutScreen';
 import MapCard from '../components/MapCard'
 import LikedDogsScreen from '../screens/LikedDogsScreen';
+import ChatsScreen from '../screens/ChatsScreen';
+import ChatScreen from '../screens/ChatScreen';
+
 
 const createDog = createStackNavigator({
     Form: {
@@ -45,6 +48,21 @@ const likedDogs = createStackNavigator({
         }
     }
 }, {detachInactiveScreens: true})
+
+const chat = createStackNavigator({
+    Chats: {
+        screen: ChatsScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    Chat: {
+        screen: ChatScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
+})
 
 const app = createDrawerNavigator({
     Main: {
@@ -78,7 +96,7 @@ const app = createDrawerNavigator({
         }
     },
     Chats: {
-        screen: MainScreen,
+        screen: chat,
         navigationOptions: {
             drawerLabel: `צ'אטים `,
             drawerIcon: () => (

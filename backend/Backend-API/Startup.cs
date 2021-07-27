@@ -22,6 +22,9 @@ using Backend_API.Services.Interfaces;
 using Backend_API.Services.Implementations;
 using Microsoft.AspNetCore.Identity;
 using Backend_API.Data.Repository;
+using System.Net.WebSockets;
+using System.Threading;
+using Backend_API.Middleware;
 
 namespace Backend_API
 {
@@ -85,19 +88,22 @@ namespace Backend_API
             });
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            
             #region services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDogService, DogService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IAttractionsService, AttractionsService>();
+            services.AddScoped<IChatService, ChatService>();
             services.AddScoped(typeof(IRepo<>), typeof(Repo<>));
             #endregion
+
+            services.AddWebSocketManager();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -107,6 +113,8 @@ namespace Backend_API
             }
 
             //app.UseHttpsRedirection();
+            app.UseWebSockets();
+            app.UseWebSocketServer();
 
             app.UseRouting();
 
@@ -119,5 +127,7 @@ namespace Backend_API
                 endpoints.MapControllers();
             });
         }
+
+
     }
 }

@@ -33,9 +33,9 @@ namespace Backend_API.Data.Repository
             return await _appDbContext.SaveChangesAsync() >= 0;
         }
 
-        public IQueryable<TEntity> Get(Func<TEntity, bool> predicate)
+        public IQueryable<TEntity> Get()
         {
-            return _dbSet.Where(predicate).AsQueryable();
+            return _dbSet.AsQueryable();
         }
     }
 }

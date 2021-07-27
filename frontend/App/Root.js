@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppNavigation, AuthNavigation } from './navigation/AppNavigation';
 import { loadUserDetails } from './store/actions/UserDetails';
 import Loader from './components/Loader';
+import {InitWebSocket} from './services/chatService';
 
 const Root = props => {
     const [isLoading, setIsLoading] = useState(true);
@@ -19,9 +20,13 @@ const Root = props => {
         getUserDetailsFromSQLite();
     }, [dispatch]);
 
-    const getNavigation = () => (
-        isLoggedIn ? <AppNavigation /> : <AuthNavigation />
-    )
+    const getNavigation = () => {
+        if (isLoggedIn) {
+            InitWebSocket();
+            return <AppNavigation />
+        }
+        return <AuthNavigation />
+    }
 
     if(isLoading) {
         return (

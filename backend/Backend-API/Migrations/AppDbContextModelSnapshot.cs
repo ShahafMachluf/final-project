@@ -161,6 +161,66 @@ namespace Backend_API.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Backend_API.Models.DbModels.Chat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AdopterId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DogId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DogOwnerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdopterId");
+
+                    b.HasIndex("DogId");
+
+                    b.HasIndex("DogOwnerId");
+
+                    b.ToTable("Chats");
+                });
+
+            modelBuilder.Entity("Backend_API.Models.DbModels.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ChatId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FromUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ToUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("FromUserId");
+
+                    b.HasIndex("ToUserId");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("Backend_API.Models.DbModels.Dog", b =>
                 {
                     b.Property<int>("Id")
@@ -368,6 +428,52 @@ namespace Backend_API.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Backend_API.Models.DbModels.Chat", b =>
+                {
+                    b.HasOne("Backend_API.Models.DbModels.ApplicationUser", "Adopter")
+                        .WithMany()
+                        .HasForeignKey("AdopterId");
+
+                    b.HasOne("Backend_API.Models.DbModels.Dog", "Dog")
+                        .WithMany()
+                        .HasForeignKey("DogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend_API.Models.DbModels.ApplicationUser", "DogOwner")
+                        .WithMany()
+                        .HasForeignKey("DogOwnerId");
+
+                    b.Navigation("Adopter");
+
+                    b.Navigation("Dog");
+
+                    b.Navigation("DogOwner");
+                });
+
+            modelBuilder.Entity("Backend_API.Models.DbModels.ChatMessage", b =>
+                {
+                    b.HasOne("Backend_API.Models.DbModels.Chat", "Chat")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend_API.Models.DbModels.ApplicationUser", "FromUser")
+                        .WithMany()
+                        .HasForeignKey("FromUserId");
+
+                    b.HasOne("Backend_API.Models.DbModels.ApplicationUser", "ToUser")
+                        .WithMany()
+                        .HasForeignKey("ToUserId");
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("FromUser");
+
+                    b.Navigation("ToUser");
+                });
+
             modelBuilder.Entity("Backend_API.Models.DbModels.Dog", b =>
                 {
                     b.HasOne("Backend_API.Models.DbModels.ApplicationUser", "Owner")
@@ -443,6 +549,11 @@ namespace Backend_API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Backend_API.Models.DbModels.Chat", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

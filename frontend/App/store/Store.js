@@ -3,9 +3,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import userDetailsReducer from './reducers/UserDetails'
+import webSocketReducer from './reducers/WebSocket';
 
 const rootReducer = combineReducers({
-    userDetails: userDetailsReducer
+    userDetails: userDetailsReducer,
+    webSocket: webSocketReducer
   });
   
 const store = createStore(
