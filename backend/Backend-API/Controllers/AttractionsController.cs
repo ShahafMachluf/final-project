@@ -30,7 +30,7 @@ namespace Backend_API.Controllers
     {
       try
       {
-        var attractions = await _attractionService.GetAllAttractionsAsync();
+        var attractions = await _attractionService.GetAllAttractionsAsync(_currentUser);
 
         return Ok(attractions);
       }

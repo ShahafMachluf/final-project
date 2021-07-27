@@ -8,6 +8,6 @@ namespace Backend_API.Services.Interfaces
 {
   public interface IAttractionsService
   {
-    Task<IEnumerable<Attraction>> GetAllAttractionsAsync();
+    Task<IEnumerable<Attraction>> GetAllAttractionsAsync(ApplicationUser applicationUser);
   }
 }

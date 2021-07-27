@@ -10,11 +10,9 @@ namespace Backend_API.Services.Interfaces
     public interface IDogService
     {
         Task<CreateDogReqRes> CreateDogAsync(CreateDogReq req);
-        Task<IEnumerable<Dog>> GetAllDogsAsync();
-        Task<Dog> GetDogByIdAsync(int id);
         Task ReactToDogAsync(ApplicationUser user, ReactToDogReq reaction);
         Task<IEnumerable<Dog>> GetLikedDogsAsync(ApplicationUser user);
-        Task<IEnumerable<Dog>> GetAllDogsAsync(string City);
+        Task<IEnumerable<Dog>> GetAllDogsAsync(ApplicationUser user);
         Task<Dog> GetDogByIdAsync(int id);
 
     }

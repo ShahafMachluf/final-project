@@ -53,9 +53,13 @@ namespace Backend_API.Services.Implementations
             return _mapper.Map<CreateDogReqRes>(newDog);
         }
 
-        public async Task<IEnumerable<Dog>> GetAllDogsAsync(string City)
+        //Show only UnReacted dogs which are in your chosen city( ofcourse not your own dogs)
+        public async Task<IEnumerable<Dog>> GetAllDogsAsync(ApplicationUser applicationUser )
         {
-            return await _repo.Get(dogs => dogs.Owner.City == City).ToListAsync();//Returns list of dogs living in current City
+            List<Dog> cityDogList =  await _repo.Get().Where(dog => dog.Owner.City == applicationUser.City && dog.Owner.Id != applicationUser.Id).ToListAsync();//Returns list of dogs living in 
+            List<Dog> didReactionDogList  = await _reactionRepo.Get().Where(reaction => reaction.UserId == applicationUser.Id ).Include(reaction => reaction.Dog).Select(reaction => reaction.Dog).ToListAsync();
+            cityDogList.RemoveAll(dog => didReactionDogList.Contains(dog));
+            return cityDogList;
         }
 
         public async Task<Dog> GetDogByIdAsync(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
@@ -90,11 +94,6 @@ namespace Backend_API.Services.Implementations
                                                .ToListAsync();
 
             return likedDogs;
-        }
-
-        Task<Dog> IDogService.GetDogByIdAsync(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
