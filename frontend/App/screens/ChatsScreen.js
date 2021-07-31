@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Loader from '../components/Loader';
 import {GetMyChats} from '../services/chatService';
 import {InitChat} from '../store/actions/Chats';
+import ChatListItem from '../components/ChatListItem';
 
 const ChatsScreen = props => {
     const [chats, setChats] = useState([]);
@@ -46,19 +47,11 @@ const ChatsScreen = props => {
         const otherPerson = getOtherPersonDetails(item);
 
         return (
-            <Pressable onPress={() => {openChat(item)}}>
-                <View style={styles.listItem}>
-                    <View style={styles.detailsContainer}>
-                        <Image 
-                            style={styles.profilePicture}
-                            source={otherPerson.imageUrl ? {uri: otherPerson.imageUrl} : require('../assets/no-profile-picture.jpg')}
-                            height={50}
-                            width={50}    
-                        />
-                        <Text style={styles.name}>{otherPerson.fullName}</Text>
-                    </View>
-                </View>
-            </Pressable>
+            <ChatListItem
+                onPress={openChat}
+                otherPerson={otherPerson}
+                data={item}
+            />
         )
     }
 
@@ -94,37 +87,6 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         borderWidth: 1,
         borderColor: 'black'
-    },
-    listItem: {
-        display: 'flex',
-        flexDirection: 'row-reverse',
-        borderWidth: 2,
-        borderColor: 'black',
-        marginBottom: 10,
-        borderRadius: 10,
-        overflow: 'hidden',
-        alignItems: 'center',
-        marginHorizontal: 20,
-    },
-    detailsContainer: {
-        display: 'flex',
-        flexDirection: 'row-reverse',
-        flex: 1,
-        marginLeft: 10,
-        marginVertical: 10,
-        alignItems: 'center'
-    },
-    profilePicture: {
-        width: 50,
-        height: 50,
-        alignSelf: 'center',
-        borderRadius: 50,
-        borderColor: 'black',
-        borderWidth: 1,
-        overflow: 'hidden'
-    },
-    name: {
-        marginRight: 20
     }
 })
 

@@ -26,7 +26,7 @@ namespace Backend_API.Middleware
             _manager = manager;
         }
 
-        public async Task InvokeAsync(HttpContext context, IChatService chatService)
+        public async Task InvokeAsync(HttpContext context, IChatService chatService, IUserService userService)
         {
             if (context.WebSockets.IsWebSocketRequest)
             {
@@ -37,7 +37,7 @@ namespace Backend_API.Middleware
                 {
                     if (result.MessageType == WebSocketMessageType.Text)
                     {
-                        await RouteJsonMessageAsync(Encoding.UTF8.GetString(buffer, 0, result.Count), chatService);
+                        await RouteJsonMessageAsync(Encoding.UTF8.GetString(buffer, 0, result.Count), chatService, userService);
 
                         return;
                     }
@@ -75,7 +75,7 @@ namespace Backend_API.Middleware
             return idClaim.Value;
         }
 
-        public async Task RouteJsonMessageAsync(string message, IChatService chatService)
+        public async Task RouteJsonMessageAsync(string message, IChatService chatService, IUserService userService)
         {
             ChatMessageModel receivedMessage = JsonConvert.DeserializeObject<ChatMessageModel>(message);
             receivedMessage.Id = await chatService.SaveMessageAsync(receivedMessage);

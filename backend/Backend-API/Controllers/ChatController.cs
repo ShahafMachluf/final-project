@@ -11,37 +11,53 @@ using System.Threading.Tasks;
 
 namespace Backend_API.Controllers
 {
-  [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-  [ApiController]
-  [Route("api/chat")]
-  public class ChatController : BaseController
-  {
-    private readonly IUserService _userService;
-    private readonly IChatService _chatService;
-    
-
-    public ChatController(
-      IUserService userService,
-      IChatService chatService) : base(userService)
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ApiController]
+    [Route("api/chat")]
+    public class ChatController : BaseController
     {
-      _userService = userService;
-      _chatService = chatService;
-    }
+        private readonly IUserService _userService;
+        private readonly IChatService _chatService;
 
-    [HttpGet]
-    [Route("")]
-    public async Task<IActionResult> GetChats()
-    {
-      try
-      {
-        IEnumerable<ChatModel> chats = await _chatService.GetMyChatsAsync(_currentUser);
 
-        return Ok(chats);
-      }
-      catch (Exception ex)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-      }
+        public ChatController(
+          IUserService userService,
+          IChatService chatService) : base(userService)
+        {
+            _userService = userService;
+            _chatService = chatService;
+        }
+
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> GetChats()
+        {
+            try
+            {
+                IEnumerable<ChatModel> chats = await _chatService.GetMyChatsAsync(_currentUser);
+
+                return Ok(chats);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("{chatId:int}")]
+        public async Task<IActionResult> GetChatMessages(int chatId)
+        {
+            try
+            {
+                List<ChatMessageModel> chatMessages = await _chatService.GetChatMessages(chatId);
+
+                return Ok(chatMessages);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
-  }
 }

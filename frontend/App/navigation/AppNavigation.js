@@ -17,7 +17,13 @@ import MapCard from '../components/MapCard'
 import LikedDogsScreen from '../screens/LikedDogsScreen';
 import ChatsScreen from '../screens/ChatsScreen';
 import ChatScreen from '../screens/ChatScreen';
+import store from '../store/Store';
 
+let hasNewMessages = false;
+store.subscribe(() => {
+    const chats = Object.values(store.getState().chats);
+    hasNewMessages = chats.some(c => c.messages?.length > 0)
+})
 
 const createDog = createStackNavigator({
     Form: {
@@ -100,12 +106,12 @@ const app = createDrawerNavigator({
         navigationOptions: {
             drawerLabel: `צ'אטים `,
             drawerIcon: () => (
-                <Ionicons name='chatbubble-ellipses' size={24}/>
+                <Ionicons name='chatbubble-ellipses' size={24} color={hasNewMessages ? "red" : "black"}/>
             )
         }
     },
     TakeCare: {
-        screen: MapCard,
+        screen: MainScreen,
         navigationOptions: {
             drawerLabel: 'דואגים לכלב',
             drawerIcon: () => (

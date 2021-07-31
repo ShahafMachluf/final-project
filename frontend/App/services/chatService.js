@@ -14,11 +14,23 @@ export const InitWebSocket = () => {
     const token = store.getState().userDetails.token;
     const webSocket = new WebSocket(Constants.manifest.extra.WebSocketAddress, ["access_token", token]);
     subscribeToMessages(webSocket);
+    reconnectOnClose(webSocket);
     store.dispatch(SaveWebSocket(webSocket));
+}
+
+export const FetchChatHistory = async chatId => {
+    const chatHistory = await chatDataService.getChatHistory(chatId);
+    return chatHistory;
 }
 
 const subscribeToMessages = webSocket => {
     webSocket.onmessage = message => {
         store.dispatch(ReceiveMessage(JSON.parse(message.data)));
+    }
+}
+
+const reconnectOnClose = webSocket => {
+    webSocket.onclose = () => {
+        InitWebSocket();
     }
 }

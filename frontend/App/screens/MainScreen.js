@@ -42,10 +42,26 @@ const MainScreen = props => {
         // get notification permissions
         Notifications.getPermissionsAsync().then(status => {
             if (!status.granted) {
-                return Notifications.requestPermissionsAsync()
+                return Notifications.requestPermissionsAsync().then(status => {
+                    if(status.granted) {
+                        setNotificationsHandlers();
+                    }
+                })
+            } else {
+                setNotificationsHandlers();
             }
         })
     }, [setDogs])
+    
+    const setNotificationsHandlers = () => {
+        const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        })
+
+        const foregroundSubscription = Notifications.addNotificationReceivedListener(notification => {
+            console.log(notification);
+        })
+    }
 
     const heartPressEventHandler = () => {
         swiperRef.current.swipeRight();

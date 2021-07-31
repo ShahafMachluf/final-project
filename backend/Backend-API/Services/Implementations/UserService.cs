@@ -147,5 +147,10 @@ namespace Backend_API.Services.Implementations
 
             return jwtToken;
         }
+
+        public async Task<string> GetImageUrlAsync(string userId)
+        {
+            return await _repo.Get().Where(u => u.Id == userId).Select(u => u.ImageUrl).FirstOrDefaultAsync();
+        }
     }
 }
