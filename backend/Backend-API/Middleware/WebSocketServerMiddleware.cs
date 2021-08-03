@@ -78,11 +78,11 @@ namespace Backend_API.Middleware
         public async Task RouteJsonMessageAsync(string message, IChatService chatService)
         {
             ChatMessageModel receivedMessage = JsonConvert.DeserializeObject<ChatMessageModel>(message);
-            chatService.SaveMessageAsync(receivedMessage);
+            receivedMessage.Id = await chatService.SaveMessageAsync(receivedMessage);
             WebSocket socket = _manager.GetById(receivedMessage.ToUserId);
             if(socket != null && socket.State == WebSocketState.Open)
             {
-                await socket.SendAsync(Encoding.UTF8.GetBytes(receivedMessage.Message), WebSocketMessageType.Text, true, CancellationToken.None);
+                await socket.SendAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(receivedMessage, Formatting.Indented)), WebSocketMessageType.Text, true, CancellationToken.None);
             }
         }
     }

@@ -12,6 +12,6 @@ namespace Backend_API.Services.Interfaces
         Task<IEnumerable<ChatModel>> GetMyChatsAsync(ApplicationUser user);
         Task CreateChatAsync(string adopterId, string ownerId, int likedDogId);
 
-        Task SaveMessageAsync(ChatMessageModel message);
+        Task<int> SaveMessageAsync(ChatMessageModel message);
     }
 }

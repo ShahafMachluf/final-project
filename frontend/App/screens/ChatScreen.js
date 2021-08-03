@@ -1,43 +1,53 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import { GiftedChat } from 'react-native-gifted-chat'
 
 import ChatMessage from '../models/ChatMessage';
+import {InitChat, RemoveReadMessages} from '../store/actions/Chats';
 
  const ChatScreen = props => {
   const [messages, setMessages] = useState([]);
-  const chat = props.navigation.state.params.chat;
+  const currentChatDetails = props.navigation.state.params.chat;
   const webSocket = useSelector(state => state.webSocket);
   const userId = useSelector(state => state.userDetails.id);
-  const otherPersonId = getOthePersonId();
-  console.log(chat)
+  const chatMessages = useSelector(state => state.chats[currentChatDetails.id].messages);
+  const otherPersonId = userId === currentChatDetails.adopter.id ? currentChatDetails.dogOwner.id : currentChatDetails.adopter.id;
+  const dispatch = useDispatch();
+
+  /*
+  
+  TODO:
+    - sort messages by time if received many
+    - handle socket disconnect request
+    - add notifications for new chat messages
+    - fetch chat history on this page startup
+  */
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ])
-  }, [])
+    if(chatMessages.length > 0) {
+    const convertedMessages = [];
+      chatMessages.forEach(message => {
+        convertedMessages.push(convertMessageFromServer(message));
+      });
 
-  const getOthePersonId = () => {
-    return userId === chat.adopter.id ? chat.dogOwner.id : chat.adopter.id 
-  }
+      setMessages(previousMessages => GiftedChat.append(previousMessages, convertedMessages));
+      dispatch(RemoveReadMessages(convertedMessages.length, currentChatDetails.id));
+    }
+  }, [chatMessages])
 
-  webSocket.onmessage = messageEvent => {
-    console.log(messageEvent.data);
+  const convertMessageFromServer = message => {
+    return {
+      _id: message.id,
+      text: message.message,
+      createdAt: message.time,
+      user: {
+        _id: message.fromUserId,
+      }
+    }
   }
 
   const onSend = useCallback((messages = []) => {
-    const message = new ChatMessage(userId, otherPersonId, chat.id, messages[0].text);
-    
+    const message = new ChatMessage(userId, otherPersonId, currentChatDetails.id, messages[0].text);
     webSocket.send(JSON.stringify(message));
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
   }, [])
@@ -47,10 +57,10 @@ import ChatMessage from '../models/ChatMessage';
       messages={messages}
       onSend={messages => onSend(messages)}
       user={{
-        _id: 1,
+        _id: userId,
       }}
     />
   )
 }
 
-export default ChatScreen;``
+export default ChatScreen;
