@@ -24,6 +24,11 @@ export const UpdateMaxDistance = maxDistance => {
     return Put(url, maxDistance);
 }
 
+export const UpdatePushNotificationToken = toekn => {
+    const url = `${baseUrl}/notificationToken`;
+    return Put(url, toekn);
+}
+
 export const FacebookLogin = () => {
 
 }

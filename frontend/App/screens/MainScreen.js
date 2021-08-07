@@ -11,6 +11,7 @@ import Colors from '../constants/Colors';
 import LinearGradientIcon from '../components/LinearGradientIcon';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import { updatePushNotificationToken } from '../services/userService';
 
 const MainScreen = props => {
     const swiperRef = useRef(null);
@@ -45,21 +46,44 @@ const MainScreen = props => {
                 return Notifications.requestPermissionsAsync().then(status => {
                     if(status.granted) {
                         setNotificationsHandlers();
+                    } else {
+                        throw new Error('Permission not granted');
                     }
                 })
             } else {
                 setNotificationsHandlers();
             }
+        }).then(() => {
+            return Notifications.getExpoPushTokenAsync();
+        }).then(response => {
+            const token = response.data;
+            console.log("token: " + token);
+            updatePushNotificationToken(token);
+        }).catch(err => {
+            console.log(err);
+            return null;
         })
     }, [setDogs])
     
     const setNotificationsHandlers = () => {
         const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
+            console.log(response)
+            props.navigation.navigate({
+                routeName: 'Chat', 
+                params: {
+                    chat: response.notification.request.content.data.chatDetails
+                }
+            })
         })
+    }
 
-        const foregroundSubscription = Notifications.addNotificationReceivedListener(notification => {
-            console.log(notification);
+    const navigateToChat = chatId => {
+        dispatch(InitChat(chatDetails.id));
+        props.navigation.navigate({
+            routeName: 'Chat', 
+            params: {
+                chat: chatDetails
+            }
         })
     }
 

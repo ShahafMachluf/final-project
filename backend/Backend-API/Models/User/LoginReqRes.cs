@@ -13,5 +13,6 @@ namespace Backend_API.Models.User
         public string Email { get; set; }
         public string ImageUrl { get; set; }
         public int MaxDistance { get; set; }
+        public string PushNotificationToken { get; set; }
     }
 }

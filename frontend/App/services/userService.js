@@ -1,5 +1,5 @@
 import { saveUserDetails, setImageUrl, setMaxDistance } from '../store/actions/UserDetails';
-import { Login, Register, UploadImage, UpdateMaxDistance } from './dataServices/userDataService';
+import { Login, Register, UploadImage, UpdateMaxDistance, UpdatePushNotificationToken } from './dataServices/userDataService';
 import profilePicture from '../models/ProfilePicture';
 import { validateEmail } from '../utilities/Utilities';
 
@@ -40,6 +40,14 @@ export const updateMaxDistance = async (maxDistance, dispacher) => {
     try {
         await UpdateMaxDistance(maxDistance);
         dispacher(setMaxDistance(maxDistance));
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const updatePushNotificationToken = async token => {
+    try {
+        await UpdatePushNotificationToken(token);
     } catch (error) {
         throw error;
     }

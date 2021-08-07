@@ -168,6 +168,21 @@ const auth = createStackNavigator({
     }
 });
 
+const chatNotification = createStackNavigator({
+    Main: {
+        screen: MainScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    Chat: {
+        screen: ChatScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
+})
+
 
 export const AppNavigation = createAppContainer(app);
 

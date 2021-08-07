@@ -19,13 +19,6 @@ import { FetchChatHistory } from '../services/chatService';
   const otherPerson = userDetails.id === currentChatDetails.adopter.id ? currentChatDetails.dogOwner : currentChatDetails.adopter;
   const dispatch = useDispatch();
 
-  /*
-  
-  TODO:
-    - add notifications for new chat messages
-    - fix avatar on loaded messages
-  */
-
   useEffect(() => {
     if(!isFetchedMessages && messages.length === 0) {
       onChatOpen()

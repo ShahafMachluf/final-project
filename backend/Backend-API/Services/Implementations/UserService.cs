@@ -152,5 +152,12 @@ namespace Backend_API.Services.Implementations
         {
             return await _repo.Get().Where(u => u.Id == userId).Select(u => u.ImageUrl).FirstOrDefaultAsync();
         }
+
+        public async Task UpdatePushNotificationTokenAsync(ApplicationUser _currentUser, string token)
+        {
+            _currentUser.PushNotificationToken = token;
+
+            await _repo.SaveChangesAsync();
+        }
     }
 }

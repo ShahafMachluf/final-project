@@ -16,5 +16,6 @@ namespace Backend_API.Services.Interfaces
         Task<string> UpdateProfilePictureUrlAsync(string base64Image, ApplicationUser user);
         Task UpdateMaxDistanceAsync(ApplicationUser user, int maxDistnace);
         Task<string> GetImageUrlAsync(string userId);
+        Task UpdatePushNotificationTokenAsync(ApplicationUser _currentUser, string token);
     }
 }

@@ -100,5 +100,25 @@ namespace Backend_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("notificationToken")]
+        public async Task<IActionResult> UpdatePushNotificationToken([FromBody] string token)
+        {
+            try
+            {
+                if (_currentUser.PushNotificationToken != token)
+                {
+                    await _userService.UpdatePushNotificationTokenAsync(_currentUser, token);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
