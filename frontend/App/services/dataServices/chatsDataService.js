@@ -9,6 +9,11 @@ export const getMyChats = () => {
     return Get(baseUrl);
 }
 
+export const getChatMessages = (chatId) => {
+    const url = `${baseUrl}/${chatId}`;
+    return Get(url);
+}
+
 export const getChatHistory = chatId => {
     return Get(`${baseUrl}/${chatId}`);
 }

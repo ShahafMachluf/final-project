@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210807134622_token")]
-    partial class token
+    [Migration("20210814104829_chat")]
+    partial class chat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -9,7 +9,7 @@ namespace Backend_API.Data.Repository
 {
     public interface IRepo<TEntity> 
     {
-        Task CreateAsync(TEntity newObject);
+        Task<TEntity> CreateAsync(TEntity newObject);
         Task<bool> SaveChangesAsync();
         Task<IEnumerable<TEntity>> getAllAsync();
         IQueryable<TEntity> Get();

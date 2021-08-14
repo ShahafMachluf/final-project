@@ -1,5 +1,5 @@
 import { saveUserDetails, setImageUrl, setMaxDistance } from '../store/actions/UserDetails';
-import { Login, Register, UploadImage, UpdateMaxDistance, UpdatePushNotificationToken } from './dataServices/userDataService';
+import { Login, Register, UploadImage, UpdateMaxDistance, UpdatePushNotificationToken, ResetPassword } from './dataServices/userDataService';
 import profilePicture from '../models/ProfilePicture';
 import { validateEmail } from '../utilities/Utilities';
 
@@ -51,6 +51,10 @@ export const updatePushNotificationToken = async token => {
     } catch (error) {
         throw error;
     }
+}
+
+export const resetPassword = async email => {
+    return await ResetPassword(email);
 }
 
 export const isValidEmail = email => {

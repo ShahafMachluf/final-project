@@ -95,7 +95,6 @@ namespace Backend_API.Middleware
         {
             ChatMessageModel receivedMessage = JsonConvert.DeserializeObject<ChatMessageModel>(message);
             ChatMessage dbMessage = await chatService.SaveMessageAsync(receivedMessage);
-            dbMessage.Chat.Messages = null;
             receivedMessage.Id = dbMessage.Id;
             WebSocket socket = _manager.GetById(dbMessage.ToUserId);
             await SendPushNotification(dbMessage);
@@ -116,9 +115,15 @@ namespace Backend_API.Middleware
                     body = receivedMessage.Message.Substring(0, 20 > receivedMessage.Message.Length ? receivedMessage.Message.Length : 20),
                     data = new
                     {
-                        chatDetails = receivedMessage.Chat
+                        chatDetails = new 
+                        {
+                          id = receivedMessage.Chat.Id,
+                          adopter = receivedMessage.Chat.Adopter,
+                          dogOwner = receivedMessage.Chat.DogOwner,
+                        }
                     },
                 };
+
                 HttpContent content = JsonContent.Create(pushMessage);
                 var response = await _client.PostAsync("https://exp.host/--/api/v2/push/send", content, CancellationToken.None);
             }

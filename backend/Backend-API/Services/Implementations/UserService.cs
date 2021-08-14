@@ -1,14 +1,12 @@
 ﻿using Backend_API.Authentication;
-using Backend_API.Data;
-using Backend_API.Models;
 using Backend_API.Models.DbModels;
 using Backend_API.Models.User;
 using Backend_API.Services.Interfaces;
+using Backend_API.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +15,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Backend_API.Data.Repository;
 using AutoMapper;
+using System.Net;
+using System.Net.Mail;
+
 
 namespace Backend_API.Services.Implementations
 {
@@ -159,5 +160,74 @@ namespace Backend_API.Services.Implementations
 
             await _repo.SaveChangesAsync();
         }
+
+    public async Task ResetPasswordAsync(string email)
+    {
+      ApplicationUser user = await _userManager.FindByEmailAsync(email);
+      if(user == null)
+      {
+        throw new ArgumentException("משתמש לא קיים");
+      }
+
+      string newPassword = GeneratePassword();
+      string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+      var result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
+      if(result.Succeeded)
+      {
+        EmailNewPassword(user, newPassword);
+      } 
+      else
+      {
+        throw new ApplicationException(result.Errors.First().Description);
+      }
     }
+
+    private void EmailNewPassword(ApplicationUser user, string newPassword)
+    {
+      var fromAddress = new MailAddress(Consts.EmailAddress, Consts.FromEmailName);
+      var toAddress = new MailAddress(user.Email, user.FullName);
+      const string fromPassword = Consts.EmailPassword;
+      const string subject = Consts.ResetPasswrodEmailSubject;
+      string body = $@"
+שלום {user.FullName}
+
+סיסמתך החדשה הינה {newPassword}
+
+בברכה
+TinDog
+";
+
+      var smtp = new SmtpClient
+      {
+        Host = Consts.EmailHostAddress,
+        Port = Consts.EmailHostPort,
+        EnableSsl = true,
+        DeliveryMethod = SmtpDeliveryMethod.Network,
+        UseDefaultCredentials = false,
+        Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+      };
+
+      var message = new MailMessage(fromAddress, toAddress)
+      {
+        Subject = subject,
+        Body = body
+      };
+      smtp.Send(message);
+      message.Dispose();
+      smtp.Dispose();
+    }
+
+    private string GeneratePassword()
+    {
+      Random random = new Random();
+      int newPassword = 0;
+      for (int i = 0; i < 6; i++)
+      {
+        newPassword *= 10;
+        newPassword += random.Next(1, 10);
+      }
+
+      return newPassword.ToString();
+    }
+  }
 }

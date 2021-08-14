@@ -120,5 +120,26 @@ namespace Backend_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+    [HttpPost]
+    [Route("resetPassword")]
+    public async Task<IActionResult> ResetPassword([FromBody] string email)
+    {
+      try
+      {
+        await _userService.ResetPasswordAsync(email);
+
+        return Ok(true);
+      }
+      catch (Exception ex)
+      {
+        if(ex is ApplicationException || ex is ArgumentException)
+        {
+          return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+        }
+
+        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+      }
+    }
     }
 }

@@ -18,6 +18,8 @@ import LikedDogsScreen from '../screens/LikedDogsScreen';
 import ChatsScreen from '../screens/ChatsScreen';
 import ChatScreen from '../screens/ChatScreen';
 import store from '../store/Store';
+import { ResetPassword } from '../services/dataServices/userDataService';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 
 let hasNewMessages = false;
 store.subscribe(() => {
@@ -162,6 +164,12 @@ const auth = createStackNavigator({
     },
     Signup: {
         screen: SignupScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    ForgotPassword: {
+        screen: ForgotPasswordScreen,
         navigationOptions: {
             headerShown: false
         }

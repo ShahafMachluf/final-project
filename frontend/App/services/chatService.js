@@ -10,6 +10,11 @@ export const GetMyChats = async () => {
     return chats;
 }
 
+export const GetChatMessages = async (chatId) => {
+    const chatMessages = await chatDataService.getChatMessages(chatId);
+    return chatMessages;
+}
+
 export const InitWebSocket = () => {
     const token = store.getState().userDetails.token;
     const webSocket = new WebSocket(Constants.manifest.extra.WebSocketAddress, ["access_token", token]);

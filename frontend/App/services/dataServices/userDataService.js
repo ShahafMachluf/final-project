@@ -29,14 +29,7 @@ export const UpdatePushNotificationToken = toekn => {
     return Put(url, toekn);
 }
 
-export const FacebookLogin = () => {
-
-}
-
-export const GoogleLogin = () => {
-
-}
-
-export const ResetPassword = () => {
-    
+export const ResetPassword = email => {
+    const url = `${baseUrl}/resetPassword`;
+    return Post(url, email);
 }

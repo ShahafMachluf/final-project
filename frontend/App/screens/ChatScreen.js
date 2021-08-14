@@ -29,6 +29,7 @@ import { FetchChatHistory } from '../services/chatService';
   }, [chatMessages])
 
 const onChatOpen = async () => {
+  setIsFetchedMessages(true);
   const chatHistory = await FetchChatHistory(currentChatDetails.id);
   const convertedMessages = convertMessageArray(chatHistory);
 
@@ -44,7 +45,6 @@ const onChatOpen = async () => {
 
   convertedMessages.sort((msg1, msg2) => msg1.createdAt > msg2.createdAt ? -1 : 1);
   setMessages(previousMessages => GiftedChat.append(previousMessages, convertedMessages));
-  setIsFetchedMessages(true);
 }
 
 const handleNewMessages = () => {
@@ -64,13 +64,15 @@ const convertMessageArray = messageArray => {
 }
 
   const convertMessageFromServer = message => {
+    const messageAvatarUrl = message.fromUserId === userDetails.id ? userDetails.imageUrl : otherPerson.imageUrl;
+
     return {
       _id: message.id,
       text: message.message,
       createdAt: message.time,
       user: {
         _id: message.fromUserId,
-        avatar: !!otherPerson.imageUrl ? otherPerson.imageUrl : require('../assets/no-profile-picture.jpg')
+        avatar: !!messageAvatarUrl ? messageAvatarUrl : require('../assets/no-profile-picture.jpg')
       }
     }
   }

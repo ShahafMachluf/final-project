@@ -54,16 +54,14 @@ namespace Backend_API.Services.Implementations
         public async Task<ChatMessage> SaveMessageAsync(ChatMessageModel message)
         {
             ChatMessage newMessage = _mapper.Map<ChatMessage>(message);
-            await _chatMessageRepo.CreateAsync(newMessage);
+            ChatMessage dbMessage  = await _chatMessageRepo.CreateAsync(newMessage);
             await _chatMessageRepo.SaveChangesAsync();
 
-            ChatMessage dbMessage = await _chatMessageRepo.Get().Where(m => m.Time == newMessage.Time && 
-                                                                       m.FromUserId == newMessage.FromUserId && 
-                                                                       m.ToUserId == newMessage.ToUserId)
-                                                                       .Include(cm => cm.ToUser)
-                                                                       .Include(cm => cm.FromUser)
-                                                                       .Include(cm => cm.Chat)
-                                                                       .FirstOrDefaultAsync();
+            dbMessage = await _chatMessageRepo.Get().Where(m => m.Id == dbMessage.Id)
+                                                    .Include(cm => cm.ToUser)
+                                                    .Include(cm => cm.FromUser)
+                                                    .Include(cm => cm.Chat)
+                                                    .FirstOrDefaultAsync();
 
             return dbMessage;
         }

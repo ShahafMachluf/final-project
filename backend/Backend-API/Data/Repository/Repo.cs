@@ -18,9 +18,9 @@ namespace Backend_API.Data.Repository
             _dbSet = appDbContext.Set<TEntity>();
         }
 
-        public async Task CreateAsync(TEntity newObject)
+        public async Task<TEntity> CreateAsync(TEntity newObject)
         {
-            await _dbSet.AddAsync(newObject);
+            return (await _dbSet.AddAsync(newObject)).Entity;
         }
 
         public async Task<IEnumerable<TEntity>> getAllAsync()

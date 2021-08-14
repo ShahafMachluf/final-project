@@ -17,5 +17,6 @@ namespace Backend_API.Services.Interfaces
         Task UpdateMaxDistanceAsync(ApplicationUser user, int maxDistnace);
         Task<string> GetImageUrlAsync(string userId);
         Task UpdatePushNotificationTokenAsync(ApplicationUser _currentUser, string token);
-    }
+    Task ResetPasswordAsync(string email);
+  }
 }
