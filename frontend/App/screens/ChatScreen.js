@@ -69,7 +69,7 @@ const convertMessageArray = messageArray => {
     return {
       _id: message.id,
       text: message.message,
-      createdAt: message.time,
+      createdAt: new Date(message.time[message.time.length - 1] === 'Z' ? message.time : message.time + 'Z'),
       user: {
         _id: message.fromUserId,
         avatar: !!messageAvatarUrl ? messageAvatarUrl : require('../assets/no-profile-picture.jpg')
