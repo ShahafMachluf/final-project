@@ -91,5 +91,13 @@ namespace Backend_API.Services.Implementations
 
             return likedDogs;
         }
+
+        public async Task<IEnumerable<Dog>> getMyDogs(ApplicationUser currentUser)
+        {
+            List<Dog> myDogsList = await _repo.Get().Where(d => d.OwnerId == currentUser.Id).ToListAsync();
+
+            return myDogsList;
+        }
+
     }
 }

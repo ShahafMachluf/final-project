@@ -15,6 +15,7 @@ import ImgPicker from '../components/ImgPicker';
 import DogProfileScreen from './DogProfileScreen';
 import { SafeAreaView } from 'react-navigation';
 import Loader from '../components/Loader';
+import { color } from 'react-native-reanimated';
 
 const CreateDogScreen = props => {
     const [name, setName] = useState('');
@@ -23,6 +24,7 @@ const CreateDogScreen = props => {
     const [color, setColor] = useState('');
     const [gender, setGender] = useState('');
     const [size, setSize] = useState('');
+    const [area, setArea] = useState('');
     const [selectedCheckBox, setSelectCheckBox] = useState([]);
     const [information, setInformation] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
@@ -41,6 +43,7 @@ const CreateDogScreen = props => {
     const [genderErrorMessage, setGenderErrorMessage] = useState('');
     const [sizeErrorMessage, setSizeErrorMessage] = useState('');
     const [imageErrorMessage, setImageErrorMessage] = useState('');
+    const [AreaErrorMessage, setAreaErrorMessage] = useState('');
     
     const [isLoading, setIsLoading] = useState(false);
 
@@ -56,6 +59,7 @@ const CreateDogScreen = props => {
         setSelectCheckBox([]);
         setGender(null);
         setSize(null);
+        setArea(null);
     } 
 
     const clearErrorMessages = () => {
@@ -65,6 +69,7 @@ const CreateDogScreen = props => {
         setColorErrorMessage('');
         setGenderErrorMessage('');
         setSizeErrorMessage('');
+        setAreaErrorMessage('');
         setImageErrorMessage('');
     }
     
@@ -98,6 +103,10 @@ const CreateDogScreen = props => {
             setImageErrorMessage('נדרש');
             validForm = false;
         }
+        if(area.length === 0) {
+            setImageErrorMessage('נדרש');
+            validForm = false;
+        }
 
         return validForm;
     }
@@ -106,7 +115,7 @@ const CreateDogScreen = props => {
         clearErrorMessages();
         const isValidForm = validateForm();
         if(isValidForm) {
-            const dog = new Dog(userDetails.id ,name, age, race, color, gender, size, selectedCheckBox, information, selectedImage.base64)
+            const dog = new Dog(userDetails.id ,name, age, race, color, gender, size,area, selectedCheckBox, information, selectedImage.base64)
             setIsLoading(true);
             createDogHandler(dog)
             .then(createdDog => {
@@ -226,6 +235,25 @@ const CreateDogScreen = props => {
                             useNativeAndroidPickerStyle={false}
                             Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
                          />
+                         <RNPickerSelect
+                            value={size}
+                            placeholder={{
+                                label: 'בחר אזור בארץ',
+                                value: null,
+                                color: '#808080',
+                            }}
+                            items={[
+                                { label: 'צפון', value: 0 },
+                                { label: 'מרכז', value: 1 },
+                                { label: 'השרון', value: 2 },
+                                { label: 'ירושלים', value: 3 },
+                                { label: 'דרום', value: 4 },
+                                ]}
+                            onValueChange={setArea}
+                            style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
+                            useNativeAndroidPickerStyle={false}
+                            Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
+                         />
                          {getErrorMessage(sizeErrorMessage)}
                         <SelectMultiple
                             rowStyle = {styles.CheckBox}
@@ -233,7 +261,7 @@ const CreateDogScreen = props => {
                             {label: 'מסורס/ מעוקרת', value: 'Neutered'}]}
                             selectedItems={selectedCheckBox}
                             onSelectionsChange={setSelectCheckBox}
-                        />            
+                        />           
                          <Input 
                             multiline={true}
                             style={{...styles.textInput, ...styles.bigTextBox}}
@@ -289,6 +317,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         flexDirection: 'row-reverse',
         marginTop: Dimensions.get('window').width / 15,
+        backgroundColor: color.mainColor
     },
     inputContainer: {
         flex: 1,

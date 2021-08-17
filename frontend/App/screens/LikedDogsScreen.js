@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, FlatList, ScrollView, StyleSheet, Text, Image, Pressable, RefreshControl} from 'react-native';
+import {View, FlatList, ScrollView, StyleSheet,Button, Text, Image, Pressable, RefreshControl} from 'react-native';
 
 import Header from '../components/Header'
 import {GetLikedDogs} from '../services/dogService';
 import Loader from '../components/Loader';
+import {DeleteLikedDog} from '../services/dogService';
 
 const LikedDogsScreen = props => {
     // TODO 
@@ -83,6 +84,11 @@ const LikedDogsScreen = props => {
         setIsRefreshing(false);
     }
 
+    const onDelete = async dogId => {
+        await DeleteLikedDog(dogId);
+        refresh();
+    }
+
     const renderItem = ({item}) => {
         return (
             <Pressable onPress={() => {props.navigation.navigate({routeName: 'DogProfile', params: {dog: item}})}}>
@@ -93,6 +99,11 @@ const LikedDogsScreen = props => {
                         <Text>{item.age}</Text>
                         <Text>{item.race}</Text>
                     </View>
+                    <Button 
+                        onPress={() => {onDelete(item.id)}}
+                        title="X"
+                        color="gray">
+                    </Button>
                 </View>
             </Pressable>
         )
