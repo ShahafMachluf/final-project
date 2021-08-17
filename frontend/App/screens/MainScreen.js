@@ -92,6 +92,7 @@ const MainScreen = props => {
                 onSwipedRight={(index) => {swipeEventHandler(index, 1)}}
                 onSwipedAll={() => {setNoDogs(true);}}
                 ref={swiperRef}
+                
             />
         )
     }

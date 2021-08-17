@@ -14,5 +14,6 @@ namespace Backend_API.Services.Interfaces
         Task<Dog> GetDogByIdAsync(int id);
         Task ReactToDogAsync(ApplicationUser user, ReactToDogReq reaction);
         Task<IEnumerable<Dog>> GetLikedDogsAsync(ApplicationUser user);
+        public Task<IEnumerable<Dog>> getMyDogs(ApplicationUser currentUser);
     }
 }

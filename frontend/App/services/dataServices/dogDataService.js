@@ -23,3 +23,19 @@ export const getLikedDogs = () => {
     const url = `${baseUrl}/liked`;
     return Get(url);
 }
+
+export const deleteLikedDog = (dogId) => {
+    const url = `${baseUrl}/delete/likedDog/id`;
+    return Delete(url);
+}
+
+export const getMyDogs = () => {
+    const url = `${baseUrl}/myDogs`;
+    return Get(url);
+}
+
+export const deleteDog = (dogId) => {
+    const url = `${baseUrl}/id`;
+    return Delete(url);
+}
+

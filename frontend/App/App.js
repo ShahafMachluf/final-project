@@ -10,9 +10,9 @@ import MainScreen from './screens/MainScreen'
 
 init().then(() => {
  console.log('init sucess');
-  //  removeUserTable().then((res) => {
-  //    console.log(res);
-  // }) 
+    //removeUserTable().then((res) => {
+      //console.log(res);
+   //}) 
 }).catch((error) => {
   console.log('init error ', error);
 })
