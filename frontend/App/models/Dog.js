@@ -1,5 +1,5 @@
 export default class Dog {
-    constructor(ownerId ,name, age, race, color, gender, size, checkBoxItems, information, imageBase64)
+    constructor(ownerId ,name, age, race, color, gender, size, area, checkBoxItems, information, imageBase64)
     {
         this.ownerId = ownerId;
         this.name = name;
@@ -8,6 +8,7 @@ export default class Dog {
         this.color = color; 
         this.gender = gender;
         this.size = size; 
+        this.area = area; 
         this.isVaccinated = false;
         this.isNeutered = false;
         this.information = information;

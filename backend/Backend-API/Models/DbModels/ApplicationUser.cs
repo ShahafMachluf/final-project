@@ -13,5 +13,6 @@ namespace Backend_API.Models.DbModels
         public string City { get; set; }
         public string ImageUrl { get; set; }
         public int MaxDistance { get; set; }
+        public string PushNotificationToken { get; set; }
     }
 }

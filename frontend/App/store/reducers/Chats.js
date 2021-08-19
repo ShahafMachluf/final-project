@@ -1,11 +1,18 @@
 import {RECEIVE_MESSAGE, INIT_CHAT, REMOVE_READ_MESSAGES} from '../actions/Chats';
 
-const initialState = {}
+const initialState = {
+}
 
 const chatReducer = (state = initialState, action) => {
     switch (action.type) {
-        case RECEIVE_MESSAGE:            
-            const messages = [...state[action.messageDetails.chatId].messages];
+        case RECEIVE_MESSAGE:
+            let messages;
+            if(!state[action.messageDetails.chatId]) {
+                messages = [];
+            }
+            else {
+                messages = [...state[action.messageDetails.chatId].messages];
+            }
             messages.push(action.messageDetails);
             return {
                 ...state,

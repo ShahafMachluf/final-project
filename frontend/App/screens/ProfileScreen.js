@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import React, { useState,useEffect, useRef} from 'react';
+import { View, FlatList,Button, Text, StyleSheet, ActivityIndicator, Touchable,Dimensions, TouchableOpacity, Image, Pressable, RefreshControl } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux';
 import Slider from '@react-native-community/slider';
 
@@ -8,23 +8,69 @@ import Separator from '../components/Separator';
 import ProfileImagePicker from '../components/ProfileImagePicker';
 import {uploadImageEventHandler, updateMaxDistance} from '../services/userService';
 import Loader from '../components/Loader';
+import { Item } from 'react-navigation-header-buttons';
+import {GetMyDogs} from '../services/dogService';
+import {DeleteDog} from '../services/dogService';
+
 
 const ProfileScreen = props => {
     const userDetails = useSelector(state => state.userDetails)
-    const [sliderValue, setSliderValue] = useState(userDetails.maxDistance);
     const [isLoadingImage, setIsLoadingImage] = useState(false);
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [myDogs, setMyDogs] = useState([]);
 
-    const setMaxDistance = async () => {
-        if(userDetails.maxDistance !== sliderValue) {
-            await updateMaxDistance(sliderValue, dispatch);
-        }
-    }
 
     const imageTakenHandler = async image => {
         setIsLoadingImage(true);
         await uploadImageEventHandler(image, dispatch);
         setIsLoadingImage(false);
+    }
+
+    useEffect(() => {
+        const getMyDogs = async () => {
+            setIsLoading(true);
+            const myDogs = await GetMyDogs();
+            setMyDogs(myDogs);
+            setIsLoading(false);
+        }
+
+        getMyDogs();
+    }, [setMyDogs])
+
+    const refresh = async () => {
+        setIsRefreshing(true);
+        const myDogs = await GetMyDogs();
+        setMyDogs(myDogs);
+        set
+        IsRefreshing(false);
+    }
+
+    const onDelete = async dogId => {
+        await DeleteDog(dogId);
+        refresh();
+    }
+
+    const renderItem = ({item}) => {
+        return (
+          
+            <Pressable onPress={() => {props.navigation.navigate({routeName: 'DogProfile', params: {dog: item}})}}>
+                <View style={styles.listItem}>
+                    <Image source={{uri: item.imageURL}} style={styles.dogImage} />
+                    <View style={styles.detailsContainer}>
+                        <Text>{item.name}</Text>
+                        <Text>{item.age}</Text>
+                        <Text>{item.race}</Text>
+                    </View>
+                    <Button 
+                        onPress={() => {onDelete(item.id)}}
+                        title="X"
+                        color="gray">
+                    </Button>
+                </View>
+            </Pressable> 
+        )
     }
 
     return (
@@ -35,6 +81,10 @@ const ProfileScreen = props => {
             />
             <ProfileImagePicker 
                 onImageTaken={imageTakenHandler}
+                renderItem = {({Item,index}) => (
+                    <TouchableOpacity onPress = {() => setDialog(index)}> </TouchableOpacity>
+                )}
+                
             />
             <Loader active={isLoadingImage} />
             <Text style={styles.name}>{userDetails.fullName}</Text>
@@ -44,23 +94,24 @@ const ProfileScreen = props => {
                     <Text style={styles.propertiesText}>{userDetails.email}</Text>
                 </View>
                 <Separator />
-                <View style={styles.keyValuePair}>
-                    <Text style={styles.propertiesText}>מרחק מירבי</Text>
-                    <Text style={styles.propertiesText}>{sliderValue} ק"מ</Text>
-                </View>
-                <Slider
-                    minimumValue={5}
-                    maximumValue={100}
-                    minimumTrackTintColor="#000000"
-                    maximumTrackTintColor="#000000"
-                    onValueChange={setSliderValue}
-                    onSlidingComplete={setMaxDistance}
-                    step={1}
-                    thumbTintColor='gray'
-                    value={sliderValue}
-                    style={styles.thumb}
-                    
+            </View>
+
+            <View style={{flex: 1}}>
+            <View style={styles.keyValuePair}>
+                <Text style={styles.propertiesText}>הכלבים שלי</Text>
+            </View>
+                <FlatList 
+                    style={styles.screen}
+                    data={myDogs}
+                    renderItem={renderItem}
+                    refreshControl={
+                        <RefreshControl 
+                            refreshing={isRefreshing}
+                            onRefresh={refresh}
+                        />
+                    } 
                 />
+                <Loader active={isLoading}/> 
             </View>
         </View>
     )
@@ -126,7 +177,34 @@ const styles = StyleSheet.create({
     },
     thumb: {
         marginTop: -20
-    }
+    },
+    dogImage: {
+        height: 70,
+        width: 70,
+        borderRadius: 70,
+        marginHorizontal: 10,
+        marginVertical: 5,
+        borderWidth: 1,
+        borderColor: 'black'
+    },
+    listItem: {
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        borderWidth: 2,
+        borderColor: 'black',
+        marginBottom: 10,
+        borderRadius: 10,
+        overflow: 'hidden',
+        alignItems: 'center',
+        marginHorizontal: 20,
+    },
+    detailsContainer: {
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+        marginRight: 50
+    },
 });
 
 export default ProfileScreen;

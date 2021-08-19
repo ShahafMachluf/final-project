@@ -11,6 +11,7 @@ import Colors from '../constants/Colors';
 import LinearGradientIcon from '../components/LinearGradientIcon';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import { updatePushNotificationToken } from '../services/userService';
 
 const MainScreen = props => {
     const swiperRef = useRef(null);
@@ -42,10 +43,49 @@ const MainScreen = props => {
         // get notification permissions
         Notifications.getPermissionsAsync().then(status => {
             if (!status.granted) {
-                return Notifications.requestPermissionsAsync()
+                return Notifications.requestPermissionsAsync().then(status => {
+                    if(status.granted) {
+                        setNotificationsHandlers();
+                    } else {
+                        throw new Error('Permission not granted');
+                    }
+                })
+            } else {
+                setNotificationsHandlers();
             }
+        }).then(() => {
+            return Notifications.getExpoPushTokenAsync();
+        }).then(response => {
+            const token = response.data;
+            console.log("token: " + token);
+            updatePushNotificationToken(token);
+        }).catch(err => {
+            console.log(err);
+            return null;
         })
     }, [setDogs])
+    
+    const setNotificationsHandlers = () => {
+        const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response)
+            props.navigation.navigate({
+                routeName: 'Chat', 
+                params: {
+                    chat: response.notification.request.content.data.chatDetails
+                }
+            })
+        })
+    }
+
+    const navigateToChat = chatId => {
+        dispatch(InitChat(chatDetails.id));
+        props.navigation.navigate({
+            routeName: 'Chat', 
+            params: {
+                chat: chatDetails
+            }
+        })
+    }
 
     const heartPressEventHandler = () => {
         swiperRef.current.swipeRight();
@@ -92,6 +132,7 @@ const MainScreen = props => {
                 onSwipedRight={(index) => {swipeEventHandler(index, 1)}}
                 onSwipedAll={() => {setNoDogs(true);}}
                 ref={swiperRef}
+                
             />
         )
     }

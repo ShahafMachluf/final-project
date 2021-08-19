@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ImageBackground, Dimensions } from 'react-native'
+import { View, Text, StyleSheet,Pressable, ImageBackground, Dimensions } from 'react-native'
 
 const ImageCard = props => {
 
@@ -27,16 +27,16 @@ const ImageCard = props => {
     }
 
     return (
-        <View style={{...styles.container}}>
-           <ImageBackground
-                style={styles.image} 
-                source={{ uri: props.imageURL}}
-            >
-                <View style={styles.imageOverlay}>
-                    <Text style={styles.info}>{props.name}, {props.age}</Text>
-                    <Text style={styles.info}>{getAdditionalInfo(props)}</Text>
-                </View>
-            </ImageBackground>
+        <View style={{...styles.container}}> 
+                <ImageBackground
+                    style={styles.image} 
+                    source={{ uri: props.imageURL}}
+                >
+                    <View style={styles.imageOverlay}>
+                        <Text style={styles.info}>{props.name}, {props.age}</Text>
+                        <Text style={styles.info}>{getAdditionalInfo(props)}</Text>
+                    </View>
+                </ImageBackground>
         </View>
     );
 }

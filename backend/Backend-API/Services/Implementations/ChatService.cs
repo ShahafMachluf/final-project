@@ -29,9 +29,10 @@ namespace Backend_API.Services.Implementations
 
         public async Task<IEnumerable<ChatModel>> GetMyChatsAsync(ApplicationUser user)
         {
-            var chats = await _chatRepo.Get().Where(c => c.DogOwnerId == user.Id || c.AdopterId == user.Id)
+            var chats = await _chatRepo.Get().Where(c => c.AdopterId == user.Id || (c.DogOwnerId == user.Id && c.Messages.Count > 0))
                                          .Include(c => c.Adopter)
                                          .Include(c => c.DogOwner)
+                                         .Include(c => c.Dog)
                                          .ToListAsync();
 
             return _mapper.Map<IEnumerable<ChatModel>>(chats);
@@ -50,16 +51,26 @@ namespace Backend_API.Services.Implementations
             await _chatRepo.SaveChangesAsync();
         }
 
-        public async Task<int> SaveMessageAsync(ChatMessageModel message)
+        public async Task<ChatMessage> SaveMessageAsync(ChatMessageModel message)
         {
             ChatMessage newMessage = _mapper.Map<ChatMessage>(message);
-            await _chatMessageRepo.CreateAsync(newMessage);
+            ChatMessage dbMessage  = await _chatMessageRepo.CreateAsync(newMessage);
             await _chatMessageRepo.SaveChangesAsync();
 
-            int messageId = _chatMessageRepo.Get().Where(m => m.Time == newMessage.Time && m.FromUserId == newMessage.FromUserId && m.ToUserId == newMessage.ToUserId)
-                                                  .Select(m => m.Id).FirstOrDefault();
+            dbMessage = await _chatMessageRepo.Get().Where(m => m.Id == dbMessage.Id)
+                                                    .Include(cm => cm.ToUser)
+                                                    .Include(cm => cm.FromUser)
+                                                    .Include(cm => cm.Chat)
+                                                    .FirstOrDefaultAsync();
 
-            return messageId;
+            return dbMessage;
+        }
+
+        public async Task<List<ChatMessageModel>> GetChatMessages(int chatId)
+        {
+            List<ChatMessage> messages = await _chatMessageRepo.Get().Where(cm => cm.ChatId == chatId).OrderByDescending(cm => cm.Time).ToListAsync();
+
+            return _mapper.Map<List<ChatMessageModel>>(messages);
         }
     }
 }

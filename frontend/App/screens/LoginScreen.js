@@ -55,6 +55,12 @@ const LoginScreen = props => {
         })
     }
 
+    const navigateToForgotPassword = () => {
+        props.navigation.navigate({ 
+            routeName: 'ForgotPassword'
+        })
+    }
+
     const getErrorMessage = (errorMessage) => {
         if(errorMessage.length > 0) {
             return (
@@ -112,23 +118,7 @@ const LoginScreen = props => {
                         </MainButton>
                         <MainButton 
                             disabled={isLoading}
-                            onPress={() => {}}
-                            buttonStyle={styles.facebookButton}
-                            textStyle={styles.facebookText}
-                        >
-                            <Text style={styles.facebookText}>Facebook</Text>
-                        </MainButton>
-                        <MainButton
-                            disabled={isLoading}
-                            onPress={() => {}}
-                            buttonStyle={styles.googleButton}
-                            textStyle={styles.googleText}
-                        >
-                            <Text style={styles.googleText}>Google</Text>
-                        </MainButton>
-                        <MainButton 
-                            disabled={isLoading}
-                            onPress={() => {}}
+                            onPress={navigateToForgotPassword}
                             buttonStyle={styles.forgotPasswordButton}
                         >
                             <Text style={styles.forgotPasswordText}>שכחת סיסמא?</Text>
@@ -176,25 +166,6 @@ const styles = StyleSheet.create({
     },
     loginText: {
         color: 'white',
-        fontSize: 20,
-        textAlign: 'center'
-    },
-    facebookButton: {
-        borderColor: Colors.facebook,
-        borderWidth: 3,
-        marginVertical: 15
-    },
-    facebookText: {
-        color: Colors.facebook,
-        fontSize: 20,
-        textAlign: 'center'
-    },
-    googleButton: {
-        borderColor: Colors.googleRed,
-        borderWidth: 3
-    },
-    googleText: {
-        color: Colors.googleRed,
         fontSize: 20,
         textAlign: 'center'
     },

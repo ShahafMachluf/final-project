@@ -24,14 +24,12 @@ export const UpdateMaxDistance = maxDistance => {
     return Put(url, maxDistance);
 }
 
-export const FacebookLogin = () => {
-
+export const UpdatePushNotificationToken = toekn => {
+    const url = `${baseUrl}/notificationToken`;
+    return Put(url, toekn);
 }
 
-export const GoogleLogin = () => {
-
-}
-
-export const ResetPassword = () => {
-    
+export const ResetPassword = email => {
+    const url = `${baseUrl}/resetPassword`;
+    return Post(url, email);
 }

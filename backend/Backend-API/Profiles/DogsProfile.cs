@@ -24,6 +24,7 @@ namespace Backend_API.Profiles
             CreateMap<ApplicationUser, UserChatModel>();
             CreateMap<Chat, ChatModel>();
             CreateMap<ChatMessageModel, ChatMessage>();
+            CreateMap<ChatMessage, ChatMessageModel>();
             CreateMap<PatchDogDto, Dog>();
     }
 
