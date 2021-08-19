@@ -1,5 +1,6 @@
 ﻿using Backend_API.Data.Repository;
 using Backend_API.Models.DbModels;
+using Backend_API.Models.Enums;
 using Backend_API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,5 +22,10 @@ namespace Backend_API.Services.Implementations
         {
             return await _repo.Get().Where(attraction => attraction.City == applicationUser.City).ToListAsync();
         }
-  }
+
+        public async Task<IEnumerable<Attraction>> GetAttractionsByType(ApplicationUser currentUser, AttractionType i_Type)
+        {
+            return await _repo.Get().Where(attraction => attraction.City == currentUser.City && attraction.attractionType == i_Type).ToListAsync();
+        }
+    }
 }

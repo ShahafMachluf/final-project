@@ -14,6 +14,11 @@ namespace Backend_API.Services.Interfaces
         Task<IEnumerable<Dog>> GetLikedDogsAsync(ApplicationUser user);
         Task<IEnumerable<Dog>> GetAllDogsAsync(ApplicationUser user);
         Task<Dog> GetDogByIdAsync(int id);
+        Task deleteDog(ApplicationUser user, Dog dog);
+        Task updateDogInfo(PatchDogDto dogUpdated);
+        public Task<IEnumerable<Dog>> getMyDogs(ApplicationUser currentUser);
+        Task deleteReactionToDog(ApplicationUser currentUser, Dog dog);
 
+        // Task deleteReaction(ApplicationUser currentUser, Reaction dog);
     }
 }

@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Backend_API.Models.Enums;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend_API.Services.Implementations
 {
@@ -94,6 +96,52 @@ namespace Backend_API.Services.Implementations
                                                .ToListAsync();
 
             return likedDogs;
+        }
+
+        public async Task deleteDog(ApplicationUser user, Dog dog)
+        {
+            //await _repo.deleteDog(user, dog);//Delete dog from database and Reactions
+            //Delete from dogs database, reaction database, chat Database?
+            if (dog.OwnerId == user.Id)
+            {
+                await _repo.Delete(dog);//need to implent - > must delete dog from all databases...
+                await _repo.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ApplicationException("לא ניתן למחוק את הכלב");
+            }
+        }
+
+        //public async Task deleteReaction(ApplicationUser currentUser, Reaction dog)
+        //{
+        //    await _reactionRepo.Delete(dog);
+        //}
+        public async Task updateDogInfo(PatchDogDto dogUpdated)
+        {
+            Dog dogFromRepository = _repo.Get().Where(d => d.Id == dogUpdated.Id).FirstOrDefault();
+            if(dogFromRepository == null)
+            {
+                throw new ApplicationException("כלב זה לא קיים במאגר");
+            }
+
+            _mapper.Map(dogUpdated, dogFromRepository);//For it to Work. need to make sure the frontend sends 
+            //All missing parts complete from the old dog info
+            await _repo.SaveChangesAsync();
+          //  return StatusCodes.Status204NoContent; //updated Dog.
+        }
+
+        public async Task<IEnumerable<Dog>> getMyDogs(ApplicationUser currentUser)
+        {
+            List<Dog> myDogsList = await _repo.Get().Where(d => d.OwnerId == currentUser.Id).ToListAsync();
+
+            return myDogsList;
+        }
+
+        public async Task deleteReactionToDog(ApplicationUser currentUser, Dog dog)
+        {
+           Reaction reactionToDelete =  await _reactionRepo.Get().Where(reaction => reaction.DogId == dog.Id && reaction.UserId == currentUser.Id).FirstOrDefaultAsync();
+           await _reactionRepo.Delete(reactionToDelete);
         }
     }
 }
