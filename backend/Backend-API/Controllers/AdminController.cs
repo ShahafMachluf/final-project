@@ -11,12 +11,13 @@ using Backend_API.Models.User;
 using Backend_API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AutoMapper;
 
 namespace Backend_API.Controllers
 {
     [ApiController]
     [Route("api/admin")]
-    public class AdminController 
+    public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;
         private readonly IMapper _mapper;
