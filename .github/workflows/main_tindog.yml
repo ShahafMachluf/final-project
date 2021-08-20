@@ -15,7 +15,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      
+      - name: Bash for GitHub Actions
+        uses: jcblw/bash@1.0.0
+        args: ["mv backend/Backend-API/appsettings.json backend/Backend-API/appsettings.local.json", "mv backend/Backend-API/appsettings.azure.json backend/Backend-API/appsettings.json"]
+      
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
