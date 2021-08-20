@@ -20,7 +20,7 @@ jobs:
           expo-version: 4.x
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
-      - run: yarn install frontend/App
+      - run: yarn add frontend/App
       - run: expo publish frontend/App
 
 
