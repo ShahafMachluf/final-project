@@ -20,8 +20,9 @@ jobs:
           expo-version: 4.x
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
-      - run: npm install frontend/App
-      - run: expo publish frontend/App
+      - run: cd frontend/App
+      - run: npm install
+      - run: expo publish
 
 
 
