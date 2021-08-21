@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useEffect} from 'react';
 import { useHistory } from 'react-router';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -36,7 +36,7 @@ const Login = props => {
     if(!!localStorage.getItem('token')) {
         history.push('/home')
     }
-  }, [useHistory])
+  }, [history])
 
   const submitEventHandler = async e => {
       e.preventDefault();

@@ -1,4 +1,3 @@
-import config from '../config.json';
 
 export const Get = async (url, headers = {}, options = {}) => { 
     const response = await fetch(url, {

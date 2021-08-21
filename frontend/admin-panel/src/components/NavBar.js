@@ -24,7 +24,10 @@ const NavBar = props => {
   const history = useHistory();
 
   const redirect = path => {
-    url[url.length - 1] === '/' ? url = url.substr(0, url.length - 1) : url = url;
+    if(url[url.length - 1] === '/'){
+      url = url.substr(0, url.length - 1)
+    }
+     
     history.push(`${url}/${path}`)
   }
 

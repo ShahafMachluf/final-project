@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = props => {
     const classes = useStyles();
-    let { path, url } = useRouteMatch();
+    let { path } = useRouteMatch();
 
   return (
       <div>
