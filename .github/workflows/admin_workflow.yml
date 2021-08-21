@@ -55,4 +55,6 @@ jobs:
           app-name: 'TinDog-admin'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9D8BADEE4AE14E9AADCF064266A6D56B }}
-          package: frontend/admin-panel
+          package: node-app
+
+
