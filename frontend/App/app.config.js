@@ -11,13 +11,13 @@ export default {
         buildNumber: "1.0.0"
     },
     // use this to work with the backend & SQL servers on Azure
-    extra:{
-        APIAddress: "https://tindog.azurewebsites.net/api",
-        WebSocketAddress: "ws://tindog.azurewebsites.net",
-    }
+    //extra:{
+        //APIAddress: "https://tindog.azurewebsites.net/api",
+        //WebSocketAddress: "ws://tindog.azurewebsites.net",
+   // }
     // use this to work with local backend & SQL servers
-    // extra:{
-    //     APIAddress: "http://169.254.81.170:45455/api",
-    //     WebSocketAddress: "ws://169.254.81.170:45455"
-    // }
+     extra:{
+         APIAddress: "http://192.168.0.105:45455/api",
+         WebSocketAddress: "ws://192.168.0.105:45455"
+     }
 };

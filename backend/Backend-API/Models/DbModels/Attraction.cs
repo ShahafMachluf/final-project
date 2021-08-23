@@ -11,11 +11,8 @@ namespace Backend_API.Models.DbModels
     {
         [Key]
         public int Id { get; set; }
-        [Required]
         public string Name { get; set; }//Required
-        [Required]
         public string Address { get; set; }//Required
-        [Required]
         public string City { get; set; }//Required
         public string ImageURL { get; set; }
         public double Latitude { get; set; }

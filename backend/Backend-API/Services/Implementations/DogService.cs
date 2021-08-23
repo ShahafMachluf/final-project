@@ -56,10 +56,18 @@ namespace Backend_API.Services.Implementations
         }
 
         //Show only UnReacted dogs which are in your chosen city( ofcourse not your own dogs)
-        public async Task<IEnumerable<Dog>> GetAllDogsAsync(ApplicationUser applicationUser, Area area )
+        public async Task<IEnumerable<Dog>> GetAllDogsAsync(ApplicationUser applicationUser )
         {
-            List<Dog> cityDogList =  await _repo.Get().Where(dog => dog.Area == area && dog.Owner.Id != applicationUser.Id).ToListAsync();//Returns list of dogs living in 
+            List<Dog> cityDogList =  await _repo.Get().Where(dog => dog.Owner.Id != applicationUser.Id).ToListAsync();//Returns list of dogs living in 
             List<Dog> didReactionDogList  = await _reactionRepo.Get().Where(reaction => reaction.UserId == applicationUser.Id ).Include(reaction => reaction.Dog).Select(reaction => reaction.Dog).ToListAsync();
+            cityDogList.RemoveAll(dog => didReactionDogList.Contains(dog)); // remove Reacted dogs from search of dogs in chosen city.
+            return cityDogList;
+        }
+
+        public async Task<IEnumerable<Dog>> GetAllDogsByAreaAsync(ApplicationUser applicationUser, Area area)
+        {
+            List<Dog> cityDogList = await _repo.Get().Where(dog => dog.Area == area && dog.Owner.Id != applicationUser.Id).ToListAsync();//Returns list of dogs living in 
+            List<Dog> didReactionDogList = await _reactionRepo.Get().Where(reaction => reaction.UserId == applicationUser.Id).Include(reaction => reaction.Dog).Select(reaction => reaction.Dog).ToListAsync();
             cityDogList.RemoveAll(dog => didReactionDogList.Contains(dog)); // remove Reacted dogs from search of dogs in chosen city.
             return cityDogList;
         }

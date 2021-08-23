@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, StyleSheet, ActivityIndicator, Text, Pressable, Dimensions} from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Text, Pressable, Dimensions, Button} from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import { Ionicons } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
@@ -7,12 +7,13 @@ import RNPickerSelect from 'react-native-picker-select';
 
 import ImageCard from '../components/ImageCard'
 import MainButton from '../components/MainButton';
-import { ReactToDog, getAllDogsHandler } from '../services/dogService';
+import { ReactToDog, getAllDogsHandler, getDogsByAreaHandler } from '../services/dogService';
 import Colors from '../constants/Colors';
 import LinearGradientIcon from '../components/LinearGradientIcon';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import { updatePushNotificationToken } from '../services/userService';
+import { getAllDogs } from '../services/dataServices/dogDataService';
 
 const MainScreen = props => {
     const swiperRef = useRef(null);
@@ -24,15 +25,10 @@ const MainScreen = props => {
     const getDogs = async () => {
         try{
             setIsLoading(true);
-            const receivedDogs = await getAllDogsHandler();
             if(area.length !== 0)
-                receivedDogs = await getDogsByAreaHandler(area);
-            setDogs(receivedDogs);
-            if(receivedDogs.length === 0) {
-                setNoDogs(true);
-            } else {
-                setNoDogs(false);
-            }
+                getDogsByArea(area);
+            else
+                getAllDogs();
         }
         catch (err) {
             console.log(err);
@@ -67,7 +63,7 @@ const MainScreen = props => {
             console.log(err);
             return null;
         })
-    }, [setDogs])
+    }, [setDogs,area])
     
     const setNotificationsHandlers = () => {
         const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(response => {
@@ -104,8 +100,24 @@ const MainScreen = props => {
         ReactToDog(swipedDog.id, reaction);
     }
 
-    const sortByAera = () => {
+    const getDogsByArea = async () => {
+        const receivedDogs = await getDogsByAreaHandler(area);
+        setDogs(receivedDogs);
+            if(receivedDogs.length === 0) {
+                setNoDogs(true);
+            } else {
+                setNoDogs(false);
+            }
+    }
 
+    const getAllDogs = async () => {
+        const receivedDogs = await getAllDogsHandler();
+        setDogs(receivedDogs);
+            if(receivedDogs.length === 0) {
+                setNoDogs(true);
+            } else {
+                setNoDogs(false);
+            }   
     }
 
     const emptyMessage = () => {
@@ -184,7 +196,7 @@ const MainScreen = props => {
                 style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
                 useNativeAndroidPickerStyle={false}
                 Icon={()=> <Ionicons name="md-arrow-down" size={21} color="gray" />}
-            />   
+            /> 
       
             { !noDogs && swiper()}
             { noDogs && emptyMessage()}
