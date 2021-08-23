@@ -49,22 +49,22 @@ namespace Backend_API.Services.Implementations
 
             if (!isCreated)
             {
-                throw new ApplicationException("התרחשה תקלה, נסה שוב מאוחר יותר");
+                throw new ApplicationException("התרחשה תקלה בעת יצירת הכלב, נסה שוב מאוחר יותר");
             }
 
             return _mapper.Map<CreateDogReqRes>(newDog);
         }
 
         //Show only UnReacted dogs which are in your chosen city( ofcourse not your own dogs)
-        public async Task<IEnumerable<Dog>> GetAllDogsAsync(ApplicationUser applicationUser )
+        public async Task<IEnumerable<Dog>> GetAllDogsAsync(ApplicationUser applicationUser, Area area )
         {
-            List<Dog> cityDogList =  await _repo.Get().Where(dog => dog.Owner.City == applicationUser.City && dog.Owner.Id != applicationUser.Id).ToListAsync();//Returns list of dogs living in 
+            List<Dog> cityDogList =  await _repo.Get().Where(dog => dog.Area == area && dog.Owner.Id != applicationUser.Id).ToListAsync();//Returns list of dogs living in 
             List<Dog> didReactionDogList  = await _reactionRepo.Get().Where(reaction => reaction.UserId == applicationUser.Id ).Include(reaction => reaction.Dog).Select(reaction => reaction.Dog).ToListAsync();
-            cityDogList.RemoveAll(dog => didReactionDogList.Contains(dog));
+            cityDogList.RemoveAll(dog => didReactionDogList.Contains(dog)); // remove Reacted dogs from search of dogs in chosen city.
             return cityDogList;
         }
 
-        public async Task<Dog> GetDogByIdAsync(int id)// Need to see how you Will have the id of the dog on the front end - or doing it diffrently 
+        public async Task<Dog> GetDogByIdAsync(int id)
         {
             return await _repo.Get().Where(d => d.Id == id).Include(d => d.Owner).FirstOrDefaultAsync();
         }
@@ -100,11 +100,9 @@ namespace Backend_API.Services.Implementations
 
         public async Task deleteDog(ApplicationUser user, Dog dog)
         {
-            //await _repo.deleteDog(user, dog);//Delete dog from database and Reactions
-            //Delete from dogs database, reaction database, chat Database?
             if (dog.OwnerId == user.Id)
             {
-                await _repo.Delete(dog);//need to implent - > must delete dog from all databases...
+                await _repo.Delete(dog);
                 await _repo.SaveChangesAsync();
             }
             else

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Backend_API.Models.DbModels;
 using Backend_API.Data.Repository;
 using AutoMapper;
+using Backend_API.Models.Enums;
 
 namespace Backend_API.Controllers
 {
@@ -37,12 +38,12 @@ namespace Backend_API.Controllers
         }
 
         [HttpGet]
-        [Route("")]
-        public async Task<IActionResult> getAllDogs()//in the Location wanted
+        [Route("{area}")]
+        public async Task<IActionResult> getAllDogs(Area area)//in the Location wanted
         {
             try
             {
-                var dogsItems = await _dogService.GetAllDogsAsync(_currentUser);//user who sent the request.
+                var dogsItems = await _dogService.GetAllDogsAsync(_currentUser, area);//user who sent the request.
                 return Ok(_mapper.Map<IEnumerable<DogReadDto>>(dogsItems)); // Will recive Dogs from function getAllDogs, and using the mapper to convert them to readDogDto and 
             }
             catch (Exception ex)

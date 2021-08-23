@@ -43,7 +43,7 @@ namespace Backend_API.Controllers
 
 
             [HttpGet]
-            [Route("kind{i_Type}")]
+            [Route("{i_Type}")]
            public async Task<IActionResult> GetAttractionsByType(AttractionType i_Type)
             {
                 try
@@ -56,9 +56,6 @@ namespace Backend_API.Controllers
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 }
-
-
-
 
             }
         }
