@@ -1,6 +1,6 @@
 import Constants from 'expo-constants'
 
-import { Post, Get } from './httpService';
+import { Post, Get, Delete } from './httpService';
 
 const baseUrl = `${Constants.manifest.extra.APIAddress}/dog`;
 
@@ -11,6 +11,11 @@ export const createDog = (dog) => {
 }
 
 export const getAllDogs = () => {
+    return Get(baseUrl);
+}
+
+export const getDogsByArea = (area) => {
+    const url = `${baseUrl}/${area}`;
     return Get(baseUrl);
 }
 
@@ -25,7 +30,7 @@ export const getLikedDogs = () => {
 }
 
 export const deleteLikedDog = (dogId) => {
-    const url = `${baseUrl}/delete/likedDog/id`;
+    const url = `${baseUrl}/delete/likedDog/${dogId}`;
     return Delete(url);
 }
 
@@ -35,7 +40,7 @@ export const getMyDogs = () => {
 }
 
 export const deleteDog = (dogId) => {
-    const url = `${baseUrl}/id`;
+    const url = `${baseUrl}/${dogId}`;
     return Delete(url);
 }
 

@@ -14,6 +14,11 @@ export const getAllDogsHandler = async () => {
     return dogs;
 }
 
+export const getDogsByAreaHandler = async (area) => {
+    const dogs = await dogDataService.getDogsByArea(area);
+    return dogs;
+}
+
 export const GetLikedDogs = async () => {
     const dogs = await dogDataService.getLikedDogs();
     return dogs;

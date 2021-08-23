@@ -1,5 +1,5 @@
 import React, {useState, useRef } from 'react';
-import { View, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, Text, ActivityIndicator } from 'react-native';
+import { View, ScrollView, StyleSheet, TextInput, Dimensions, TouchableWithoutFeedback, Keyboard, Text,Platform, KeyboardAvoidingView, ActivityIndicator} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import SelectMultiple from 'react-native-select-multiple';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,6 +16,7 @@ import DogProfileScreen from './DogProfileScreen';
 import { SafeAreaView } from 'react-navigation';
 import Loader from '../components/Loader';
 import { color } from 'react-native-reanimated';
+import KeyboardShift from '../components/KeyboardShift';
 
 const CreateDogScreen = props => {
     const [name, setName] = useState('');
@@ -147,142 +148,147 @@ const CreateDogScreen = props => {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
-            <ScrollView style={{flex: 1}}>
-                <Header 
-                menuClickEventHandler={props.navigation.toggleDrawer} 
-                />
-                <Text style={styles.headerText} >נא הזן את פרטי הכלב:</Text>
-                <View style={styles.screen}>
-                    <View style={styles.inputContainer}>
-                        <Input 
-                            style={styles.textInput}
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            onChangeText={setName}
-                            placeholder='שם'
-                            returnKeyType='next'
-                            ref={nameInput}
-                            onSubmitEditing={() => ageInput.current.focus() }
-                        />
-                        {getErrorMessage(nameErrorMessage)}
-                        <Input 
-                            style={styles.textInput}
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            keyboardType='numeric'
-                            placeholder='גיל'
-                            onChangeText={setAge}
-                            returnKeyType='next'
-                            ref={ageInput}
-                            onSubmitEditing={() => raceInput.current.focus() }
-                        />
-                        {getErrorMessage(ageErrorMessage)}
-                        <Input 
-                            style={styles.textInput}
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            returnKeyType='next'
-                            placeholder='גזע'
-                            onChangeText={setRace}
-                            ref={raceInput}
-                            onSubmitEditing={() => colorInput.current.focus() }
-                        />
-                        {getErrorMessage(raceErrorMessage)}
-                        <Input 
-                            style={styles.textInput}
-                            autoCapitalize='none'
-                            autoCorrect={true}
-                            returnKeyType='next'
-                            placeholder='צבע'
-                            onChangeText={setColor}
-                            ref={colorInput}
-                        />
-                        {getErrorMessage(colorErrorMessage)}
-                        <ImgPicker onImageTaken={setSelectedImage} ref={imageInput} />
-                        {getErrorMessage(imageErrorMessage)}
-                        <RNPickerSelect
-                            value={gender}
-                            placeholder={{
-                                label: 'בחר מין',
-                                value: null,
-                                color: '#808080',
-                            }}
-                            items={[
-                                { label: 'זכר', value: 0 },
-                                { label: 'נקבה', value: 1 },
-                            ]}
-                            onValueChange = {setGender}
-                            style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
-                            useNativeAndroidPickerStyle={false}
-                            Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
-                        />
-                        {getErrorMessage(genderErrorMessage)}
-                        <RNPickerSelect
-                            value={size}
-                            placeholder={{
-                                label: 'בחר גודל',
-                                value: null,
-                                color: '#808080',
-                            }}
-                            items={[
-                                { label: 'קטן', value: 0 },
-                                { label: 'בינוני', value: 1 },
-                                { label: 'גדול', value: 2 },
+        <KeyboardShift>{() => (
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
+                <ScrollView style={{flex: 1}}>
+                    <Header 
+                    menuClickEventHandler={props.navigation.toggleDrawer} 
+                    />
+                    <Text style={styles.headerText} >נא הזן את פרטי הכלב:</Text>
+                    <View style={styles.screen}>
+                        <View style={styles.inputContainer}>
+                            <Input 
+                                style={styles.textInput}
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                                onChangeText={setName}
+                                placeholder='שם'
+                                returnKeyType='next'
+                                ref={nameInput}
+                                onSubmitEditing={() => ageInput.current.focus() }
+                            />
+                            {getErrorMessage(nameErrorMessage)}
+                            <Input 
+                                style={styles.textInput}
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                                keyboardType='numeric'
+                                placeholder='גיל'
+                                onChangeText={setAge}
+                                returnKeyType='next'
+                                ref={ageInput}
+                                onSubmitEditing={() => raceInput.current.focus() }
+                            />
+                            {getErrorMessage(ageErrorMessage)}
+                            <Input 
+                                style={styles.textInput}
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                                returnKeyType='next'
+                                placeholder='גזע'
+                                onChangeText={setRace}
+                                ref={raceInput}
+                                onSubmitEditing={() => colorInput.current.focus() }
+                            />
+                            {getErrorMessage(raceErrorMessage)}
+                            <Input 
+                                style={styles.textInput}
+                                autoCapitalize='none'
+                                autoCorrect={true}
+                                returnKeyType='next'
+                                placeholder='צבע'
+                                onChangeText={setColor}
+                                ref={colorInput}
+                            />
+                            {getErrorMessage(colorErrorMessage)}
+                            <ImgPicker onImageTaken={setSelectedImage} ref={imageInput} />
+                            {getErrorMessage(imageErrorMessage)}
+                            <RNPickerSelect
+                                value={gender}
+                                placeholder={{
+                                    label: 'בחר מין',
+                                    value: null,
+                                    color: '#808080',
+                                }}
+                                items={[
+                                    { label: 'זכר', value: 0 },
+                                    { label: 'נקבה', value: 1 },
                                 ]}
-                            onValueChange={setSize}
-                            style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
-                            useNativeAndroidPickerStyle={false}
-                            Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
-                         />
-                         <RNPickerSelect
-                            value={size}
-                            placeholder={{
-                                label: 'בחר אזור בארץ',
-                                value: null,
-                                color: '#808080',
-                            }}
-                            items={[
-                                { label: 'צפון', value: 0 },
-                                { label: 'מרכז', value: 1 },
-                                { label: 'השרון', value: 2 },
-                                { label: 'ירושלים', value: 3 },
-                                { label: 'דרום', value: 4 },
-                                ]}
-                            onValueChange={setArea}
-                            style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
-                            useNativeAndroidPickerStyle={false}
-                            Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
-                         />
-                         {getErrorMessage(sizeErrorMessage)}
-                        <SelectMultiple
-                            rowStyle = {styles.CheckBox}
-                            items={[{label: 'מחוסן', value: 'Vaccinated'},
-                            {label: 'מסורס/ מעוקרת', value: 'Neutered'}]}
-                            selectedItems={selectedCheckBox}
-                            onSelectionsChange={setSelectCheckBox}
-                        />           
-                         <Input 
-                            multiline={true}
-                            style={{...styles.textInput, ...styles.bigTextBox}}
-                            autoCapitalize='none'
-                            autoCorrect={true}
-                            placeholder='מידע כללי'
-                            onChangeText={setInformation}
-                            ref={additionalInput}
-                        />
-                        {isLoading &&  <Loader active={isLoading} />}
-                        <MainButton 
-                            onPress={clickDogHandler} 
-                            buttonStyle={styles.continueButton}
-                            linearGradientColor={Colors.mainColor} 
-                        >
-                            <Text style={styles.continueText}>המשך</Text>
-                        </MainButton>
+                                onValueChange = {setGender}
+                                style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
+                                useNativeAndroidPickerStyle={false}
+                                Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
+                            />
+                            {getErrorMessage(genderErrorMessage)}
+                            <RNPickerSelect
+                                value={size}
+                                placeholder={{
+                                    label: 'בחר גודל',
+                                    value: null,
+                                    color: '#808080',
+                                }}
+                                items={[
+                                    { label: 'קטן', value: 0 },
+                                    { label: 'בינוני', value: 1 },
+                                    { label: 'גדול', value: 2 },
+                                    ]}
+                                onValueChange={setSize}
+                                style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
+                                useNativeAndroidPickerStyle={false}
+                                Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
+                            />
+                            <RNPickerSelect
+                                value={area}
+                                placeholder={{
+                                    label: 'בחר אזור בארץ',
+                                    value: null,
+                                    color: '#808080',
+                                }}
+                                items={[
+                                    { label: 'צפון', value: 0 },
+                                    { label: 'מרכז', value: 1 },
+                                    { label: 'השרון', value: 2 },
+                                    { label: 'ירושלים', value: 3 },
+                                    { label: 'דרום', value: 4 },
+                                    ]}
+                                onValueChange={setArea}
+                                style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
+                                useNativeAndroidPickerStyle={false}
+                                Icon={() => <Ionicons name="md-arrow-down" size={24} color="gray" />}
+                            />
+                            {getErrorMessage(sizeErrorMessage)}
+                            <SelectMultiple
+                                rowStyle = {styles.CheckBox}
+                                items={[{label: 'מחוסן', value: 'Vaccinated'},
+                                {label: 'מסורס/ מעוקרת', value: 'Neutered'}]}
+                                selectedItems={selectedCheckBox}
+                                onSelectionsChange={setSelectCheckBox}
+                            /> 
+                            <KeyboardAvoidingView behavior={Platform.Os == "ios" ? "padding" : "height"}>       
+                            <Input 
+                                multiline={true}
+                                style={{...styles.textInput, ...styles.bigTextBox}}
+                                autoCapitalize='none'
+                                autoCorrect={true}
+                                placeholder='מידע כללי'
+                                onChangeText={setInformation}
+                                ref={additionalInput}
+                            />
+                            </KeyboardAvoidingView>
+                            {isLoading &&  <Loader active={isLoading} />}
+                            <MainButton 
+                                onPress={clickDogHandler} 
+                                buttonStyle={styles.continueButton}
+                                linearGradientColor={Colors.mainColor} 
+                            >
+                                <Text style={styles.continueText}>המשך</Text>
+                            </MainButton>
+                            </View>
                         </View>
-                    </View>
-            </ScrollView>
-        </TouchableWithoutFeedback>
+                </ScrollView>
+            </TouchableWithoutFeedback>
+         )}
+         </KeyboardShift>
     );
 };
 
@@ -345,7 +351,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 20,
         textAlign: 'center'
-    }
+    },
 });
 
 const pickerSelectStyles = StyleSheet.create({
