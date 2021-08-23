@@ -11,6 +11,9 @@ import MainScreen from '../screens/MainScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import DogProfileScreen from '../screens/DogProfileScreen';
 import CreateDogScreen from '../screens/CreateDogScreen';
+import CareDogScreen from '../screens/CareDogScreen';
+import Hospitals from '../screens/Hospitals';
+import BuisnessProfile from '../screens/BuisnessProfile';
 import Drawer from '../components/Drawer';
 import HangOutScreen from '../screens/HangOutScreen';
 import MapCard from '../components/MapCard'
@@ -36,6 +39,27 @@ const createDog = createStackNavigator({
     },
     DogProfile: {
         screen: DogProfileScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
+})
+
+const careDog = createStackNavigator({
+    Search: {
+        screen: CareDogScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    Hospitals: {
+        screen: Hospitals,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    Buisness: {
+        screen: BuisnessProfile,
         navigationOptions: {
             headerShown: false
         }
@@ -113,7 +137,8 @@ const app = createDrawerNavigator({
         }
     },
     TakeCare: {
-        screen: MainScreen,
+        screen: careDog,
+        //screen: BuisnessProfile,
         navigationOptions: {
             drawerLabel: 'דואגים לכלב',
             drawerIcon: () => (
