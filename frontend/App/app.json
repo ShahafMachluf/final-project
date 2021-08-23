@@ -1,10 +1,25 @@
 {
   "expo": {
-    "name": "App",
-    "slug": "App",
+    "name": "TinDog",
+    "slug": "tindog",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "sdkVersion": "41.0.0",
+    "android": {
+      "package": "com.shahafm.tindog",
+      "versionCode": 1,
+      "useNextNotificationsApi": true,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shahafm.tindog",
+      "buildNumber": "1.0.0"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -16,18 +31,19 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "useNextNotificationsApi": true
-    },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
+  },
+  "android": {
+    "package": "com.shahafm.tindog",
+    "versionCode": 1,
+    "useNextNotificationsApi": true
+  },
+  "ios": {
+    "supportsTablet": true,
+    "bundleIdentifier": "com.shahafm.tindog",
+    "buildNumber": "1.0.0"
   }
 }

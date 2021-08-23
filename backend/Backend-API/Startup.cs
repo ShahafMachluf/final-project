@@ -99,6 +99,17 @@ namespace Backend_API
             #endregion
 
             services.AddWebSocketManager();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("all", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+            
+
 
         }
 
@@ -117,6 +128,8 @@ namespace Backend_API
             app.UseWebSocketServer();
 
             app.UseRouting();
+
+            app.UseCors("all");
 
             app.UseAuthentication();
 
