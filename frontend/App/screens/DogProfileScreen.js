@@ -13,10 +13,11 @@ const DogProfileScreen = props => {
     const dog = props.navigation.state.params.dog;
 
     const navigateToMainScreen = () => {
-        props.navigation.dispatch(StackActions.popToTop());
-        props.navigation.navigate({ 
-            routeName: 'Main'
-        })
+        props.navigation.goBack(null); 
+        //props.navigation.dispatch(StackActions.popToTop());
+        //props.navigation.navigate({ 
+            //routeName: 'Main'
+        //})
     }
 
     const setGender = gender => {
@@ -33,6 +34,19 @@ const DogProfileScreen = props => {
             return 'בינוני';
         else
             return 'גדול';
+    }
+
+    const setArea = area => {
+        if(area == '0')
+            return 'צפון';
+        else if(area == '1')
+            return 'מרכז';
+        else if(area == '2')
+            return 'השרון';
+        else if(area == '3')
+            return 'ירושלים';
+        else
+            return 'דרום';
     }
 
     const setIsVaccinated = isVaccinated => {
@@ -58,6 +72,7 @@ const DogProfileScreen = props => {
                         </View>
                         <MainButton
                             buttonStyle={styles.addImageIcon}
+                            //onPress={(props) => { this.props.navigation.goBack(null) }}
                             onPress={navigateToMainScreen}
                         >
                             <LinearGradientIcon 
@@ -86,6 +101,10 @@ const DogProfileScreen = props => {
                             <Text style={styles.propertiesText}>{setSize(dog.size)}</Text>
                     </View>
                     <View style={styles.keyValuePair}>
+                            <Text style={styles.propertiesText}>אזור</Text>
+                            <Text style={styles.propertiesText}>{setArea(dog.area)}</Text>
+                    </View>
+                    <View style={styles.keyValuePair}>
                             <Text style={styles.propertiesText}>מחוסן</Text>
                             <Text style={styles.propertiesText}>{setIsVaccinated(dog.isVaccinated)}</Text>
                     </View>
@@ -93,9 +112,9 @@ const DogProfileScreen = props => {
                             <Text style={styles.propertiesText}>מסורס/מעוקרת</Text>
                             <Text style={styles.propertiesText}>{setIsVaccinated(dog.isNeutered)}</Text>
                     </View>
-                    <View style={styles.keyValuePair}>
-                            <Text style={styles.propertiesText}>מידע כללי</Text>
-                            <Text style={styles.propertiesText}>{dog.information}</Text>
+                    <View >
+                            <Text style={styles.informationText}>מידע כללי</Text> 
+                            <Text style={styles.informationText}>{dog.information}</Text>
                     </View>
                     </View>
                 </View>
@@ -131,11 +150,20 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'gray'
     },
+    informationText: {
+        marginBottom: 15,
+        fontSize: 18,
+        color: 'gray',
+        textAlign: 'center', 
+        marginHorizontal: 30
+    },
+
     keyValuePair: {
         flexDirection: 'row-reverse',
         justifyContent: 'space-between',
         marginVertical: 20,
         marginHorizontal: 30
+
     },
     addImageIcon: {
         backgroundColor: 'white',

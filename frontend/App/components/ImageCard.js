@@ -27,6 +27,7 @@ const ImageCard = props => {
     }
 
     return (
+        
         <View style={{...styles.container}}> 
                 <ImageBackground
                     style={styles.image} 

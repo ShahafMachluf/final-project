@@ -13,56 +13,7 @@ const LikedDogsScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [likedDogs, setLikedDogs] = useState([
-        //{
-        //     id: 1,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 2,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 3,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 4,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 5,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 6,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 7,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 8,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 9,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 10,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // }
+       
     ]);
 
 
@@ -85,8 +36,7 @@ const LikedDogsScreen = props => {
     }
 
     const onDelete = async dogId => {
-        await DeleteLikedDog(dogId);
-        refresh();
+        const dog = await DeleteLikedDog(dogId);
     }
 
     const renderItem = ({item}) => {

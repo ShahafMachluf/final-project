@@ -48,8 +48,8 @@ const ProfileScreen = props => {
     }
 
     const onDelete = async dogId => {
-        await DeleteDog(dogId);
-        refresh();
+        const dog = await DeleteDog(dogId);
+
     }
 
     const renderItem = ({item}) => {

@@ -57,6 +57,37 @@ const likedDogs = createStackNavigator({
     }
 }, {detachInactiveScreens: true})
 
+const userProfile = createStackNavigator({
+    UserProfile: {
+        screen: ProfileScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    DogProfile: {
+        screen: DogProfileScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
+}, {detachInactiveScreens: true})
+
+const main = createStackNavigator({
+    MainScreen: {
+        screen: MainScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    DogProfile: {
+        screen: DogProfileScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
+}, {detachInactiveScreens: true})
+
+
 const chat = createStackNavigator({
     Chats: {
         screen: ChatsScreen,
@@ -74,7 +105,7 @@ const chat = createStackNavigator({
 
 const app = createDrawerNavigator({
     Main: {
-        screen: MainScreen,
+        screen: main,
         navigationOptions: {
             drawerLabel: 'אימוץ כלב',
             drawerIcon: () => (
@@ -137,7 +168,7 @@ const app = createDrawerNavigator({
         }
     },
     Profile: {
-        screen: ProfileScreen,
+        screen: userProfile,
         navigationOptions: {
             drawerLabel: 'פרופיל',
             drawerIcon: () => (
