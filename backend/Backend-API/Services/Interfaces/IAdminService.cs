@@ -9,8 +9,12 @@ namespace Backend_API.Services.Interfaces
 {
     public interface IAdminService
     {
-        public Task RemoveUser(ApplicationUser user);
-        public Task AddAttraction(Attraction attraction);
-        public ApplicationUser GetById(string id);
+        Task RemoveUser(ApplicationUser user);
+        Task RemoveAttraction(Attraction attraction);
+        Task<Attraction> CreateAttraction(Attraction attraction);
+        Task<ApplicationUser> GetUserById(string id);
+        Task<Attraction> GetAttractionById(int id);
+
+
     }
 }

@@ -12,6 +12,7 @@ using Backend_API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using AutoMapper;
+using Backend_API.Models.DbModels;
 
 namespace Backend_API.Controllers
 {
@@ -27,13 +28,57 @@ namespace Backend_API.Controllers
             _adminService = adminService;
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> deleteUser(string id)
+         [HttpPost]
+         [Route("addAttraction")]
+         public async Task<IActionResult> addAttraction([FromBody] Attraction attraction )
         {
             try
             {
-                var user =  _adminService.GetById(id);
+                Attraction result = await _adminService.CreateAttraction(attraction);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ArgumentException || ex is ApplicationException)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("attraction/{id}")]
+        public async Task<IActionResult> deleteAttraction(int id)
+        {
+            try
+            {
+                var attraction = await _adminService.GetAttractionById(id);
+                if (attraction == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _adminService.RemoveAttraction(attraction);
+                    return Ok(attraction);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status203NonAuthoritative, ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> deleteUser(string id)//and his dogs..
+        {
+            try
+            {
+                var user = await _adminService.GetUserById(id);
                 if (user == null)
                 {
                     return NotFound();
