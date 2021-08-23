@@ -1,34 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, StyleSheet, ActivityIndicator, Text } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Text, Pressable, Dimensions, Button} from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import { Ionicons } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
+import RNPickerSelect from 'react-native-picker-select';
 
 import ImageCard from '../components/ImageCard'
 import MainButton from '../components/MainButton';
-import { ReactToDog, getAllDogsHandler } from '../services/dogService';
+import { ReactToDog, getAllDogsHandler, getDogsByAreaHandler } from '../services/dogService';
 import Colors from '../constants/Colors';
 import LinearGradientIcon from '../components/LinearGradientIcon';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import { updatePushNotificationToken } from '../services/userService';
+import { getAllDogs } from '../services/dataServices/dogDataService';
 
 const MainScreen = props => {
     const swiperRef = useRef(null);
     const [dogs, setDogs] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [noDogs, setNoDogs] = useState(false);
+    const [area, setArea] = useState('');
     
     const getDogs = async () => {
         try{
             setIsLoading(true);
-            const receivedDogs = await getAllDogsHandler();
-            setDogs(receivedDogs);
-            if(receivedDogs.length === 0) {
-                setNoDogs(true);
-            } else {
-                setNoDogs(false);
-            }
+            if(area.length !== 0)
+                getDogsByArea(area);
+            else
+                getAllDogs();
         }
         catch (err) {
             console.log(err);
@@ -63,7 +63,7 @@ const MainScreen = props => {
             console.log(err);
             return null;
         })
-    }, [setDogs])
+    }, [setDogs,area])
     
     const setNotificationsHandlers = () => {
         const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(response => {
@@ -100,6 +100,26 @@ const MainScreen = props => {
         ReactToDog(swipedDog.id, reaction);
     }
 
+    const getDogsByArea = async () => {
+        const receivedDogs = await getDogsByAreaHandler(area);
+        setDogs(receivedDogs);
+            if(receivedDogs.length === 0) {
+                setNoDogs(true);
+            } else {
+                setNoDogs(false);
+            }
+    }
+
+    const getAllDogs = async () => {
+        const receivedDogs = await getAllDogsHandler();
+        setDogs(receivedDogs);
+            if(receivedDogs.length === 0) {
+                setNoDogs(true);
+            } else {
+                setNoDogs(false);
+            }   
+    }
+
     const emptyMessage = () => {
         return (
             <View style={styles.noDogs}>
@@ -115,7 +135,7 @@ const MainScreen = props => {
     }
 
     const swiper = () => {
-        return (
+        return (   
             <Swiper
                 cardStyle={{paddingTop: 20}}
                 containerStyle={styles.cardContainer}
@@ -131,14 +151,16 @@ const MainScreen = props => {
                 onSwipedLeft={(index) => {swipeEventHandler(index, 2)}}
                 onSwipedRight={(index) => {swipeEventHandler(index, 1)}}
                 onSwipedAll={() => {setNoDogs(true);}}
-                ref={swiperRef}
+                ref={swiperRef} 
             />
         )
     }
 
     const renderDogCard = dogData => {
         if(dogData) {
-            return <ImageCard {...dogData} />
+            return <Pressable onPress={() => {props.navigation.navigate({routeName: 'DogProfile', params: {dog: dogData}})}}>
+               <ImageCard {...dogData} />
+            </Pressable>
         }
     }
 
@@ -152,9 +174,30 @@ const MainScreen = props => {
 
     return (
         <View style={styles.screen}>
-            <Header 
+            <Header style={styles.Header}
                 menuClickEventHandler={props.navigation.toggleDrawer}
+                
             />
+            <RNPickerSelect
+                value={area}
+                placeholder={{
+                    label: 'בחר אזור בארץ',
+                    value: null,
+                    color: '#808080',
+                }}
+                items={[
+                    { label: 'צפון', value: 0 },
+                    { label: 'מרכז', value: 1 },
+                    { label: 'השרון', value: 2 },
+                    { label: 'ירושלים', value: 3 },
+                    { label: 'דרום', value: 4 },
+                    ]}
+                onValueChange={setArea}
+                style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
+                useNativeAndroidPickerStyle={false}
+                Icon={()=> <Ionicons name="md-arrow-down" size={21} color="gray" />}
+            /> 
+      
             { !noDogs && swiper()}
             { noDogs && emptyMessage()}
             <View style={styles.buttonsContainer}>
@@ -184,7 +227,6 @@ const MainScreen = props => {
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
     screen: {
@@ -221,7 +263,48 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    inputContainer: {
+        flex: 1,
+        width: '100%',
+        marginBottom: Dimensions.get('window').height / 60
+    },
+    iconContainer: {
+        marginTop: Dimensions.get('window').width / 10.5,
+        right: Dimensions.get('window').width / 3.3,
+    },
+    Header: {
+        height: '11.5%',
     }
+
 });
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+      textAlign: 'center',
+      fontSize: 16,
+      paddingVertical: 7,
+      paddingHorizontal: 7,
+      borderWidth: 1,
+      borderColor: 'black',
+      borderRadius: 4,
+      color: 'black',
+      marginHorizontal: Dimensions.get('window').width / 3.5,
+      marginTop: Dimensions.get('window').width / 13,
+      marginBottom: 10,
+    },
+    inputAndroid: {
+      textAlign: 'center',
+      fontSize: 16,
+      paddingHorizontal: 7,
+      paddingVertical: 7,
+      borderWidth: 1,
+      borderColor: 'black',
+      borderRadius: 8,
+      color: 'black',
+      marginHorizontal: Dimensions.get('window').width / 3.5,
+      marginTop: Dimensions.get('window').width / 15,
+    },
+  });
 
 export default MainScreen;

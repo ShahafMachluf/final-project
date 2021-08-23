@@ -25,6 +25,7 @@ namespace Backend_API.Models.DbModels
         public string Information { get; set; }
         public bool? IsVaccinated { get; set; } //חיסון
         public bool? IsNeutered { get; set; } //סירוס
-        //public virtual ICollection<Reaction> Reactions { get; set; }
+        public virtual ICollection<Reaction> Reactions { get; set; }
+        public Area Area { get; set; }
   }
 }

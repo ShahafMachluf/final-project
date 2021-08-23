@@ -68,3 +68,4 @@ export const isValidPassword = password => {
 export const isValidName = name => {
     return name.length > 0;
 }
+

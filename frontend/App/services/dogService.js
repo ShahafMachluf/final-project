@@ -14,7 +14,29 @@ export const getAllDogsHandler = async () => {
     return dogs;
 }
 
+export const getDogsByAreaHandler = async (area) => {
+    const dogs = await dogDataService.getDogsByArea(area);
+    return dogs;
+}
+
 export const GetLikedDogs = async () => {
     const dogs = await dogDataService.getLikedDogs();
     return dogs;
 }
+
+export const DeleteLikedDog = async (dogId) => {
+    const dog = await dogDataService.deleteLikedDog(dogId);
+    return dog;
+}
+
+export const GetMyDogs = async () => {
+    const dogs = await dogDataService.getMyDogs();
+    return dogs;
+}
+
+export const DeleteDog = async (dogId) => {
+    const dog = await dogDataService.deleteDog(dogId);
+    return dog;
+}
+
+

@@ -27,7 +27,7 @@ const MapCard = props => {
             />
             <View style={styles.detailsContainer}>                    
                 <Text style={styles.title}>{props.data.name}</Text>
-                <Text>{props.data.address}</Text>
+                <Text style={styles.address} >{props.data.address}</Text>
             </View>
         </View>
     )
@@ -54,6 +54,10 @@ const styles = StyleSheet.create({
     image: {
         height: 100,
         width: 200,
+    },
+    address: {
+        fontSize: 15,
+        textAlign: 'center'
     }
 });
 

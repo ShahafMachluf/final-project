@@ -109,6 +109,9 @@ namespace Backend_API.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
 
@@ -120,6 +123,9 @@ namespace Backend_API.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("attractionType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -133,7 +139,8 @@ namespace Backend_API.Migrations
                             ImageURL = "https://lh5.googleusercontent.com/p/AF1QipMhf6Z16ZIfaq2XwW-hSZCOjndODw_Nnn_6-Hs=w408-h304-k-no",
                             Latitude = 32.039332389353092,
                             Longitude = 34.745416855801309,
-                            Name = "חוף עליה תל אביב יפו"
+                            Name = "חוף עליה תל אביב יפו",
+                            attractionType = 0
                         },
                         new
                         {
@@ -142,7 +149,8 @@ namespace Backend_API.Migrations
                             ImageURL = "https://lh5.googleusercontent.com/p/AF1QipM3-k-Cx-grQzaczPPEGdDBbx7ErjzihT8yUdud=w408-h306-k-no",
                             Latitude = 32.093060412683101,
                             Longitude = 34.770929383805104,
-                            Name = "חוף הכלבים"
+                            Name = "חוף הכלבים",
+                            attractionType = 0
                         },
                         new
                         {
@@ -151,7 +159,8 @@ namespace Backend_API.Migrations
                             ImageURL = "https://lh5.googleusercontent.com/p/AF1QipPeRLFHW8modnyo7mN4AD6XEDgDieF4CIzJmMQ4=w408-h306-k-no",
                             Latitude = 32.116458689969946,
                             Longitude = 34.779863188779913,
-                            Name = "חוף הכלבים הצפוני - תל ברוך"
+                            Name = "חוף הכלבים הצפוני - תל ברוך",
+                            attractionType = 0
                         },
                         new
                         {
@@ -160,7 +169,8 @@ namespace Backend_API.Migrations
                             ImageURL = "https://lh5.googleusercontent.com/p/AF1QipOXwbXKGAlscGmDZ_0n6z_fgdcfUsxP6FpTV-dS=w408-h306-k-no",
                             Latitude = 32.144486238831021,
                             Longitude = 34.790942155733418,
-                            Name = "חוף הצוק הצפוני"
+                            Name = "חוף הצוק הצפוני",
+                            attractionType = 0
                         });
                 });
 
@@ -233,6 +243,9 @@ namespace Backend_API.Migrations
 
                     b.Property<double?>("Age")
                         .HasColumnType("float");
+
+                    b.Property<int>("Area")
+                        .HasColumnType("int");
 
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
@@ -489,7 +502,7 @@ namespace Backend_API.Migrations
             modelBuilder.Entity("Backend_API.Models.DbModels.Reaction", b =>
                 {
                     b.HasOne("Backend_API.Models.DbModels.Dog", "Dog")
-                        .WithMany()
+                        .WithMany("Reactions")
                         .HasForeignKey("DogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -557,6 +570,11 @@ namespace Backend_API.Migrations
             modelBuilder.Entity("Backend_API.Models.DbModels.Chat", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Backend_API.Models.DbModels.Dog", b =>
+                {
+                    b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618
         }

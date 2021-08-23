@@ -37,5 +37,12 @@ namespace Backend_API.Data.Repository
         {
             return _dbSet.AsQueryable();
         }
+
+        public async Task Delete(TEntity objectToRemove)
+        {//if its to delete dog you will also need to delete all his reactions and what so ever... messy
+            //_dbSet.Remove(objectToRemove);
+            _appDbContext.Remove(objectToRemove); //only removes dogs from dog database.
+            await SaveChangesAsync();
+        }
     }
 }

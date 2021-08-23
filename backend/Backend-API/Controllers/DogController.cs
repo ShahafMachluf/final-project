@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Backend_API.Models.DbModels;
 using Backend_API.Data.Repository;
 using AutoMapper;
+using Backend_API.Models.Enums;
 
 namespace Backend_API.Controllers
 {
@@ -28,12 +29,28 @@ namespace Backend_API.Controllers
 
         public DogController(
             IDogService dogService,
-            IUserService userService, 
+            IUserService userService,
             IMapper mapper) : base(userService)
         {
             _dogService = dogService;
             _mapper = mapper;
-            
+
+        }
+
+        [HttpGet]
+        [Route("{area}")]
+        public async Task<IActionResult> getAllDogsByArea(Area area)//in the Location wanted
+        {
+            try
+            {
+                var dogsItems = await _dogService.GetAllDogsByAreaAsync(_currentUser, area);//user who sent the request.
+                return Ok(_mapper.Map<IEnumerable<DogReadDto>>(dogsItems)); // Will recive Dogs from function getAllDogs, and using the mapper to convert them to readDogDto and 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+
+            }
         }
 
         [HttpGet]
@@ -42,13 +59,52 @@ namespace Backend_API.Controllers
         {
             try
             {
-                var dogsItems = await _dogService.GetAllDogsAsync();
+                var dogsItems = await _dogService.GetAllDogsAsync(_currentUser);//user who sent the request.
                 return Ok(_mapper.Map<IEnumerable<DogReadDto>>(dogsItems)); // Will recive Dogs from function getAllDogs, and using the mapper to convert them to readDogDto and 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-                
+
+            }
+        }
+
+        [HttpPatch]
+        [Route("id")]
+        public async Task<IActionResult> updateExistingDog([FromBody] PatchDogDto dogUpdated)
+        {
+            try
+            {
+
+                await _dogService.updateDogInfo(dogUpdated);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status406NotAcceptable, ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> deleteDog(int id)
+        {
+            try
+            {
+                var dog = await _dogService.GetDogByIdAsync(id);
+                if (dog == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _dogService.deleteDog(_currentUser, dog);
+                    return Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status203NonAuthoritative, ex.Message);
             }
         }
 
@@ -58,7 +114,7 @@ namespace Backend_API.Controllers
         {
             try
             {
-                var dogItem =  _dogService.GetDogByIdAsync(id);
+                var dogItem = await _dogService.GetDogByIdAsync(id);
                 if (dogItem != null)
                 {
                     return Ok(_mapper.Map<DogReadDto>(dogItem));
@@ -71,6 +127,30 @@ namespace Backend_API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("/delete/likedDog/{id}")]// delete/likedDog/id
+        public async Task<IActionResult> deleteLikedDogFromList(int idOfDog)
+        {
+            try
+            {
+                var dog = await _dogService.GetDogByIdAsync(idOfDog);
+                if (dog == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    //await _dogService.deleteDog(_currentUser, dog);;
+                    await _dogService.deleteReactionToDog(_currentUser, dog);
+                    return Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
 
@@ -95,36 +175,52 @@ namespace Backend_API.Controllers
             }
         }
 
-    [HttpPost]
-    [Route("react")]
-    public async Task<IActionResult> ReactToDog([FromBody] ReactToDogReq reaction)
-    {
-      try
-      {
-        await _dogService.ReactToDogAsync(_currentUser, reaction);
+        [HttpPost]
+        [Route("react")]
+        public async Task<IActionResult> ReactToDog([FromBody] ReactToDogReq reaction)
+        {
+            try
+            {
+                await _dogService.ReactToDogAsync(_currentUser, reaction);
 
-        return Ok(true);
-      }
-      catch (Exception ex)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-      }
-     }
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
-    [HttpGet]
-    [Route("liked")]
-    public async Task<IActionResult> GetLikedDogs()
-    {
-      try
-      {
-        var dogs = await _dogService.GetLikedDogsAsync(_currentUser);
+        [HttpGet]
+        [Route("liked")]
+        public async Task<IActionResult> GetLikedDogs()
+        {
+            try
+            {
+                var dogs = await _dogService.GetLikedDogsAsync(_currentUser);
 
-        return Ok(dogs);
-      }
-      catch (Exception ex)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-      }
+                return Ok(dogs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("myDogs")]
+        public async Task<IActionResult> getMyDogs()
+        {
+            try
+            {
+                var dogs = await _dogService.getMyDogs(_currentUser);
+
+                return Ok(dogs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
     }
     }
 }

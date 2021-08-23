@@ -1,4 +1,5 @@
-﻿using Backend_API.Services.Interfaces;
+﻿using Backend_API.Models.Enums;
+using Backend_API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,20 +25,38 @@ namespace Backend_API.Controllers
       _attractionService = attractionService;
     }
 
-    [HttpGet]
-    [Route("")]
-    public async Task<IActionResult> GetAllAttractions()
-    {
-      try
-      {
-        var attractions = await _attractionService.GetAllAttractionsAsync();
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> GetAllAttractions()
+        {
+            try
+            {
+                var attractions = await _attractionService.GetAllAttractionsAsync(_currentUser);
 
-        return Ok(attractions);
-      }
-      catch (Exception ex)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-      }
-    }
-  }
+                return Ok(attractions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+            [HttpGet]
+            [Route("{i_Type}")]
+           public async Task<IActionResult> GetAttractionsByType(AttractionType i_Type)
+            {
+                try
+                {
+                    var attractions = await _attractionService.GetAttractionsByType(_currentUser, i_Type);
+
+                    return Ok(attractions);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                }
+
+            }
+        }
 }

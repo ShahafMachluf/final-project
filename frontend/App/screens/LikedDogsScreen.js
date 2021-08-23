@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, FlatList, ScrollView, StyleSheet, Text, Image, Pressable, RefreshControl} from 'react-native';
+import {View, FlatList, ScrollView, StyleSheet,Button, Text, Image, Pressable, RefreshControl} from 'react-native';
 
 import Header from '../components/Header'
 import {GetLikedDogs} from '../services/dogService';
 import Loader from '../components/Loader';
+import {DeleteLikedDog} from '../services/dogService';
 
 const LikedDogsScreen = props => {
     // TODO 
@@ -12,56 +13,7 @@ const LikedDogsScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [likedDogs, setLikedDogs] = useState([
-        //{
-        //     id: 1,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 2,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 3,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 4,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 5,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 6,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 7,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 8,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 9,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // },
-        // {
-        //     id: 10,
-        //     name: `ג'קי`,
-        //     imageURL: 'https://res.cloudinary.com/dogapp444/image/upload/v1621253804/yq682rq87fqpiwhlvnyv.jpg'
-        // }
+       
     ]);
 
 
@@ -83,6 +35,10 @@ const LikedDogsScreen = props => {
         setIsRefreshing(false);
     }
 
+    const onDelete = async dogId => {
+        const dog = await DeleteLikedDog(dogId);
+    }
+
     const renderItem = ({item}) => {
         return (
             <Pressable onPress={() => {props.navigation.navigate({routeName: 'DogProfile', params: {dog: item}})}}>
@@ -93,6 +49,11 @@ const LikedDogsScreen = props => {
                         <Text>{item.age}</Text>
                         <Text>{item.race}</Text>
                     </View>
+                    <Button 
+                        onPress={() => {onDelete(item.id)}}
+                        title="X"
+                        color="gray">
+                    </Button>
                 </View>
             </Pressable>
         )

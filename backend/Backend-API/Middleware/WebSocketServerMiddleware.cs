@@ -55,7 +55,7 @@ namespace Backend_API.Middleware
                         else if (result.MessageType == WebSocketMessageType.Close)
                         {
                             WebSocket removedSocket = _manager.RemoveSocket(userId);
-                            await removedSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+                             await removedSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
 
                             return;
                         }
