@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210819114500_dog")]
-    partial class dog
+    [Migration("20210823155628_area")]
+    partial class area
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,6 +128,9 @@ namespace Backend_API.Migrations
 
                     b.Property<int>("attractionType")
                         .HasColumnType("int");
+
+                    b.Property<string>("phoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -99,3 +99,19 @@ export const removeUserTable = () => {
         });
     });
 }
+
+export const removeUser = () => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                'DELETE from user;',
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, error) => {
+                    reject(error); 
+                })
+        });
+    });
+}

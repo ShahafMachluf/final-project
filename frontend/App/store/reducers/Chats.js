@@ -1,4 +1,4 @@
-import {RECEIVE_MESSAGE, INIT_CHAT, REMOVE_READ_MESSAGES} from '../actions/Chats';
+import {RECEIVE_MESSAGE, INIT_CHAT, REMOVE_READ_MESSAGES, REMOVE_CHATS} from '../actions/Chats';
 
 const initialState = {
 }
@@ -40,6 +40,8 @@ const chatReducer = (state = initialState, action) => {
                     messages: [...newMessages] 
                 }
             }
+        case REMOVE_CHATS:
+            return {}
         default:
             return state;
     }

@@ -124,7 +124,7 @@ const MainScreen = props => {
         return (
             <View style={styles.noDogs}>
                 <Text>לא מצאנו כלבים נוספים</Text>
-                <Text>הגדל את המרחק המירבי או נסה שוב מאוחר יותר</Text>
+                <Text>החלף אזור או נסה שוב מאוחר יותר</Text>
                 <MainButton 
                     onPress={getDogs}
                 >

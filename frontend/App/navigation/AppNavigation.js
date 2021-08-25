@@ -23,6 +23,7 @@ import ChatScreen from '../screens/ChatScreen';
 import store from '../store/Store';
 import { ResetPassword } from '../services/dataServices/userDataService';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import LogoutScreen from '../screens/LogoutScreen';
 
 let hasNewMessages = false;
 store.subscribe(() => {
@@ -200,6 +201,15 @@ const app = createDrawerNavigator({
                 <Ionicons name='person' size={24}/>
             )
         },
+    },
+    Logout: {
+        screen: LogoutScreen,
+        navigationOptions: {
+            drawerLabel: 'התנתק',
+            drawerIcon: () => (
+                <Ionicons name="log-out" size={24}/>
+            )
+        }
     }
 },
 {

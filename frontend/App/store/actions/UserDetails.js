@@ -3,6 +3,7 @@ import * as db from '../db';
 export const SAVE_USER_DETAILS = 'SAVE_USER_DETAILS';
 export const SET_USER_IMAGE_URL = 'SET_USER_IMAGE_URL';
 export const SET_MAX_DISTANCE = 'SET_MAX_DISTANCE';
+export const LOGOUT = 'LOGOUT';
 
 export const saveUserDetails = (userDetails) => {
     return async dispatch => {
@@ -82,6 +83,21 @@ export const setMaxDistance = maxDistance => {
                 }
             })
         }
+        catch (err) {
+            console.log(err);
+            throw err;
+        }
+    }
+}
+
+export const logout = () => {
+    return async dispatch => {
+        try {
+            await db.removeUser();
+            dispatch({
+                type: LOGOUT
+            })
+        } 
         catch (err) {
             console.log(err);
             throw err;

@@ -93,14 +93,21 @@ namespace Backend_API.Middleware
 
         public async Task RouteJsonMessageAsync(string message, IChatService chatService, IUserService userService)
         {
-            ChatMessageModel receivedMessage = JsonConvert.DeserializeObject<ChatMessageModel>(message);
-            ChatMessage dbMessage = await chatService.SaveMessageAsync(receivedMessage);
-            receivedMessage.Id = dbMessage.Id;
-            WebSocket socket = _manager.GetById(dbMessage.ToUserId);
-            await SendPushNotification(dbMessage);
-            if (socket != null && socket.State == WebSocketState.Open)
+            try
             {
-                await socket.SendAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(receivedMessage, Formatting.Indented)), WebSocketMessageType.Text, true, CancellationToken.None);
+                ChatMessageModel receivedMessage = JsonConvert.DeserializeObject<ChatMessageModel>(message);
+                ChatMessage dbMessage = await chatService.SaveMessageAsync(receivedMessage);
+                receivedMessage.Id = dbMessage.Id;
+                WebSocket socket = _manager.GetById(dbMessage.ToUserId);
+                await SendPushNotification(dbMessage);
+                if (socket != null && socket.State == WebSocketState.Open)
+                {
+                  await socket.SendAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(receivedMessage, Formatting.Indented)), WebSocketMessageType.Text, true, CancellationToken.None);
+                }
+            }
+            catch(Exception error)
+            {
+              
             }
         }
 

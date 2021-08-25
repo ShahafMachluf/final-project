@@ -1,6 +1,7 @@
 export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
 export const INIT_CHAT = 'INIT_CHAT';
 export const REMOVE_READ_MESSAGES = 'REMOVE_READ_MESSAGES';
+export const REMOVE_CHATS = "REMOVE_CHATS";
 
 export const ReceiveMessage = message => {
     return {
@@ -25,5 +26,11 @@ export const RemoveReadMessages = (readCount, chatId) => {
         type: REMOVE_READ_MESSAGES,
         readCount,
         chatId
+    }
+}
+
+export const RemoveChats = () => {
+    return {
+        type: REMOVE_CHATS
     }
 }

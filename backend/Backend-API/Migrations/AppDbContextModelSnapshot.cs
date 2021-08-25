@@ -127,6 +127,9 @@ namespace Backend_API.Migrations
                     b.Property<int>("attractionType")
                         .HasColumnType("int");
 
+                    b.Property<string>("phoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Attractions");
