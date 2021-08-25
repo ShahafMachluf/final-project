@@ -1,6 +1,6 @@
 
 
-name: Expo Publish
+name: Expo Publish new
 on:
   push:
     branches:
