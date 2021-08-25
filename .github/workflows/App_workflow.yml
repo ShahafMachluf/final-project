@@ -13,13 +13,15 @@ jobs:
     name: Install and publish
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      
       - name: Update config
         run: "mv frontend/App/app.config.js frontend/App/app.config.local.js"
         
       - name: Update config
         run: "mv frontend/App/app.config.azure.js frontend/App/app.config.js"
     
-      - uses: actions/checkout@v2
+      
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
