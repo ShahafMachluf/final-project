@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - uses: expo/expo-github-action@v6
+      - uses: expo/expo-github-action@v6 
         with:
           expo-version: 4.x
           expo-cache: true
