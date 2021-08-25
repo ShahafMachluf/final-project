@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210823155628_area")]
+    [Migration("20210825193919_area")]
     partial class area
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
