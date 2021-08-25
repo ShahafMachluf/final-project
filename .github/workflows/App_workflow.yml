@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Update config
-        run: "mv frontend/App/app.config.json frontend/App/app.config.local.json"
+        run: "mv frontend/App/app.config.js frontend/App/app.config.local.js"
         
       - name: Update config
-        run: "mv frontend/App/app.config.azure.json frontend/App/app.config.json"
+        run: "mv frontend/App/app.config.azure.js frontend/App/app.config.js"
     
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
