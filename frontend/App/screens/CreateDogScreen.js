@@ -16,7 +16,6 @@ import DogProfileScreen from './DogProfileScreen';
 import { SafeAreaView } from 'react-navigation';
 import Loader from '../components/Loader';
 import { color } from 'react-native-reanimated';
-import KeyboardShift from '../components/KeyboardShift';
 
 const CreateDogScreen = props => {
     const [name, setName] = useState('');
@@ -148,7 +147,6 @@ const CreateDogScreen = props => {
     }
 
     return (
-        <KeyboardShift>{() => (
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
                 <ScrollView style={{flex: 1}}>
                     <Header 
@@ -287,8 +285,6 @@ const CreateDogScreen = props => {
                         </View>
                 </ScrollView>
             </TouchableWithoutFeedback>
-         )}
-         </KeyboardShift>
     );
 };
 
