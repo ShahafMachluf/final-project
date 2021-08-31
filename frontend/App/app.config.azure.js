@@ -1,6 +1,7 @@
 export default {
     name: 'TinDog',
     icon: './assets/icon.png',
+    owner: "tindog",
     android: {
         package: "com.shahafm.tindog",
         versionCode: 1,
