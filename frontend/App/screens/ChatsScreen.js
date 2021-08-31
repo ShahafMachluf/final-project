@@ -11,19 +11,30 @@ import ChatListItem from '../components/ChatListItem';
 const ChatsScreen = props => {
     const [chats, setChats] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const userDetails = useSelector(state => state.userDetails);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const getChats = async () => {
             setIsLoading(true);
-            const chats = await GetMyChats();
-            setChats(chats);
+            await updateChats();
             setIsLoading(false);
         }
 
         getChats();
     }, [setChats])
+
+    const updateChats = async () => {
+        const chats = await GetMyChats();
+        setChats(chats);
+    }
+
+    const refresh = async () => {
+        setIsRefreshing(true);
+        await updateChats();
+        setIsRefreshing(false);
+    }
 
     const openChat = chatDetails => {
         dispatch(InitChat(chatDetails.id));
@@ -62,14 +73,14 @@ const ChatsScreen = props => {
                 data={chats}
                 renderItem={renderItem}
                 ListHeaderComponent={ <Header menuClickEventHandler={props.navigation.toggleDrawer}/>}
-                // refreshControl={
-                //     <RefreshControl 
-                //         refreshing={isRefreshing}
-                //         onRefresh={refresh}
-                //     />
-                // } 
+                refreshControl={
+                    <RefreshControl 
+                        refreshing={isRefreshing}
+                        onRefresh={refresh}
+                    />
+                } 
             />
-            <Loader active={isLoading}/> 
+            <Loader style={styles.loader} active={isLoading}/> 
         </View>
     )
 }
@@ -87,6 +98,11 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         borderWidth: 1,
         borderColor: 'black'
+    },
+    loader: {
+        position: 'absolute',
+        alignSelf: 'center',
+        marginVertical: '50%'
     }
 })
 

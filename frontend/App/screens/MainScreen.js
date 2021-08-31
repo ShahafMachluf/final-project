@@ -139,7 +139,7 @@ const MainScreen = props => {
             <Swiper
                 cardStyle={{paddingTop: 20}}
                 containerStyle={styles.cardContainer}
-                backgroundColor={'white'}
+                backgroundColor={'transparent'}
                 cardVerticalMargin={0}
                 disableBottomSwipe={true}
                 disableTopSwipe={true}

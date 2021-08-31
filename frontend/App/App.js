@@ -1,4 +1,5 @@
 import React from 'react';
+import { I18nManager } from 'react-native'
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 
@@ -16,7 +17,7 @@ init().then(() => {
 }).catch((error) => {
   console.log('init error ', error);
 })
-
+I18nManager.allowRTL(false);
 enableScreens();
 
 export default function App() {

@@ -74,7 +74,7 @@ const LikedDogsScreen = props => {
                     />
                 } 
             />
-            <Loader active={isLoading}/> 
+            <Loader style={styles.loader} active={isLoading}/> 
         </View>
     )
 }
@@ -110,6 +110,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         justifyContent: 'space-between',
         marginRight: 50
+    },
+    loader: {
+        position: 'absolute',
+        alignSelf: 'center',
+        marginVertical: '50%'
     }
 })
 

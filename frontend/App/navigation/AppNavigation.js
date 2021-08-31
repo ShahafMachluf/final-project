@@ -218,7 +218,8 @@ const app = createDrawerNavigator({
     contentComponent: Drawer,
     drawerWidth: Dimensions.get('window').width / 2,
     initialRouteName: 'Main',
-    backBehavior: 'history'
+    backBehavior: 'history',
+    unmountInactiveRoutes: true
 });
 
 const auth = createStackNavigator({
