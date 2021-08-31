@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "sdkVersion": "41.0.0",
+    "owner": "tindog",
     "android": {
       "package": "com.shahafm.tindog",
       "versionCode": 1,
