@@ -7,6 +7,8 @@ using Backend_API.Services.Interfaces;
 using AutoMapper;
 using Backend_API.Models.DbModels;
 using Backend_API.Models.User;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Backend_API.Controllers
 {
@@ -22,9 +24,11 @@ namespace Backend_API.Controllers
         public AdminController(IAdminService adminService, IUserService userService)
         { 
             _adminService = adminService;
+            _userService = userService;
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginReq request)
         {
