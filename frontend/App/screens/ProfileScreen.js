@@ -13,6 +13,7 @@ import {GetMyDogs} from '../services/dogService';
 import {DeleteDog} from '../services/dogService';
 
 
+
 const ProfileScreen = props => {
     const userDetails = useSelector(state => state.userDetails)
     const [isLoadingImage, setIsLoadingImage] = useState(false);
@@ -20,6 +21,7 @@ const ProfileScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [myDogs, setMyDogs] = useState([]);
+    const [dogDeleted, setDogDeleted] = useState(false);
 
 
     const imageTakenHandler = async image => {
@@ -31,25 +33,25 @@ const ProfileScreen = props => {
     useEffect(() => {
         const getMyDogs = async () => {
             setIsLoading(true);
+            setDogDeleted(false);
             const myDogs = await GetMyDogs();
             setMyDogs(myDogs);
-            setIsLoading(false);
+            setIsLoading(false);   
         }
-
         getMyDogs();
-    }, [setMyDogs])
+ 
+    }, [setMyDogs,dogDeleted, onDelete])
 
     const refresh = async () => {
         setIsRefreshing(true);
         const myDogs = await GetMyDogs();
         setMyDogs(myDogs);
-        set
         IsRefreshing(false);
     }
 
     const onDelete = async dogId => {
-        const dog = await DeleteDog(dogId);
-
+        await DeleteDog(dogId);
+        setDogDeleted(true);
     }
 
     const renderItem = ({item}) => {

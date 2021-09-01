@@ -13,7 +13,7 @@ import LinearGradientIcon from '../components/LinearGradientIcon';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import { updatePushNotificationToken } from '../services/userService';
-import { getAllDogs } from '../services/dataServices/dogDataService';
+import { getAllDogs, getDogsByArea } from '../services/dataServices/dogDataService';
 
 const MainScreen = props => {
     const swiperRef = useRef(null);
@@ -25,10 +25,11 @@ const MainScreen = props => {
     const getDogs = async () => {
         try{
             setIsLoading(true);
-            if(area.length !== 0)
-                getDogsByArea(area);
-            else
-                getAllDogs();
+            if(area.length !== 0){
+                await GetDogsByArea(area);
+            } else {
+                await getAllDogs();
+            }
         }
         catch (err) {
             console.log(err);
@@ -100,10 +101,11 @@ const MainScreen = props => {
         ReactToDog(swipedDog.id, reaction);
     }
 
-    const getDogsByArea = async () => {
-        const receivedDogs = await getDogsByAreaHandler(area);
-        setDogs(receivedDogs);
-            if(receivedDogs.length === 0) {
+    const GetDogsByArea = async () => {
+        const receivedDogsByArea =  await getDogsByAreaHandler(area);
+        console.log(receivedDogsByArea);
+        setDogs(receivedDogsByArea);
+            if(receivedDogsByArea.length === 0) {
                 setNoDogs(true);
             } else {
                 setNoDogs(false);
@@ -124,7 +126,7 @@ const MainScreen = props => {
         return (
             <View style={styles.noDogs}>
                 <Text>לא מצאנו כלבים נוספים</Text>
-                <Text>הגדל את המרחק המירבי או נסה שוב מאוחר יותר</Text>
+                <Text>נסה שוב מאוחר יותר</Text>
                 <MainButton 
                     onPress={getDogs}
                 >

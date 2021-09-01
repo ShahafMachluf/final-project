@@ -148,7 +148,7 @@ const CreateDogScreen = props => {
     }
 
     return (
-        <KeyboardShift>{() => (
+
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
                 <ScrollView style={{flex: 1}}>
                     <Header 
@@ -287,8 +287,7 @@ const CreateDogScreen = props => {
                         </View>
                 </ScrollView>
             </TouchableWithoutFeedback>
-         )}
-         </KeyboardShift>
+        
     );
 };
 

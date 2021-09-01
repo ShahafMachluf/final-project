@@ -43,7 +43,7 @@ namespace Backend_API.Controllers
 
 
             [HttpGet]
-            [Route("{i_Type}")]
+            [Route("type/{i_Type}")]
            public async Task<IActionResult> GetAttractionsByType(AttractionType i_Type)
             {
                 try
