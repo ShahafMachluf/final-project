@@ -38,12 +38,12 @@ namespace Backend_API.Controllers
         }
 
         [HttpGet]
-        [Route("{area}")]
-        public async Task<IActionResult> getAllDogsByArea(Area area)//in the Location wanted
+        [Route("area/{area}")]
+        public async Task<IActionResult> getAllDogsByArea(int area)//in the Location wanted
         {
             try
             {
-                var dogsItems = await _dogService.GetAllDogsByAreaAsync(_currentUser, area);//user who sent the request.
+                var dogsItems = await _dogService.GetAllDogsByAreaAsync(_currentUser, (Area)area);//user who sent the request.
                 return Ok(_mapper.Map<IEnumerable<DogReadDto>>(dogsItems)); // Will recive Dogs from function getAllDogs, and using the mapper to convert them to readDogDto and 
             }
             catch (Exception ex)

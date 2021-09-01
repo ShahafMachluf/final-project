@@ -15,8 +15,8 @@ export const getAllDogs = () => {
 }
 
 export const getDogsByArea = (area) => {
-    const url = `${baseUrl}/${area}`;
-    return Get(baseUrl);
+    const url = `${baseUrl}/area/${area}`;
+    return Get(url);
 }
 
 export const reactToDog = (reaction) => {

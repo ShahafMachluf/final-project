@@ -12,9 +12,8 @@ const LikedDogsScreen = props => {
     //      edit renderItem() to show name, age, race (and more?)
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const [likedDogs, setLikedDogs] = useState([
-       
-    ]);
+    const [likedDogs, setLikedDogs] = useState([]);
+    const [dogDeleted, setDogDeleted] = useState(false);
 
 
     useEffect(() => {
@@ -23,10 +22,11 @@ const LikedDogsScreen = props => {
             const likedDogs = await GetLikedDogs();
             setLikedDogs(likedDogs);
             setIsLoading(false);
+            setDogDeleted(false);
         }
 
         getLikedDogs();
-    }, [setLikedDogs])
+    }, [setLikedDogs,dogDeleted])
 
     const refresh = async () => {
         setIsRefreshing(true);
@@ -34,9 +34,11 @@ const LikedDogsScreen = props => {
         setLikedDogs(likedDogs);
         setIsRefreshing(false);
     }
+    
 
     const onDelete = async dogId => {
         const dog = await DeleteLikedDog(dogId);
+        setDogDeleted(true);
     }
 
     const renderItem = ({item}) => {
