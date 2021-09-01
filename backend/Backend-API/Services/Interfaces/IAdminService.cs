@@ -1,4 +1,5 @@
 ﻿using Backend_API.Models.DbModels;
+using Backend_API.Models.User;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ namespace Backend_API.Services.Interfaces
         Task<Attraction> CreateAttraction(Attraction attraction);
         Task<ApplicationUser> GetUserById(string id);
         Task<Attraction> GetAttractionById(int id);
-
-
+        Task<IEnumerable<ApplicationUser>> getAllUsers();
+        Task<IEnumerable<Dog>> getAllDogs();
+        Task<Dog> GetDogById(int id);
+        Task RemoveDog(Dog dog);
     }
 }

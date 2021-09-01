@@ -108,6 +108,7 @@ namespace Backend_API
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IAttractionsService, AttractionsService>();
             services.AddScoped<IChatService, ChatService>();
+            services.AddScoped<IAdminService, AdminService>();
             services.AddScoped(typeof(IRepo<>), typeof(Repo<>));
             #endregion
 
