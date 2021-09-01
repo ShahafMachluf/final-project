@@ -15,7 +15,7 @@ const columns = [
         width: 120,
         editable: true,
         renderCell: (params) => (
-            <img src={params.row.imageURL} height='100' width='100'/>
+            <img src={params.row.imageURL} height='100' width='100' alt="תמונה של כלב"/>
         )
       },
   {
