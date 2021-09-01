@@ -1,18 +1,12 @@
-﻿using Backend_API.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
-using Backend_API.Models.User;
 using Backend_API.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using AutoMapper;
 using Backend_API.Models.DbModels;
+using Backend_API.Models.User;
 
 namespace Backend_API.Controllers
 {
@@ -21,14 +15,77 @@ namespace Backend_API.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public AdminController(IAdminService adminService)
+        public AdminController(IAdminService adminService, IUserService userService)
         { 
             _adminService = adminService;
         }
 
-         [HttpPost]
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] LoginReq request)
+        {
+            try
+            {
+                LoginReqRes result = await _userService.LoginAsync(request);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ArgumentException)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("users")]
+        public async Task<IActionResult> getAllUsers()
+        {
+            try
+            {
+                var users = await _adminService.getAllUsers();
+                return Ok(users);
+            }
+            catch(Exception ex)
+            {
+                if (ex is ArgumentException || ex is ApplicationException)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("dogs")]
+        public async Task<IActionResult> getAllDogs()
+        {
+            try
+            {
+                var users = await _adminService.getAllDogs();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ArgumentException || ex is ApplicationException)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+
+            }
+        }
+
+        [HttpPost]
          [Route("addAttraction")]
          public async Task<IActionResult> addAttraction([FromBody] Attraction attraction )
         {
@@ -73,7 +130,7 @@ namespace Backend_API.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("user/{id}")]
         public async Task<IActionResult> deleteUser(string id)//and his dogs..
         {
             try
@@ -87,6 +144,29 @@ namespace Backend_API.Controllers
                 {
                     await _adminService.RemoveUser(user);
                     return Ok(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status203NonAuthoritative, ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("dog/{id}")]
+        public async Task<IActionResult> deleteDog(int id)
+        {
+            try
+            {
+                var dog = await _adminService.GetDogById(id);
+                if (dog == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _adminService.RemoveDog(dog);
+                    return Ok(dog);
                 }
             }
             catch (Exception ex)

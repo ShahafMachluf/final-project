@@ -1,9 +1,5 @@
-﻿using Backend_API.Models.User;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Backend_API.Models.Chat
 {
