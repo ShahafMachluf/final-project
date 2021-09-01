@@ -17,6 +17,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
+      - name: Update config
+        run: "mv frontend/admin-panel/src/config.json frontend/admin-panel/src/config.local.json"
+        
+      - name: Update config
+        run: "mv frontend/admin-panel/src/config.azure.json frontend/admin-panel/src/config.json"
 
       - name: Set up Node.js version
         uses: actions/setup-node@v1
