@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Backend_API.Models.User;
 
 namespace Backend_API.Services.Implementations
 {
@@ -15,6 +16,14 @@ namespace Backend_API.Services.Implementations
     {
         private readonly IRepo<Attraction> _repoAttractions;
         private readonly IRepo<ApplicationUser> _repoUsers;
+        private readonly IRepo<Dog> _repoDogs;
+
+        public AdminService(IRepo<Attraction> repoAttraction, IRepo<ApplicationUser> repoUsers, IRepo<Dog> repoDogs)
+        {
+            _repoAttractions = repoAttraction;
+            _repoUsers = repoUsers;
+            _repoDogs = repoDogs;
+        }
 
         public async Task RemoveUser(ApplicationUser user)
         {
@@ -55,6 +64,28 @@ namespace Backend_API.Services.Implementations
         public Task<Attraction> GetAttractionById(int id)
         {
             return _repoAttractions.Get().Where(Attraction => Attraction.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> getAllUsers()
+        {
+            return await _repoUsers.getAllAsync();
+        }
+
+        public async Task<IEnumerable<Dog>> getAllDogs()
+        {
+            return await _repoDogs.getAllAsync();
+
+        }
+
+        public async Task<Dog> GetDogById(int id)
+        {
+            return await _repoDogs.Get().Where(dog => dog.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task RemoveDog(Dog dog)
+        {
+            await _repoDogs.Delete(dog);
+            await _repoDogs.SaveChangesAsync();
         }
     }
 }
