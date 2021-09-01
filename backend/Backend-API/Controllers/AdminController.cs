@@ -17,6 +17,7 @@ using Backend_API.Models.DbModels;
 namespace Backend_API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/admin")]
     public class AdminController : ControllerBase
     {

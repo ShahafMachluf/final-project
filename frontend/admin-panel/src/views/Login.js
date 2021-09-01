@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import icon from '../assets/icon.png'
-import * as UserService from '../services/UserService';
+import * as AdminService from '../services/AdminService';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,7 +44,7 @@ const Login = props => {
           email: email.current.value,
           password: password.current.value
       }
-      const loginResult = await UserService.Login(loginDetails);
+      const loginResult = await AdminService.Login(loginDetails);
       if(!!loginResult.token) {
         localStorage.setItem('token', loginResult.token)
         history.push('/home')

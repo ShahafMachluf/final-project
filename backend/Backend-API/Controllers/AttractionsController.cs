@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 
 namespace Backend_API.Controllers
 {
-  [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-  [ApiController]
-  [Route("api/attraction")]
-  public class AttractionsController : BaseController
-  {
-    private readonly IAttractionsService _attractionService;
-    
-    public AttractionsController(
-      IUserService userService,
-      IAttractionsService attractionService) : base(userService)
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ApiController]
+    [Route("api/attraction")]
+    public class AttractionsController : BaseController
     {
-      _attractionService = attractionService;
-    }
+        private readonly IAttractionsService _attractionService;
+
+        public AttractionsController(
+          IUserService userService,
+          IAttractionsService attractionService) : base(userService)
+        {
+            _attractionService = attractionService;
+        }
 
         [HttpGet]
         [Route("")]
@@ -42,21 +42,21 @@ namespace Backend_API.Controllers
         }
 
 
-            [HttpGet]
-            [Route("type/{i_Type}")]
-           public async Task<IActionResult> GetAttractionsByType(AttractionType i_Type)
+        [HttpGet]
+        [Route("type/{i_Type}")]
+        public async Task<IActionResult> GetAttractionsByType(AttractionType i_Type)
+        {
+            try
             {
-                try
-                {
-                    var attractions = await _attractionService.GetAttractionsByType(_currentUser, i_Type);
+                var attractions = await _attractionService.GetAttractionsByType(_currentUser, i_Type);
 
-                    return Ok(attractions);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-                }
-
+                return Ok(attractions);
             }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
+    }
 }

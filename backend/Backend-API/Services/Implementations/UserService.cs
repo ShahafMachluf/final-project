@@ -65,9 +65,9 @@ namespace Backend_API.Services.Implementations
                 throw new ApplicationException(isCreated.Errors.First().Description);
             }
 
-
+            await _userManager.AddToRoleAsync(newUser, "User");
             RegisterReqRes result = _mapper.Map<RegisterReqRes>(newUser);
-            result.Token = GenerateJwtToken(newUser);
+            result.Token = await GenerateJwtTokenAsync(newUser);
 
             return result;
         }
@@ -87,7 +87,7 @@ namespace Backend_API.Services.Implementations
             }
 
             LoginReqRes result = _mapper.Map<LoginReqRes>(existingUser);
-            result.Token = GenerateJwtToken(existingUser);
+            result.Token = await GenerateJwtTokenAsync(existingUser);
 
             return result;
         }
@@ -126,7 +126,7 @@ namespace Backend_API.Services.Implementations
             await _repo.SaveChangesAsync();
         }
 
-        private string GenerateJwtToken(ApplicationUser user)
+        private async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
         {
             JwtSecurityTokenHandler jwtToketHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
@@ -137,7 +137,8 @@ namespace Backend_API.Services.Implementations
                     new Claim("Id", user.Id),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? string.Empty)
                 }),
                 Expires = DateTime.Now.AddYears(500),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

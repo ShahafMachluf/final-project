@@ -68,7 +68,7 @@ namespace Backend_API
                     };
                 });
 
-            services.AddDefaultIdentity<ApplicationUser>(opt =>
+/*            services.AddDefaultIdentity<ApplicationUser>(opt =>
             {
                 opt.SignIn.RequireConfirmedAccount = true;
                 opt.Password.RequireDigit = true;
@@ -77,7 +77,20 @@ namespace Backend_API
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Lockout.AllowedForNewUsers = false;
             })
-            .AddEntityFrameworkStores<AppDbContext>();
+            //.AddRoleManager<IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>();*/
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.SignIn.RequireConfirmedAccount = true;
+                config.Password.RequireDigit = true;
+                config.Password.RequireLowercase = false;
+                config.Password.RequireUppercase = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Lockout.AllowedForNewUsers = false;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
             #endregion
 
@@ -139,8 +152,45 @@ namespace Backend_API
             {
                 endpoints.MapControllers();
             });
+
+            CreateUserRoles(serviceProvider).Wait();
         }
 
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
+            IdentityResult roleResult;
+            //Adding Admin Role
+            var roleCheckAdmin = await RoleManager.RoleExistsAsync("Admin");
+            if (!roleCheckAdmin)
+            {
+                //create the roles and seed them to the database
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            var roleCheckUser = await RoleManager.RoleExistsAsync("User");
+            if (!roleCheckUser)
+            {
+                //create the roles and seed them to the database
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("User"));
+            }
+            //Assign Admin role to the main User here we have given our newly registered 
+            //login id for Admin management
+            ApplicationUser user = await UserManager.FindByEmailAsync("tindogapp44@gmail.com");
+            if(user == null)
+            {
+                user = new ApplicationUser()
+                {
+                    Email = "tindogapp44@gmail.com",
+                    UserName = "tindogapp44@gmail.com",
+                    FullName = "TinDog Admin"
+                };
+                await UserManager.CreateAsync(user, "tindog44");
+            }
+
+            await UserManager.AddToRoleAsync(user, "Admin");
+        }
     }
 }
