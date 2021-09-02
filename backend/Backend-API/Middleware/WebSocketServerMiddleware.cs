@@ -111,7 +111,7 @@ namespace Backend_API.Middleware
                 var pushMessage = new
                 {
                     to = receivedMessage.ToUser.PushNotificationToken,
-                    title = $"הודה חדשה מ - {receivedMessage.FromUser.FullName}",
+                    title = $"הודעה חדשה מ - {receivedMessage.FromUser.FullName}",
                     body = receivedMessage.Message.Substring(0, 20 > receivedMessage.Message.Length ? receivedMessage.Message.Length : 20),
                     data = new
                     {

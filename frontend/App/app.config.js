@@ -17,7 +17,7 @@ export default {
    // }
     // use this to work with local backend & SQL servers
      extra:{
-         APIAddress: "http://192.168.0.105:45455/api",
-         WebSocketAddress: "ws://192.168.0.105:45455"
+         APIAddress: "http://192.168.1.118:45455/api",
+         WebSocketAddress: "ws://192.168.1.118:45455"
      }
 };

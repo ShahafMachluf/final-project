@@ -12,7 +12,6 @@ import ProfileScreen from '../screens/ProfileScreen';
 import DogProfileScreen from '../screens/DogProfileScreen';
 import CreateDogScreen from '../screens/CreateDogScreen';
 import CareDogScreen from '../screens/CareDogScreen';
-import Hospitals from '../screens/Hospitals';
 import BuisnessProfile from '../screens/BuisnessProfile';
 import Drawer from '../components/Drawer';
 import HangOutScreen from '../screens/HangOutScreen';
@@ -23,6 +22,7 @@ import ChatScreen from '../screens/ChatScreen';
 import store from '../store/Store';
 import { ResetPassword } from '../services/dataServices/userDataService';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import BuisnessScreen from '../screens/BuisnessScreen';
 
 let hasNewMessages = false;
 store.subscribe(() => {
@@ -52,8 +52,8 @@ const careDog = createStackNavigator({
             headerShown: false
         }
     },
-    Hospitals: {
-        screen: Hospitals,
+    Buisness: {
+        screen: BuisnessScreen,
         navigationOptions: {
             headerShown: false
         }
