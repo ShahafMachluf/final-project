@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import { useHistory } from 'react-router';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -31,6 +31,7 @@ const Login = props => {
   const history = useHistory();
   const email = useRef('');
   const password = useRef('')
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if(!!localStorage.getItem('token')) {
@@ -44,10 +45,16 @@ const Login = props => {
           email: email.current.value,
           password: password.current.value
       }
-      const loginResult = await AdminService.Login(loginDetails);
-      if(!!loginResult.token) {
-        localStorage.setItem('token', loginResult.token)
-        history.push('/home')
+
+      try {
+        setError('');
+        const loginResult = await AdminService.Login(loginDetails);
+        if(!!loginResult.token) {
+          localStorage.setItem('token', loginResult.token)
+          history.push('/home')
+        }
+      } catch(error) {
+        setError(error.message);
       }
   }
 
@@ -84,6 +91,11 @@ const Login = props => {
             autoComplete="current-password"
             inputRef={password}
           />
+          {error.length > 0 && 
+          <span style={{backgroundColor: 'red', justifyContent: 'center', display: 'flex'}}>
+            <p>{error}</p>
+          </span>
+          }
           <Button
             type="submit"
             fullWidth

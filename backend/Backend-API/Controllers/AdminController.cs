@@ -35,6 +35,11 @@ namespace Backend_API.Controllers
             try
             {
                 LoginReqRes result = await _userService.LoginAsync(request);
+                string role = await _userService.GetUserRoleAsync(result.Email);
+                if(role != "Admin")
+                {
+                  throw new ArgumentException("דוא\"ל או הסיסמא אינם נכונים");
+                }
 
                 return Ok(result);
             }

@@ -218,6 +218,12 @@ TinDog
       smtp.Dispose();
     }
 
+    public async Task<string> GetUserRoleAsync(string userEmail)
+    {
+      ApplicationUser user = await _userManager.FindByEmailAsync(userEmail);
+      return (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+    }
+
     private string GeneratePassword()
     {
       Random random = new Random();
