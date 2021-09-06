@@ -150,11 +150,8 @@ namespace Backend_API.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    await _adminService.RemoveUser(user);
-                    return Ok(user);
-                }
+                await _adminService.RemoveUserAsync(user);
+                return Ok(user);
             }
             catch (Exception ex)
             {
@@ -173,11 +170,9 @@ namespace Backend_API.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    await _adminService.RemoveDog(dog);
-                    return Ok(dog);
-                }
+
+                await _adminService.RemoveDog(dog);
+                return Ok(true);
             }
             catch (Exception ex)
             {

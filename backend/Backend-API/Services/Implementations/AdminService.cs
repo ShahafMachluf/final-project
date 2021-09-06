@@ -17,22 +17,21 @@ namespace Backend_API.Services.Implementations
         private readonly IRepo<Attraction> _repoAttractions;
         private readonly IRepo<ApplicationUser> _repoUsers;
         private readonly IRepo<Dog> _repoDogs;
+        private readonly IDogService _dogService;
 
-        public AdminService(IRepo<Attraction> repoAttraction, IRepo<ApplicationUser> repoUsers, IRepo<Dog> repoDogs)
+        public AdminService(IRepo<Attraction> repoAttraction, IRepo<ApplicationUser> repoUsers, IRepo<Dog> repoDogs, IDogService dogService)
         {
             _repoAttractions = repoAttraction;
             _repoUsers = repoUsers;
             _repoDogs = repoDogs;
+            _dogService = dogService;
         }
 
-        public async Task RemoveUser(ApplicationUser user)
+        public async Task RemoveUserAsync(ApplicationUser user)
         {
-            await _repoUsers.Delete(user);
-            bool isDeleted = await _repoUsers.SaveChangesAsync();
-            if(isDeleted != true)
-            {
-                throw new ApplicationException("Cannot delete user.");
-            }
+            var userDogs = await _dogService.GetDogsByOwnerId(user.Id);
+            await _repoDogs.DeleteAsync(userDogs);
+            await _repoUsers.DeleteAsync(user);
         }
 
         public async Task<ApplicationUser> GetUserById(string id)
@@ -44,7 +43,7 @@ namespace Backend_API.Services.Implementations
 
         public async Task RemoveAttraction(Attraction attraction)
         {
-            await _repoAttractions.Delete(attraction);
+            await _repoAttractions.DeleteAsync(attraction);
             await _repoAttractions.SaveChangesAsync();
         }
 
@@ -68,7 +67,7 @@ namespace Backend_API.Services.Implementations
 
         public async Task<IEnumerable<ApplicationUser>> getAllUsers()
         {
-            return await _repoUsers.getAllAsync();
+            return (await _repoUsers.getAllAsync()).Where(u => u.Email != "tindogapp44@gmail.com");
         }
 
         public async Task<IEnumerable<Dog>> getAllDogs()
@@ -84,7 +83,7 @@ namespace Backend_API.Services.Implementations
 
         public async Task RemoveDog(Dog dog)
         {
-            await _repoDogs.Delete(dog);
+            await _repoDogs.DeleteAsync(dog);
             await _repoDogs.SaveChangesAsync();
         }
     }

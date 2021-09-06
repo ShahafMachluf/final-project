@@ -15,7 +15,5 @@ namespace Backend_API.Models.User
         public string Password { get; set; }
         [Required]
         public string FullName { get; set; }
-        //[Required]
-        // public string City { get; set; }  
     }
 }

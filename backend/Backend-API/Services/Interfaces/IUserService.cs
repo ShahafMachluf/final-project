@@ -14,7 +14,6 @@ namespace Backend_API.Services.Interfaces
         Task<LoginReqRes> LoginAsync(LoginReq req);
         ApplicationUser GetById(string id);
         Task<string> UpdateProfilePictureUrlAsync(string base64Image, ApplicationUser user);
-        Task UpdateMaxDistanceAsync(ApplicationUser user, int maxDistnace);
         Task<string> GetImageUrlAsync(string userId);
         Task UpdatePushNotificationTokenAsync(ApplicationUser _currentUser, string token);
         Task ResetPasswordAsync(string email);

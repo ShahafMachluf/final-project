@@ -81,23 +81,6 @@ namespace Backend_API.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Route("maxDistance")]
-        public async Task<IActionResult> UpdateMaxDistance([FromBody] int maxDistance)
-        {
-            try
-            {
-                await _userService.UpdateMaxDistanceAsync(_currentUser, maxDistance);
-
-                return Ok(true);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Route("notificationToken")]
         public async Task<IActionResult> UpdatePushNotificationToken([FromBody] string token)
         {

@@ -55,8 +55,7 @@ namespace Backend_API.Services.Implementations
             {
                 Email = req.Email,
                 UserName = req.Email,
-                FullName = req.FullName,
-                MaxDistance = 50
+                FullName = req.FullName
             };
 
             IdentityResult isCreated = await _userManager.CreateAsync(newUser, req.Password);
@@ -120,11 +119,6 @@ namespace Backend_API.Services.Implementations
             return _repo.Get().Where(u => u.Id == id).FirstOrDefault();
         }
 
-        public async Task UpdateMaxDistanceAsync(ApplicationUser user, int maxDistnace)
-        {
-            user.MaxDistance = maxDistnace;
-            await _repo.SaveChangesAsync();
-        }
 
         private async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
         {

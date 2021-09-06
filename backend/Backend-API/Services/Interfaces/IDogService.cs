@@ -20,7 +20,8 @@ namespace Backend_API.Services.Interfaces
         Task updateDogInfo(PatchDogDto dogUpdated);
         public Task<IEnumerable<Dog>> getMyDogs(ApplicationUser currentUser);
         Task deleteReactionToDog(ApplicationUser currentUser, Dog dog);
+        Task<IEnumerable<Dog>> GetDogsByOwnerId(string ownerId);
 
         // Task deleteReaction(ApplicationUser currentUser, Reaction dog);
-    }
+  }
 }

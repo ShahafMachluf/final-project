@@ -55,6 +55,11 @@ namespace Backend_API.Services.Implementations
             return _mapper.Map<CreateDogReqRes>(newDog);
         }
 
+    public async Task<IEnumerable<Dog>> GetDogsByOwnerId(string ownerId)
+    {
+      return await _repo.Get().Where(d => d.OwnerId == ownerId).ToListAsync();
+    }
+
         //Show only UnReacted dogs which are in your chosen city( ofcourse not your own dogs)
         public async Task<IEnumerable<Dog>> GetAllDogsAsync(ApplicationUser applicationUser )
         {
@@ -110,7 +115,7 @@ namespace Backend_API.Services.Implementations
         {
             if (dog.OwnerId == user.Id)
             {
-                await _repo.Delete(dog);
+                await _repo.DeleteAsync(dog);
                 await _repo.SaveChangesAsync();
             }
             else
@@ -147,7 +152,7 @@ namespace Backend_API.Services.Implementations
         public async Task deleteReactionToDog(ApplicationUser currentUser, Dog dog)
         {
            Reaction reactionToDelete =  await _reactionRepo.Get().Where(reaction => reaction.DogId == dog.Id && reaction.UserId == currentUser.Id).FirstOrDefaultAsync();
-           await _reactionRepo.Delete(reactionToDelete);
+           await _reactionRepo.DeleteAsync(reactionToDelete);
         }
     }
 }

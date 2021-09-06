@@ -18,14 +18,14 @@ namespace Backend_API.Services.Implementations
       _repo = repo;
     }
 
-        public async Task<IEnumerable<Attraction>> GetAllAttractionsAsync(ApplicationUser applicationUser)//get all attractions in your location
+        public async Task<IEnumerable<Attraction>> GetAllAttractionsAsync()
         {
-            return await _repo.Get().Where(attraction => attraction.City == applicationUser.City).ToListAsync();
+            return await _repo.Get().ToListAsync();
         }
 
-        public async Task<IEnumerable<Attraction>> GetAttractionsByType(ApplicationUser currentUser, AttractionType i_Type)
+        public async Task<IEnumerable<Attraction>> GetAttractionsByType(ApplicationUser currentUser, AttractionType type)
         {
-            return await _repo.Get().Where(attraction => attraction.attractionType == i_Type).ToListAsync();
+            return await _repo.Get().Where(attraction => attraction.attractionType == type).ToListAsync();
         }
     }
 }

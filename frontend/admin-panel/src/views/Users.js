@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import * as AdminService from '../services/AdminService';
+import noImage from '../assets/no-profile-picture.jpg'
 
 const modalStyle = {
   content: {
@@ -17,18 +18,18 @@ const modalStyle = {
   },
 };
 
-const Dogs = props => {
-    const [dogs, setDogs] = useState([]);
+const Users = props => {
+    const [users, setUsers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [dogToRemove, setDogToRemove] = useState(null);
+    const [userToRemove, setUserToRemove] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalLoading, setModalIsLoading] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
-        AdminService.GetAllDogs()
-        .then(receviedDogs => {
-            setDogs(receviedDogs);
+        AdminService.GetAllUsers()
+        .then(receviedUserss => {
+            setUsers(receviedUserss);
         }).catch(err => {
             console.log(err);
         }).finally(() =>{
@@ -40,7 +41,7 @@ const Dogs = props => {
       { 
         field: 'id', 
         headerName: 'ID', 
-        width: 150 
+        width: 300 
       },
       {
           field: 'image',
@@ -48,34 +49,21 @@ const Dogs = props => {
           width: 120,
           editable: true,
           renderCell: (params) => (
-              <img src={params.row.imageURL} height='100' width='100' alt="dog"/>
+              <img src={params.row.imageUrl || noImage} height='100' width='100' alt="user"/>
           )
         },
     {
-      field: 'name',
+      field: 'fullName',
       headerName: 'שם',
       width: 150,
       editable: true,
     },
     {
-      field: 'race',
-      headerName: 'גזע',
-      width: 150,
-      editable: true,
-    },
-    {
-      field: 'age',
-      headerName: 'גיל',
-      type: 'number',
-      width: 110,
-      editable: true,
-    },
-    {
-      field: 'color',
-      headerName: 'צבע',
-      width: 110,
-      editable: true,
-    },
+        field: 'email',
+        headerName: 'דוא"ל',
+        width: 150,
+        editable: true,
+      },
     {
       field: 'delete',
       headerName: 'מחק',
@@ -92,19 +80,19 @@ const Dogs = props => {
     }
   ];
   
-    const openConfirmationModal = (dogDetails) => {
+    const openConfirmationModal = (userDetails) => {
       setIsModalOpen(true);
-      setDogToRemove(dogDetails)
+      setUserToRemove(userDetails)
     }
 
     const closeModal = () => {
       setIsModalOpen(false);
     }
 
-    const removeDog = async () => {
+    const removeUser = async () => {
       try {
         setModalIsLoading(true);
-        const result = await AdminService.RemoveDog(dogToRemove.id);
+        const result = await AdminService.RemoveUser(userToRemove.id);
         if(result) {
           console.log('deleted', result);
           setIsModalOpen(false);
@@ -120,10 +108,10 @@ const Dogs = props => {
     const modalBody = () => {
       return (
         <div className="modal-content">
-              <p>האם אתה בטוח שברצונך להסיר את הכלב {dogToRemove?.name}</p>
+              <p>האם אתה בטוח שברצונך להסיר את המשתמש {userToRemove?.fullName}</p>
               {isModalLoading && <CircularProgress />}
               <span style={{marginTop: 40, display: 'flex'}}>
-                <Button onClick={removeDog} variant="contained" color="primary" style={{marginRight: 20}}>כן</Button>
+                <Button onClick={removeUser} variant="contained" color="primary" style={{marginRight: 20}}>כן</Button>
                 <Button onClick={closeModal} variant="contained">לא</Button>
               </span>
         </div>
@@ -134,7 +122,7 @@ const Dogs = props => {
         <div>
             <DataGrid
                 style={{margin: 80}}
-                rows={dogs}
+                rows={users}
                 columns={columns}
                 autoHeight
                 wid
@@ -145,7 +133,7 @@ const Dogs = props => {
             <Modal
                 isOpen={isModalOpen}
                 style={modalStyle}
-                contentLabel="הסר כלב"
+                contentLabel="הסר משתמש"
                 shouldCloseOnOverlayClick={true}
                 onRequestClose={closeModal}
                 ariaHideApp={false}
@@ -156,4 +144,4 @@ const Dogs = props => {
     )
 }
 
-export default Dogs;
+export default Users;

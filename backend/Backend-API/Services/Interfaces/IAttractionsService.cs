@@ -9,8 +9,8 @@ namespace Backend_API.Services.Interfaces
 {
   public interface IAttractionsService
   {
-    Task<IEnumerable<Attraction>> GetAllAttractionsAsync(ApplicationUser applicationUser);
-    public Task<IEnumerable<Attraction>> GetAttractionsByType(ApplicationUser currentUser, AttractionType i_Type);
+    Task<IEnumerable<Attraction>> GetAllAttractionsAsync();
+    public Task<IEnumerable<Attraction>> GetAttractionsByType(ApplicationUser currentUser, AttractionType type);
 
     }
 }

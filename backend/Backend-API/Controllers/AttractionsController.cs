@@ -29,7 +29,7 @@ namespace Backend_API.Controllers
         {
             try
             {
-                var attractions = await _attractionService.GetAllAttractionsAsync(_currentUser);
+                var attractions = await _attractionService.GetAllAttractionsAsync();
 
                 return Ok(attractions);
             }
@@ -41,12 +41,12 @@ namespace Backend_API.Controllers
 
 
         [HttpGet]
-        [Route("type/{i_Type}")]
-        public async Task<IActionResult> GetAttractionsByType(AttractionType i_Type)
+        [Route("type/{type}")]
+        public async Task<IActionResult> GetAttractionsByType(AttractionType type)
         {
             try
             {
-                var attractions = await _attractionService.GetAttractionsByType(_currentUser, i_Type);
+                var attractions = await _attractionService.GetAttractionsByType(_currentUser, type);
 
                 return Ok(attractions);
             }

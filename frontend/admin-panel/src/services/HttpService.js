@@ -60,4 +60,23 @@ export const Put = async (url, body, headers = {}, options = {}) => {
     return response.json();
 }
 
+export const Delete = async (url, headers = {}, options = {}) => {
+    const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            ...headers,
+            'Authorization': getAuthToken()
+        },
+        ...options
+    });
+
+    if(!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+    }
+
+    return response.json();
+}
+
 const getAuthToken = () => 'Bearer ' + localStorage.getItem('token');

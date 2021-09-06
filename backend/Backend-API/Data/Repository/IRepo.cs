@@ -13,6 +13,7 @@ namespace Backend_API.Data.Repository
         Task<bool> SaveChangesAsync();
         Task<IEnumerable<TEntity>> getAllAsync();
         IQueryable<TEntity> Get();
-        Task Delete(TEntity objectToRemove);
+        Task DeleteAsync(TEntity objectToRemove);
+        Task DeleteAsync(IEnumerable<TEntity> objectsToRemove);
     }
 }

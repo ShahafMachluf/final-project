@@ -27,9 +27,6 @@ namespace Backend_API.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -52,9 +49,6 @@ namespace Backend_API.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("MaxDistance")
-                        .HasColumnType("int");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -97,6 +91,25 @@ namespace Backend_API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "5f8bab53-3cd8-48fb-8563-97687cd286ab",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "0ca72488-6b92-4350-93d1-817f04e0844b",
+                            Email = "tindogapp44@gmail.com",
+                            EmailConfirmed = false,
+                            FullName = "TinDog Admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "TINDOGAPP44@GMAIL.COM",
+                            NormalizedUserName = "TINDOGAPP44@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOPqp45WEFQxgwcMmO+f9GPndvFbKnAPMW2623goci1JjlkBGdTIrEY44+TJz79sHQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "COZIXSFUJ5FUW6TUBIM3FOSVIP63GXEJ",
+                            TwoFactorEnabled = false,
+                            UserName = "tindogapp44@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("Backend_API.Models.DbModels.Attraction", b =>
@@ -133,48 +146,6 @@ namespace Backend_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Attractions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "יפת, קדם, תל אביב יפו",
-                            ImageURL = "https://lh5.googleusercontent.com/p/AF1QipMhf6Z16ZIfaq2XwW-hSZCOjndODw_Nnn_6-Hs=w408-h304-k-no",
-                            Latitude = 32.039332389353092,
-                            Longitude = 34.745416855801309,
-                            Name = "חוף עליה תל אביב יפו",
-                            attractionType = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "טיילת שלמה להט, תל אביב יפו",
-                            ImageURL = "https://lh5.googleusercontent.com/p/AF1QipM3-k-Cx-grQzaczPPEGdDBbx7ErjzihT8yUdud=w408-h306-k-no",
-                            Latitude = 32.093060412683101,
-                            Longitude = 34.770929383805104,
-                            Name = "חוף הכלבים",
-                            attractionType = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "שביל ישראל, תל אביב יפו",
-                            ImageURL = "https://lh5.googleusercontent.com/p/AF1QipPeRLFHW8modnyo7mN4AD6XEDgDieF4CIzJmMQ4=w408-h306-k-no",
-                            Latitude = 32.116458689969946,
-                            Longitude = 34.779863188779913,
-                            Name = "חוף הכלבים הצפוני - תל ברוך",
-                            attractionType = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Address = "תל אביב יפו",
-                            ImageURL = "https://lh5.googleusercontent.com/p/AF1QipOXwbXKGAlscGmDZ_0n6z_fgdcfUsxP6FpTV-dS=w408-h306-k-no",
-                            Latitude = 32.144486238831021,
-                            Longitude = 34.790942155733418,
-                            Name = "חוף הצוק הצפוני",
-                            attractionType = 0
-                        });
                 });
 
             modelBuilder.Entity("Backend_API.Models.DbModels.Chat", b =>
@@ -390,12 +361,10 @@ namespace Backend_API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -432,12 +401,10 @@ namespace Backend_API.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
