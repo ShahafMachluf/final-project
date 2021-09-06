@@ -10,6 +10,6 @@ export const getAllAttractions = async () => {
 }
 
 export const getAttractionsWithSameType = async (type) =>{
-    const url = `${baseUrl}/kind`;
-    return Get(url, type);
+    const url = `${baseUrl}/type/${type}`;
+    return Get(url);
 }

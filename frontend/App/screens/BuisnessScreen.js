@@ -1,43 +1,27 @@
 import React, {useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, Text, ActivityIndicator, FlatList } from 'react-native';
+import { StackActions } from 'react-navigation';
 
 import Header from '../components/Header';
 import BuisnessCard from '../components/BuisnessCard'
-import { StackActions } from 'react-navigation';
+import Loader from '../components/Loader';
+import { getAttractionByType } from '../services/attractionsService';
 
-
-
-const Buisness = props => {
+const BuisnessScreen = props => {
         const typeAttraction = props.navigation.state.params.type;
-        const [buisness, setBuisness] = useState([{
-             name: 'גורג',
-             address: 'פלורנטין 21',
-             city: 'Tel-Aviv',
-             info: 'blablablab'
-        },
-    {
-        name: 'Gorge',
-        address: 'Florentin 21',
-        city: 'Tel-Aviv',
-        info: 'blablablab'
-    },
-    {
-        name: 'Gorge',
-        address: 'Florentin 21',
-        city: 'Tel-Aviv',
-        info: 'blablablab'
-    },]);
+        const [buisness, setBuisness] = useState([]);
+        const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const getBuisness = async () => {
             setIsLoading(true);
-            const buisness = await getAttractionByType(type);
+            const buisness = await getAttractionByType(typeAttraction);
             setBuisness(buisness);
             setIsLoading(false);
         }
 
         getBuisness();
-    }, [setBuisness])
+    }, [])
 
     const navigateBack = () => {
         props.navigation.dispatch(StackActions.popToTop());
@@ -58,7 +42,7 @@ const Buisness = props => {
     }
     const navigateBuisness = (item) => {
         props.navigation.navigate({ 
-            routeName: 'Buisness',
+            routeName: 'BuisnessProfile',
             params: {buisness: item}
         })
 
@@ -66,28 +50,35 @@ const Buisness = props => {
 
     const renderItem = ({item}) => {
         return (
-
-                <View style={styles.screen}>
-                        <BuisnessCard name = {item.name} address = {item.address} city = {item.city} imageUrl = {item.image} onPress={() => {navigateBuisness(item)}}></BuisnessCard>
-                   </View>
+            <View style={styles.screen}>
+                <BuisnessCard 
+                    name={item.name} 
+                    address={item.address} 
+                    city={item.city} 
+                    imageUrl={item.image} 
+                    onPress={() => {navigateBuisness(item)}}
+                />
+            </View>
         )
     }
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss();}}>
-        <ScrollView style={{flex: 1}}>
-            <Header 
-            hideMenuIcon = {true}
-            showBackLabel = {true}
-            navigateBack = {navigateBack}
-            />
-            <Text style={styles.headerText} >{setHeader()}</Text>
-            <FlatList
-            //style={styles.inputContainer}
-            contentContainerStyle = {styles.inputContainer}
-            data={buisness}
-            renderItem={renderItem}/>
+            <ScrollView style={{flex: 1}}>
+                <Header 
+                    hideMenuIcon = {true}
+                    showBackLabel = {true}
+                    navigateBack = {navigateBack}
+                />
+                <Text style={styles.headerText} >{setHeader()}</Text>
+                <Loader active={isLoading}/>
+                <FlatList
+                    //style={styles.inputContainer}
+                    contentContainerStyle = {styles.inputContainer}
+                    data={buisness}
+                    renderItem={renderItem}
+                />
             </ScrollView>
-           </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
     );
 };
 

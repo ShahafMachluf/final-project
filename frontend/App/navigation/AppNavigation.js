@@ -59,7 +59,7 @@ const careDog = createStackNavigator({
             headerShown: false
         }
     },
-    Buisness: {
+    BuisnessProfile: {
         screen: BuisnessProfile,
         navigationOptions: {
             headerShown: false
@@ -170,7 +170,6 @@ const app = createDrawerNavigator({
     },
     TakeCare: {
         screen: careDog,
-        //screen: BuisnessProfile,
         navigationOptions: {
             drawerLabel: 'דואגים לכלב',
             drawerIcon: () => (

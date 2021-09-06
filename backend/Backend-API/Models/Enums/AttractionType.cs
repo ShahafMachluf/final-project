@@ -7,7 +7,7 @@ namespace Backend_API.Models.Enums
 {
     public enum AttractionType
     {
-        Veterinary,
+        Veterinary = 1,
         FoodAndComforts,
         HairDresser,
         DogTrainers,
