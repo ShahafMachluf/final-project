@@ -7,8 +7,9 @@ import { StackActions } from 'react-navigation';
 
 
 
-const Hospitals = props => {
-        const [hospitals, setHospitals] = useState([{
+const Buisness = props => {
+        const typeAttraction = props.navigation.state.params.type;
+        const [buisness, setBuisness] = useState([{
              name: 'גורג',
              address: 'פלורנטין 21',
              city: 'Tel-Aviv',
@@ -28,18 +29,31 @@ const Hospitals = props => {
     },]);
 
     useEffect(() => {
-        const getHospitals = async () => {
+        const getBuisness = async () => {
             setIsLoading(true);
-            const hospitals = await getAttractionByType(0);
-            setHospitals(hospitals);
+            const buisness = await getAttractionByType(type);
+            setBuisness(buisness);
             setIsLoading(false);
         }
 
-        getHospitals();
-    }, [setHospitals])
+        getBuisness();
+    }, [setBuisness])
 
     const navigateBack = () => {
         props.navigation.dispatch(StackActions.popToTop());
+
+    }
+    const setHeader = () => {
+        if(typeAttraction == 1)
+            return 'וטרינריות';
+        else if(typeAttraction == 2)
+            return 'חנויות אוכל ורווחה';
+        else if(typeAttraction == 3)
+            return 'מספרות';
+        else if(typeAttraction == 4)
+            return 'מאלפי כלבים';
+        else if(typeAttraction == 5)
+            return 'פנסיונים';
 
     }
     const navigateBuisness = (item) => {
@@ -66,11 +80,11 @@ const Hospitals = props => {
             showBackLabel = {true}
             navigateBack = {navigateBack}
             />
-            <Text style={styles.headerText} >וטרינריות</Text>
+            <Text style={styles.headerText} >{setHeader()}</Text>
             <FlatList
             //style={styles.inputContainer}
             contentContainerStyle = {styles.inputContainer}
-            data={hospitals}
+            data={buisness}
             renderItem={renderItem}/>
             </ScrollView>
            </TouchableWithoutFeedback>
@@ -118,4 +132,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Hospitals;
+export default BuisnessScreen;

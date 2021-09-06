@@ -15,12 +15,10 @@ const CareDogScreen = props => {
     const [choice, setChoice] = useState('');
 
     const clickChoiceHandler = () => {
-            if(choice == 0)
-            {
-                props.navigation.navigate({
-                    routeName: 'Hospitals'
-                })
-            }
+        props.navigation.navigate({ 
+            routeName: 'Buisness',
+            params: {type: choice}
+        })
     }
 
     return (
@@ -40,11 +38,11 @@ const CareDogScreen = props => {
                                 color: '#808080',
                             }}
                             items={[
-                                { label: 'וטרינריות', value: 0 },
-                                { label: 'חנויות אוכל ורווחה', value: 1 },
-                                { label: 'מספרות', value: 2 },
-                                { label: 'מאלפי כלבים', value: 3 },
-                                { label: 'פנסיונים', value: 4 },
+                                { label: 'וטרינריות', value: 1 },
+                                { label: 'חנויות אוכל ורווחה', value: 2 },
+                                { label: 'מספרות', value: 3 },
+                                { label: 'מאלפי כלבים', value: 4 },
+                                { label: 'פנסיונים', value: 5 },
                             ]}
                             onValueChange = {setChoice}
                             style={{...pickerSelectStyles, iconContainer: styles.iconContainer}}
