@@ -6,6 +6,7 @@ import NavBar from '../components/NavBar';
 import icon from '../assets/icon.png'
 import Dogs from './Dogs';
 import Users from './Users';
+import Attractions from './Attractions';
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -27,6 +28,7 @@ const Home = props => {
             </Route>
             <Route exact path={`${path}/users`} component={Users}/>
             <Route exact path={`${path}/dogs`} component={Dogs} />
+            <Route exact path={`${path}/attractions`} component={Attractions} />
         </Switch>
       </div>
   );

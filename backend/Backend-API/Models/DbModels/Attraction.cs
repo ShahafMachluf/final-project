@@ -17,7 +17,7 @@ namespace Backend_API.Models.DbModels
         public string ImageURL { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public AttractionType attractionType {get; set;}
-        public string phoneNumber { get; set; }
+        public AttractionType AttractionType {get; set;}
+        public string PhoneNumber { get; set; }
     }
 }

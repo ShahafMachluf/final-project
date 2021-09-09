@@ -15,6 +15,12 @@ export const GetAllUsers = async () => {
     return result;
 }
 
+export const GetAllAttractions = async () => {
+    const url = `${baseAddress}/attractions`;
+    const result = await Get(url);
+    return result;
+}
+
 export const Login = async userDetails => {
     const url = `${baseAddress}/login`;
     const result = await Post(url, userDetails);
@@ -30,5 +36,17 @@ export const RemoveDog = async dogId => {
 export const RemoveUser = async userId => {
     const url = `${baseAddress}/user/${userId}`;
     const result = await Delete(url);
+    return result;
+}
+
+export const RemoveAttrction = async attractionId => {
+    const url = `${baseAddress}/attraction/${attractionId}`;
+    const result = await Delete(url);
+    return result;
+}
+
+export const AddAttraction = async attractionDetails => {
+    const url = `${baseAddress}/attraction`;
+    const result = await Post(url, attractionDetails);
     return result;
 }

@@ -83,11 +83,13 @@ const Dogs = props => {
       width: 110,
       editable: true,
       renderCell: (params) => (
-          <button
-              onClick={_ => {openConfirmationModal(params.row)}}
-          >
-            מחק
-          </button>
+        <Button
+            variant="contained" 
+            color="secondary"
+            onClick={_ => {openConfirmationModal(params.row)}}
+        >
+          מחק
+        </Button>
       )
     }
   ];

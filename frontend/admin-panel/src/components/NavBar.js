@@ -49,6 +49,13 @@ const NavBar = props => {
             >
                 כלבים
             </Button>
+            <Button 
+            className={classes.utton} 
+            color="inherit"
+            onClick={() => redirect('attractions')}
+            >
+                אטרקציות
+            </Button>
         </Toolbar>
       </AppBar>
     </div>

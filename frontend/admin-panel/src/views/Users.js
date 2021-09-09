@@ -71,11 +71,13 @@ const Users = props => {
       width: 110,
       editable: true,
       renderCell: (params) => (
-          <button
+        <Button
+              variant="contained" 
+              color="secondary"
               onClick={_ => {openConfirmationModal(params.row)}}
           >
             מחק
-          </button>
+          </Button>
       )
     }
   ];

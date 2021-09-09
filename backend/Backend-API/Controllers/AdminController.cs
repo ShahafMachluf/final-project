@@ -19,12 +19,14 @@ namespace Backend_API.Controllers
     {
         private readonly IAdminService _adminService;
         private readonly IUserService _userService;
+    private readonly IAttractionsService _attractionsService;
         private readonly IMapper _mapper;
 
-        public AdminController(IAdminService adminService, IUserService userService)
+        public AdminController(IAdminService adminService, IUserService userService, IAttractionsService attractionsService)
         { 
             _adminService = adminService;
             _userService = userService;
+      _attractionsService = attractionsService;
         }
 
         [HttpPost]
@@ -96,7 +98,7 @@ namespace Backend_API.Controllers
         }
 
         [HttpPost]
-         [Route("addAttraction")]
+         [Route("attraction")]
          public async Task<IActionResult> addAttraction([FromBody] Attraction attraction )
         {
             try
@@ -179,5 +181,21 @@ namespace Backend_API.Controllers
                 return StatusCode(StatusCodes.Status203NonAuthoritative, ex.Message);
             }
         }
+
+    [HttpGet]
+    [Route("attractions")]
+    public async Task<IActionResult> GetAllAttractions()
+    {
+      try
+      {
+        var attractions = await _attractionsService.GetAllAttractionsAsync();
+
+        return Ok(attractions);
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(StatusCodes.Status203NonAuthoritative, ex.Message);
+      }
+    }
     }
 }

@@ -25,7 +25,7 @@ namespace Backend_API.Services.Implementations
 
         public async Task<IEnumerable<Attraction>> GetAttractionsByType(ApplicationUser currentUser, AttractionType type)
         {
-            return await _repo.Get().Where(attraction => attraction.attractionType == type).ToListAsync();
+            return await _repo.Get().Where(attraction => attraction.AttractionType == type).ToListAsync();
         }
     }
 }
