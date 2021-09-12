@@ -40,7 +40,7 @@ const ProfileScreen = props => {
         }
         getMyDogs();
  
-    }, [setMyDogs,dogDeleted, onDelete])
+    }, [setMyDogs, dogDeleted, onDelete])
 
     const refresh = async () => {
         setIsRefreshing(true);
@@ -52,6 +52,7 @@ const ProfileScreen = props => {
     const onDelete = async dogId => {
         await DeleteDog(dogId);
         setDogDeleted(true);
+        setMyDogs(dogs => dogs.filter(d => d.id !== dogId))
     }
 
     const renderItem = ({item}) => {

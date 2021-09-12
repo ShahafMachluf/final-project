@@ -37,8 +37,9 @@ const LikedDogsScreen = props => {
     
 
     const onDelete = async dogId => {
-        const dog = await DeleteLikedDog(dogId);
+        await DeleteLikedDog(dogId);
         setDogDeleted(true);
+        setLikedDogs(dogs => dogs.filter(d => d.id !== dogId))
     }
 
     const renderItem = ({item}) => {

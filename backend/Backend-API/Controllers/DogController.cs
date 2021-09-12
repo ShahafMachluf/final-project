@@ -125,18 +125,17 @@ namespace Backend_API.Controllers
 
         [HttpDelete]
         [Route("/delete/likedDog/{id}")]// delete/likedDog/id
-        public async Task<IActionResult> deleteLikedDogFromList(int idOfDog)
+        public async Task<IActionResult> deleteLikedDogFromList(int id)
         {
             try
             {
-                var dog = await _dogService.GetDogByIdAsync(idOfDog);
+                var dog = await _dogService.GetDogByIdAsync(id);
                 if (dog == null)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    //await _dogService.deleteDog(_currentUser, dog);;
                     await _dogService.deleteReactionToDog(_currentUser, dog);
                     return Ok();
                 }
