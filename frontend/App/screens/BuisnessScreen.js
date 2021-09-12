@@ -55,7 +55,7 @@ const BuisnessScreen = props => {
                     name={item.name} 
                     address={item.address} 
                     city={item.city} 
-                    imageUrl={item.image} 
+                    imageUrl={item.imageURL} 
                     onPress={() => {navigateBuisness(item)}}
                 />
             </View>

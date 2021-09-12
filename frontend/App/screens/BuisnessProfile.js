@@ -9,7 +9,7 @@ import { StackActions } from 'react-navigation';
 
 
 const Buisnessprofile = props => {
-    console.log(props);
+
     const buisness = props.navigation.state.params.buisness;
 
     const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +19,7 @@ const Buisnessprofile = props => {
         props.navigation.dispatch(popAction);
 
     }
-    
+
     return (
         <ScrollView style={{flex: 1}}>
             <SafeAreaView>
@@ -27,7 +27,7 @@ const Buisnessprofile = props => {
                     <View style={styles.imageContainer}>
                         <Image
                             style={styles.profilePicture}
-                            source={props.imageUrl ? {uri: Bprops.imageUr} : require('../assets/no-profile-picture.jpg')}
+                            source={buisness.imageURL ? {uri: buisness.imageURL} : require('../assets/no-profile-picture.jpg')}
                             onLoadStart={() => {setIsLoading(true)}}
                             onLoad={() => {setIsLoading(false)}} 
                         />

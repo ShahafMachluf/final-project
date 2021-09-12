@@ -11,9 +11,7 @@ const BuisnessCard = props => {
         <View style={{...styles.container}}>
         <ImageBackground
              style={styles.image} 
-             source={props.imageUrl ? {uri: Bprops.imageUr} : require('../assets/no-profile-picture.jpg')}
-             //source={{uri: 'https://1.bp.blogspot.com/-BnMqqmZAJW0/XUbhir1Bl2I/AAAAAAABrBE/KBv1l7qDt8QuO8C8ymaYuDfcmhux2Ot-ACLcBGAs/s1600/%25D7%2594%25D7%2591%25D7%25A2%25D7%2599%25D7%2594-%25D7%2594%25D7%2599%25D7%25AA%25D7%2594-%25D7%2591%25D7%259E%25D7%2599%25D7%25A0%25D7%2595%25D7%25A0%25D7%2599%25D7%259D.jpg'}}
-
+             source={props.imageUrl ? {uri: props.imageUrl} : require('../assets/no-profile-picture.jpg')}
          >
              <View style={styles.imageOverlay}>
                  <Text style={styles.name}>{props.name}</Text>
