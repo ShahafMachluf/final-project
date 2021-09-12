@@ -92,7 +92,7 @@ namespace Backend_API.Controllers
                 else
                 {
                     await _dogService.deleteDog(_currentUser, dog);
-                    return Ok();
+                    return Ok(true);
                 }
             }
             catch (Exception ex)
@@ -124,7 +124,7 @@ namespace Backend_API.Controllers
         }
 
         [HttpDelete]
-        [Route("/delete/likedDog/{id}")]// delete/likedDog/id
+        [Route("delete/likedDog/{id}")]// delete/likedDog/id
         public async Task<IActionResult> deleteLikedDogFromList(int id)
         {
             try
@@ -137,7 +137,7 @@ namespace Backend_API.Controllers
                 else
                 {
                     await _dogService.deleteReactionToDog(_currentUser, dog);
-                    return Ok();
+                    return Ok(true);
                 }
             }
             catch (Exception ex)
